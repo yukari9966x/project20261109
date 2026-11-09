@@ -246,6 +246,23 @@ def test_connection_failure_and_timeout():
         c.complete_json("s", "u", SCHEMA)
 
 
+def test_transport_allows_only_http_urls(tmp_path):
+    from ksfix.llm.transport import _http_only_opener, check_url, post_json
+
+    secret = tmp_path / "secret.txt"
+    secret.write_text("비밀", encoding="utf-8")
+    for bad in (secret.as_uri(), "ftp://example.com/x", "data:,hello", "localhost:11434/v1", ""):
+        with pytest.raises(LLMError):
+            post_json(bad, {"a": 1})
+    assert check_url("http://localhost:11434/v1") and check_url("https://api.example.com/v1")
+    # 전용 opener에는 파일 처리기가 없어 file:// 주소를 열 수 없다
+    import urllib.error
+    import urllib.request
+
+    with pytest.raises(urllib.error.URLError):
+        _http_only_opener().open(urllib.request.Request(secret.as_uri()))
+
+
 def test_batch_timeout_retries_single_sentences():
     from ksfix.llm.base import LLMTimeoutError
     from ksfix.llm.tasks.modal_verbs import judge

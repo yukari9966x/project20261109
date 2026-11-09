@@ -195,4 +195,8 @@
 - 사용자 확인: GitLab 주소 https://gitlab.aigov.go.kr/xieaqur571/project20261109 로 푸시, 태그 v1.0.0 생성, 기능 추가 중단
 - 이 클라우드 세션에서는 gitlab.aigov.go.kr(및 www.aigov.go.kr) 연결이 서버 쪽에서 끊김(다른 .go.kr 사이트는 정상) → 사용자 PC에서 푸시하도록 전체 이력·태그를 담은 git 번들과 명령을 제공
 - 제출 양식: 참가 안내서(붙임1)의 [양식 1-1] 참가신청서·[양식 2-1] 구동안내서를 hwpx로 채움(개인정보·동의·서명 칸은 사용자가 작성), 붙임3 기관별 신청목록(xlsx)은 기관 AI 담당부서 제출용으로 과제 행만 채움 — 저장소에는 넣지 않음
+- 1차 GitLab 푸시(사용자 PC)가 공공 GitLab 사전 보안 검사(pre-receive)에서 거부됨: Semgrep `python.lang.security.audit.dynamic-urllib-use-detected`(`llm/transport.py`의 `urllib.request.urlopen(변수)` — urllib은 `file://`도 열 수 있음). Gitleaks·OSV-Scanner·Trivy·Syft는 통과
+  - 수정: LLM 주소는 http·https만 허용(스킴·호스트 검사), http·https·오류 처리기만 넣은 전용 opener로 연결(파일·FTP·data 처리기와 리다이렉트 없음, 그 밖의 스킴은 URLError). 테스트 추가(`file://` 주소 거부·전용 opener가 파일을 열지 못함)
+  - 확인: semgrep-rules 저장소의 Python 규칙 전체로 거부된 커밋과 수정본을 비교 — tests/ 포함 기존 29건 → 28건, 사라진 것은 해당 1건뿐이고 새 지적 없음(나머지 28건은 GitLab 검사 규칙에 없어 1차 푸시에서도 지적되지 않음)
+  - v1.0.0 태그는 아직 어디에도 공개되지 않았으므로(GitHub 태그 푸시 차단, GitLab 푸시 거부) 수정 커밋으로 옮겨 다시 만듦
 
