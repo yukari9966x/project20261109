@@ -27,11 +27,27 @@ UNIT_RE = re.compile("|".join(re.escape(u) for u in sorted(UNIT_TOKENS, key=len,
 EXCLUDE_ROLES = {Role.EMPTY}
 
 
+UNIT_ALT = "|".join(re.escape(u) for u in sorted(UNIT_TOKENS, key=len, reverse=True))
+RANGE_BOTH_RE = re.compile(rf"(\d+(?:[.,]\d+)?) ?({UNIT_ALT}) ?∼ ?(\d+(?:[.,]\d+)?) ?\2")
+RANGE_PAREN_RE = re.compile(rf"\( ?(\d+(?:[.,]\d+)?) ?∼ ?(\d+(?:[.,]\d+)?) ?\) ?({UNIT_ALT})")
+LABEL_RE = re.compile(r"^ ?(?:비 ?고|보 ?기|참 ?고) ?\d{1,2}(?=\s)")
+
+
 def normalize(text: str) -> str:
     t = text.replace(OBJ, " ")
     t = SPACES_RE.sub(" ", t)
-    t = t.replace("~", "∼").replace("～", "∼").replace("〜", "∼")
+    t = (
+        t.replace("~", "∼")
+        .replace("～", "∼")
+        .replace("〜", "∼")
+        .replace("－", "∼")
+        .replace("–", "∼")
+    )
     t = t.replace("°C", "℃").replace("° C", "℃")
+    # 허용된 표기 변환: 범위의 단위 반복('10 ℃ ∼ 40 ℃' = '10 ∼ 40 ℃' = '(10 ∼ 40) ℃'), 비고·보기 라벨 번호
+    t = RANGE_BOTH_RE.sub(r"\1 ∼ \3 \2", t)
+    t = RANGE_PAREN_RE.sub(r"\1 ∼ \2 \3", t)
+    t = LABEL_RE.sub("비고", t)
     return t
 
 
@@ -76,7 +92,11 @@ def diff(before: Counter, after: Counter, allowed_extra: Counter | None = None) 
     extra = allowed_extra or Counter()
     added = after - before - extra
     removed = before - after
-    return {"added": dict(added), "removed": dict(removed)}
+
+    def fmt(c: Counter) -> dict[str, int]:
+        return {f"{k[0]}:{k[1]}": v for k, v in c.items()}
+
+    return {"added": fmt(added), "removed": fmt(removed)}
 
 
 def is_clean(d: dict) -> bool:

@@ -98,3 +98,11 @@ def test_revision_ids_unique():
         if etree.QName(el).localname in ("ins", "del")
     ]
     assert len(ids) == len(set(ids)) == 4
+
+
+def test_split_run_with_break_and_multiple_texts():
+    pa = para("<w:r><w:rPr><w:b/></w:rPr><w:br/><w:t>눈금 간격 </w:t><w:t>(scale)</w:t></w:r>")
+    assert pa.text == "\n눈금 간격 (scale)"
+    apply_text_edit(pa, 6, 7, "", "tracked", rev())  # 괄호 앞 공백 삭제
+    assert pa.text == "\n눈금 간격(scale)"
+    assert len(pa.xml.findall(f".//{{{W_NS}}}br")) == 1  # 줄바꿈이 복제되지 않음

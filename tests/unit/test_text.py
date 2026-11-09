@@ -78,7 +78,9 @@ def test_tabs_breaks_symbols_and_math():
     assert pt.text == "a\tb\n±" + OBJ
     assert pt.has_math
     pa = para(pt)
-    assert not pa.is_editable(0, 1)  # w:t가 여러 개인 런은 분할하지 않는다
+    assert pa.is_editable(0, 1)  # w:t·탭·줄바꿈만 있는 런은 나눠서 고칠 수 있다
+    assert not pa.is_editable(1, 2)  # 탭 자체는 고치지 않는다
+    assert not pa.is_editable(4, 5)  # 수식
 
 
 def test_field_state_crosses_paragraphs_toc():

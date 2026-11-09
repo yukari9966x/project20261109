@@ -113,6 +113,7 @@ def plan(
                 if inside:
                     d.action, d.covered_by = "apply", clash.rule_id
                     d.reason = f"{clash.rule_id} 수정에 포함"
+                    clash.extra.setdefault("covers", []).append(f.rule_id)
                 else:
                     d.reason = f"다른 수정({clash.rule_id})과 겹침"
                 continue
@@ -128,7 +129,7 @@ def plan(
             d.action, d.reason = "apply", None
         elif fx.kind in PARA_KINDS:
             key = (fx.target, fx.kind)
-            if key in para_kinds_used or fx.target in struct_used:
+            if key in para_kinds_used:
                 d.reason = "같은 문단의 다른 서식 수정과 겹침"
                 continue
             para_kinds_used.add(key)

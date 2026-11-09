@@ -133,3 +133,55 @@ def reference_targets(doc: KSDoc, ctx: RuleContext):
                 ref_kind=kind,
                 ref=num,
             )
+
+
+REF02_RE = re.compile(
+    r"(?<![\w.])(?P<num>(?:[A-Z]\.)?\d{1,2}(?:\.\d{1,3})+)(?P<hang>\s*항)(?!목|공|만|상)"
+)
+
+
+@rule("REF-02")
+def clause_suffix(doc: KSDoc, ctx: RuleContext):
+    from ksfix.rules.base import FixSpec
+
+    for p in doc.paras:
+        if p.role not in REF_ROLES:
+            continue
+        for m in REF02_RE.finditer(p.text):
+            yield finding(
+                ctx,
+                "REF-02",
+                p,
+                m.start(),
+                m.end(),
+                f"절·항은 번호만으로 참조합니다('{m.group()}' → '{m.group('num')}').",
+                fix=FixSpec("replace_text", p.idx, m.start("hang"), m.end("hang"), text=""),
+                suggestion=m.group("num"),
+            )
+
+
+STD_COLON_RE = re.compile(
+    rf"(?P<std>(?:{pt.STD_NO_CORE}))(?P<colon>\s+[:：]\s*|\s*[:：]\s+|：)(?P<year>(?:19|20)\d\d)"
+)
+REF04_ROLES = REF_ROLES | {Role.NORMREF_ENTRY, Role.BIBLIO_ENTRY, Role.TERM_SOURCE, Role.FOREWORD}
+
+
+@rule("REF-04")
+def std_number_form(doc: KSDoc, ctx: RuleContext):
+    from ksfix.rules.base import FixSpec
+
+    for p in doc.paras:
+        if p.role not in REF04_ROLES:
+            continue
+        for m in STD_COLON_RE.finditer(p.text):
+            want = f"{m.group('std').strip()}:{m.group('year')}"
+            yield finding(
+                ctx,
+                "REF-04",
+                p,
+                m.start(),
+                m.end(),
+                f"표준번호와 연도는 쌍점(:)을 붙여 씁니다('{m.group()}' → '{want}').",
+                fix=FixSpec("replace_text", p.idx, m.start("colon"), m.end("colon"), text=":"),
+                suggestion=want,
+            )

@@ -248,8 +248,11 @@ def local_candidate(p: Para) -> Cand | None:
     return None
 
 
-def plausible_next(last: str | None, num: str) -> bool:
-    """손으로 친 번호가 직전 절 번호 다음에 올 수 있는 번호인지(그림 범례 "1 용접봉" 등 배제)."""
+def plausible_next(last: str | None, num: str, allow_gap: bool = False) -> bool:
+    """손으로 친 번호가 직전 절 번호 다음에 올 수 있는 번호인지(그림 범례 "1 용접봉" 등 배제).
+
+    allow_gap: 1단계 번호가 2칸까지 건너뛰는 것을 허용(굵은 손번호 제목 — NUM-01이 잡게 한다).
+    """
     prefix = ""
     if num[:1].isalpha():
         prefix, num = num[:2], num[2:]
@@ -268,6 +271,8 @@ def plausible_next(last: str | None, num: str) -> bool:
     for depth in range(len(lp)):
         if parts == lp[:depth] + [lp[depth] + 1]:
             return True
+    if allow_gap and not prefix and len(parts) == 1 and lp[0] + 1 < parts[0] <= lp[0] + 3:
+        return True
     return False
 
 
@@ -497,7 +502,8 @@ class _Zones:
         if role == Role.HEADING:
             typed = c.attrs.get("typed")
             num = c.attrs.get("number") or ""
-            if typed and not plausible_next(self.last_heading_num, num):
+            gap_ok = bool(p.attrs.get("bold")) and "\t" not in stripped
+            if typed and not plausible_next(self.last_heading_num, num, allow_gap=gap_ok):
                 pass  # 번호가 이어지지 않는 손번호(그림 범례·목록 등)는 제목이 아니다
             elif self.zone == "annex" and typed and not re.match(r"[A-Z]\.", num):
                 pass  # 부속서 안의 손번호 "1 ..."은 제목으로 보지 않는다

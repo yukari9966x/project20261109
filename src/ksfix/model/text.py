@@ -126,18 +126,27 @@ def _run_is_hidden(run: Any) -> bool:
     return val is None or val.lower() not in ("0", "false", "off")
 
 
+SPLITTABLE_CHILDREN = {
+    "rPr",
+    "lastRenderedPageBreak",
+    "t",
+    "tab",
+    "br",
+    "cr",
+    "noBreakHyphen",
+    "softHyphen",
+}
+
+
 def _run_is_splittable(run: Any) -> bool:
-    """w:t가 정확히 하나이고 필드·개체가 없는 런만 분할 편집 대상."""
+    """텍스트(w:t)와 탭·줄바꿈만 있고 필드·개체가 없는 런만 분할 편집 대상."""
     n_t = 0
     for c in run:
-        tag = local(c.tag)
-        if ns_of(c.tag) == W_NS and tag == "t":
-            n_t += 1
-        elif tag in ("rPr", "lastRenderedPageBreak"):
-            continue
-        else:
+        if ns_of(c.tag) != W_NS or local(c.tag) not in SPLITTABLE_CHILDREN:
             return False
-    return n_t == 1
+        if local(c.tag) == "t":
+            n_t += 1
+    return n_t >= 1
 
 
 class _Extractor:

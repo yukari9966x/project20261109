@@ -23,7 +23,8 @@ def test_tracked_fix_sample01(sample_bytes):
     assert hashlib.sha256(data).hexdigest() == before
     assert r.output and not r.integrity and r.invariants["ok"]
     s = r.summary()
-    assert s["applied"] >= 7 and s["comments"] == len(r.check.findings)
+    covered = sum(1 for d in r.decisions if d.covered_by)
+    assert s["applied"] >= 20 and s["comments"] == len(r.check.findings) - covered
     assert s["pass_rate_after"] > s["pass_rate_before"]
     d = docx.Document(io.BytesIO(r.output))
     assert all(c.author == "KS-Fix" for c in d.comments)

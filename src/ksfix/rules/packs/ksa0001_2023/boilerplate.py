@@ -146,3 +146,106 @@ def terms_intro(doc: KSDoc, ctx: RuleContext):
         TERMS2_RE,
         "용어와 정의",
     )
+
+
+def _best_match(paras: list[Para], targets: list[str]) -> tuple[Para | None, str, float]:
+    best = (None, targets[0], 0.0)
+    for p in paras:
+        for t in targets:
+            r = similarity(pt.clean(p.text), t)
+            if r > best[2]:
+                best = (p, t, r)
+    return best
+
+
+@rule("BLT-02")
+def foreword_copyright(doc: KSDoc, ctx: RuleContext):
+    """머리말 저작권 정형문 2문장 + 특허 정형문(두 형태 허용)."""
+    title = next((p for p in doc.paras if p.role == Role.FOREWORD_TITLE), None)
+    if title is None:
+        return
+    body = [p for p in doc.paras if p.role == Role.FOREWORD and pt.clean(p.text)]
+    bp = ctx.boilerplate["foreword"]
+    required = [
+        ("저작권 정형문(첫째 문장)", [bp["copyright"][0]]),
+        ("저작권 정형문(둘째 문장)", [bp["copyright"][1]]),
+        ("특허 정형문", list(bp["patent"])),
+    ]
+    used: set[int] = set()
+    last_anchor = body[0] if body else title
+    for name, targets in required:
+        p, target, ratio = _best_match([q for q in body if q.idx not in used], targets)
+        if p is not None and ratio >= MISSING_RATIO:
+            used.add(p.idx)
+            last_anchor = p
+            if any(same_text(p.text, t) for t in targets):
+                continue
+            auto = ratio >= AUTO_RATIO
+            yield finding(
+                ctx,
+                "BLT-02",
+                p,
+                0,
+                len(p.text),
+                f"머리말 {name}의 문구가 KS A 0001 부속서 E와 다릅니다(유사도 {ratio:.2f}).",
+                fix=FixSpec("replace_text", p.idx, 0, len(p.text.rstrip()), text=target, auto=auto),
+                suggestion=target,
+                confidence=round(ratio, 2),
+            )
+        else:
+            yield finding(
+                ctx,
+                "BLT-02",
+                title,
+                None,
+                None,
+                f"머리말에 {name}이(가) 없습니다.",
+                fix=FixSpec(
+                    "insert_paragraph_after", last_anchor.idx, text=targets[0], style="body"
+                ),
+                suggestion=targets[0],
+            )
+
+
+@rule("BLT-06")
+def commentary_intro(doc: KSDoc, ctx: RuleContext):
+    title = next((p for p in doc.paras if p.role == Role.COMMENTARY_TITLE), None)
+    if title is None:
+        return
+    target = ctx.boilerplate["commentary"]["intro"]
+    accepted = [target, *ctx.boilerplate["commentary"].get("accepted", [])]
+    body = [
+        p for p in doc.paras[title.idx + 1 :] if p.role == Role.COMMENTARY and pt.clean(p.text)
+    ][:3]
+    if any(same_text(q.text, a) for q in body for a in accepted):
+        return
+    p, _, ratio = _best_match(body, [target])
+    if p is not None and ratio >= MISSING_RATIO:
+        yield finding(
+            ctx,
+            "BLT-06",
+            p,
+            0,
+            len(p.text),
+            f"해설 도입문의 문구가 KS A 0001 부속서 N과 다릅니다(유사도 {ratio:.2f}).",
+            fix=FixSpec(
+                "replace_text",
+                p.idx,
+                0,
+                len(p.text.rstrip()),
+                text=target,
+                auto=ratio >= AUTO_RATIO,
+            ),
+            suggestion=target,
+        )
+        return
+    yield finding(
+        ctx,
+        "BLT-06",
+        title,
+        None,
+        None,
+        "해설 도입문(이 해설은 … 표준의 일부는 아니다.)이 없습니다.",
+        fix=FixSpec("insert_paragraph_after", title.idx, text=target, style="body"),
+        suggestion=target,
+    )

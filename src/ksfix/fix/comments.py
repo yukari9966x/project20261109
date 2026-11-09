@@ -68,4 +68,7 @@ def comment_text(finding: Any, status_label: str) -> str:
     body = finding.message
     if finding.suggestion and finding.suggestion not in body and status_label != "자동수정":
         body += f" 제안: {finding.suggestion}"
+    covers = finding.extra.get("covers") if hasattr(finding, "extra") else None
+    if covers:
+        body += f" (함께 해결: {', '.join(sorted(set(covers)))})"
     return f"{head} {body} {tail}"

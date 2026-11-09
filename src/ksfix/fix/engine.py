@@ -150,12 +150,23 @@ def apply_decisions(
             if want_comments and comment_applied and mode == "tracked" and d.anchors:
                 commenter.add_range(d.anchors[0], d.anchors[-1], comment_text(d.finding, _label(d)))
 
-    # 3) 문단 서식·이동·삽입·설정
-    for d in decisions:
+    # 3) 문단 서식 → 이동·삭제 → 삽입 → 설정(서식을 먼저 바꿔야 옮긴 문단에도 반영된다)
+    order = {
+        "set_style": 0,
+        "set_alignment": 0,
+        "set_table_header": 0,
+        "move_paragraph": 1,
+        "delete_paragraph": 1,
+    }
+    step3 = [
+        d
+        for d in decisions
+        if d.action == "apply" and d.finding.fix and d.finding.fix.kind != "replace_text"
+    ]
+    step3.sort(key=lambda d: order.get(d.finding.fix.kind, 2))
+    for d in step3:
         f = d.finding
         fx = f.fix
-        if d.action != "apply" or fx is None or fx.kind == "replace_text":
-            continue
         p = doc.paras[fx.target]
         created: list[Any] = []
         if fx.kind == "set_style":
@@ -175,9 +186,13 @@ def apply_decisions(
             for t in texts:
                 res.allowed_extra.update(text_tokens(t))
         elif fx.kind == "move_paragraph":
-            target = doc.paras[(fx.props or {})["to"]]
-            where = (fx.props or {}).get("where", "before")
-            created = [para_ops.move_paragraph(p.xml, target.xml, where, mode, rev)]
+            props = fx.props or {}
+            if "to_table" in props:
+                target_el = doc.tables[props["to_table"]].xml
+            else:
+                target_el = doc.paras[props["to"]].xml
+            where = props.get("where", "before")
+            created = [para_ops.move_paragraph(p.xml, target_el, where, mode, rev)]
         elif fx.kind == "delete_paragraph":
             para_ops.delete_paragraph(p.xml, mode, rev)
         elif fx.kind == "set_doc_setting":

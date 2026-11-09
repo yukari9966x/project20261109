@@ -38,15 +38,48 @@ def _set_text(t_el: Any, text: str) -> None:
     t_el.set(f"{{{XML_NS}}}space", "preserve")
 
 
+ONE_CHAR = {w("tab"), w("br"), w("cr"), w("noBreakHyphen")}
+
+
+def _child_len(c: Any) -> int:
+    if c.tag == w("t"):
+        return len(c.text or "")
+    return 1 if c.tag in ONE_CHAR else 0
+
+
+def run_length(run: Any) -> int:
+    return sum(_child_len(c) for c in run if c.tag != w("rPr"))
+
+
 def split_run(run: Any, k: int) -> tuple[Any, Any]:
-    """w:t가 하나인 런을 k번째 글자에서 둘로 나눈다."""
-    t_el = _t(run)
-    text = t_el.text or ""
-    if not 0 < k < len(text):
+    """런을 보이는 글자 k번째에서 둘로 나눈다(w:t·탭·줄바꿈이 섞인 런도 처리, 서식 복사)."""
+    total = run_length(run)
+    if not 0 < k < total:
         raise EditError("런 분할 위치가 범위를 벗어났습니다.")
-    right = copy.deepcopy(run)
-    _set_text(t_el, text[:k])
-    _set_text(_t(right), text[k:])
+    right = etree.Element(w("r"))
+    rpr = run.find(w("rPr"))
+    if rpr is not None:
+        right.append(copy.deepcopy(rpr))
+    pos = 0
+    moving = False
+    for c in [c for c in run if c.tag != w("rPr")]:
+        n = _child_len(c)
+        if moving:
+            right.append(c)  # 이후 자식은 오른쪽 런으로 옮긴다
+            continue
+        if pos + n <= k:
+            pos += n
+            if pos == k:
+                moving = True
+            continue
+        # 이 자식 안에서 나눈다(w:t만 길이가 2 이상)
+        cut = k - pos
+        text = c.text or ""
+        t2 = etree.SubElement(right, w("t"))
+        _set_text(t2, text[cut:])
+        _set_text(c, text[:cut])
+        moving = True
+        pos = k
     run.addnext(right)
     return run, right
 
@@ -63,10 +96,9 @@ def isolate(para: Para, start: int, end: int) -> list[Any]:
     runs = []
     for s in _editable_spans(para, start, end):
         run = s.run
-        a = max(start, s.start) - s.start
-        b = min(end, s.end) - s.start
-        length = len(_t(run).text or "")
-        if b < length:
+        a = s.run_offset + max(start, s.start) - s.start
+        b = s.run_offset + min(end, s.end) - s.start
+        if b < run_length(run):
             run, _ = split_run(run, b)
         if a > 0:
             _, run = split_run(run, a)
@@ -117,8 +149,8 @@ def low_level_replace(
             return []
         span = _insertion_span(para, start)
         run = span.run
-        k = start - span.start
-        length = len(_t(run).text or "")
+        k = span.run_offset + start - span.start
+        length = run_length(run)
         new_run = make_run(new, _rpr(run))
         if k == 0:
             anchor_before = run
