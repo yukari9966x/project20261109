@@ -1,7 +1,7 @@
 # [구동안내서 초안] KS-Fix: KS A 0001 표준안 서식 자동교정 AI
 
 > 양식 2-1 항목 순서대로 쓴 초안입니다. A4 3~5쪽 PDF로 옮길 때 그림(`images/`)을 함께 넣습니다.
-> 채울 곳: 팀명(성명), 공공 GitLab 주소, 온라인 데모 주소(있으면).
+> 공공 GitLab: https://gitlab.aigov.go.kr/xieaqur571/project20261109 (태그 v1.0.0)
 
 ## 1. 실행 환경
 
@@ -36,7 +36,7 @@ docker compose up --build
 ```
 → 브라우저에서 http://127.0.0.1:8765
 
-**④ 온라인 데모(설치 없음)**: (주소가 있으면 기재) — 문서는 브라우저 안에서만 처리되며 서버로 보내지 않습니다.
+**④ 브라우저 데모(선택)**: `python scripts/build_pages.py` → `python -m http.server 8000 --directory site` → http://127.0.0.1:8000 — 문서는 브라우저 안에서만 처리되며 서버로 보내지 않습니다(온라인 공개 주소 없음).
 
 ![그림 1. 첫 화면: 문서 올리기와 옵션](images/01_upload_options.png)
 
@@ -47,7 +47,7 @@ docker compose up --build
   1. Ollama 설치 후 모델 받기: `ollama pull exaone3.5:7.8b`, `ollama pull gemma3:4b`
   2. 웹 UI ‘AI(LLM)’에서 `ollama-exaone` 또는 `ollama-gemma` 선택(명령줄: `--llm ollama-exaone`)
 - 다른 모델·기관 API: `config/llm_profiles.yaml`(예시 파일 복사) 또는 환경변수 `KSFIX_LLM_BASE_URL`·`KSFIX_LLM_MODEL`·`KSFIX_LLM_API_KEY` — OpenAI 호환 API면 코드 수정 없이 교체됩니다. 외부 API를 고르면 전송 경고가 표시됩니다.
-- 모델 2종 평가(합성 문장 60개, `ksfix eval`): (README의 평가표를 옮겨 적음)
+- 모델 2종 평가(합성 문장 60개, `ksfix eval`, CPU): EXAONE 3.5 7.8B — 유형 정확도 75 %, 허용 판별 97 %, 문장당 24.5초 / Gemma 3 4B — 82 %, 97 %, 9.4초. 두 모델 모두 같은 설정으로 주요 기능 동작
 
 ## 4. 모의데이터 안내
 

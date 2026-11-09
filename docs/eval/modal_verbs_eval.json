@@ -3,20 +3,20 @@
   "permission_accuracy": 0.967,
   "permission_recall": 0.9,
   "permission_false_positive": 1,
-  "must_accuracy": 0.778,
-  "suggestions_used": 6,
-  "suggestions_rejected": 5,
-  "cached": true,
+  "must_accuracy": 0.556,
+  "suggestions_used": 7,
+  "suggestions_rejected": 6,
+  "cached": false,
   "profile": "ollama-exaone",
   "model": "exaone3.5:7.8b",
   "n": 60,
-  "accuracy": 0.8,
+  "accuracy": 0.75,
   "compliance_accuracy": 0.717,
-  "held": 0,
-  "seconds": 0.0,
-  "sec_per_sentence": 0.0,
+  "held": 1,
+  "seconds": 1472.5,
+  "sec_per_sentence": 24.54,
   "per_category": {
-   "요구사항": 1.0,
+   "요구사항": 0.7,
    "권고사항": 1.0,
    "허용": 0.9,
    "가능성/역량": 0.6,
@@ -25,7 +25,9 @@
   },
   "confusion": {
    "요구사항": {
-    "요구사항": 10
+    "요구사항": 7,
+    "외적 제약": 2,
+    "판단보류": 1
    },
    "권고사항": {
     "권고사항": 10
@@ -66,7 +68,7 @@
     "ok": true,
     "compliant_gold": true,
     "compliant_pred": false,
-    "suggestion": "표시는 쉽게 지워지지 않는 방법으로 하도록 하여야 한다.",
+    "suggestion": "표시는 쉽게 지워지지 않는 방법으로 해야 한다.",
     "rejected": null
    },
    {
@@ -75,15 +77,15 @@
     "pred": "요구사항",
     "ok": true,
     "compliant_gold": true,
-    "compliant_pred": true,
-    "suggestion": null,
+    "compliant_pred": false,
+    "suggestion": "측정 장치는 매 시험 전에 교정해도 된다.",
     "rejected": null
    },
    {
     "id": "r04",
     "gold": "요구사항",
-    "pred": "요구사항",
-    "ok": true,
+    "pred": "외적 제약",
+    "ok": false,
     "compliant_gold": false,
     "compliant_pred": false,
     "suggestion": "시험자는 보호 안경을 착용하여야 한다.",
@@ -92,21 +94,21 @@
    {
     "id": "r05",
     "gold": "요구사항",
-    "pred": "요구사항",
-    "ok": true,
+    "pred": "판단보류",
+    "ok": false,
     "compliant_gold": true,
     "compliant_pred": false,
-    "suggestion": "케이블의 피복은 시험 후 손상되어서는 안 된다. (손상되지 않아야 한다로 명확히 표현 가능)",
-    "rejected": null
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
    },
    {
     "id": "r06",
     "gold": "요구사항",
-    "pred": "요구사항",
-    "ok": true,
+    "pred": "외적 제약",
+    "ok": false,
     "compliant_gold": false,
-    "compliant_pred": true,
-    "suggestion": null,
+    "compliant_pred": false,
+    "suggestion": "제품의 금속 외함은 접지하여야 한다.",
     "rejected": null
    },
    {
@@ -658,15 +660,15 @@
   "must_accuracy": 0.889,
   "suggestions_used": 6,
   "suggestions_rejected": 3,
-  "cached": true,
+  "cached": false,
   "profile": "ollama-gemma",
   "model": "gemma3:4b",
   "n": 60,
   "accuracy": 0.817,
   "compliance_accuracy": 0.65,
   "held": 0,
-  "seconds": 0.0,
-  "sec_per_sentence": 0.0,
+  "seconds": 564.3,
+  "sec_per_sentence": 9.4,
   "per_category": {
    "요구사항": 0.8,
    "권고사항": 1.0,
