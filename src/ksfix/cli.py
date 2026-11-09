@@ -56,6 +56,120 @@ def cmd_inspect(args: argparse.Namespace) -> int:
     return 0
 
 
+SEV_KO = {"error": "오류", "warning": "경고", "info": "참고"}
+FAIL_LEVEL = {"error": 0, "warning": 1, "info": 2, "never": -1}
+
+
+def _print_summary(result, name: str, limit: int = 30) -> None:
+    from collections import Counter
+
+    s = result.summary()
+    c = s["by_severity"]
+    print(f"KS-Fix 점검: {name}")
+    for w in result.warnings:
+        print(f"  ! {w}")
+    print(
+        f"  지적 {s['findings']}건 (오류 {c['error']} · 경고 {c['warning']} · 참고 {c['info']}) · "
+        f"자동수정 가능 {s['autofixable']}건 · 규칙 통과율 {s['pass_rate']}% "
+        f"({s['rules_passed']}/{s['rules_applied']})"
+    )
+    by_rule = Counter(f.rule_id for f in result.findings)
+    if by_rule:
+        print("  규칙별: " + ", ".join(f"{k} {v}" for k, v in sorted(by_rule.items())))
+    for f in result.findings[:limit]:
+        print(
+            f"  [{SEV_KO[f.severity]}] {f.rule_id} #{f.block}: {f.message} «{_short(f.snippet, 50)}»"
+        )
+    if len(result.findings) > limit:
+        print(f"  … 외 {len(result.findings) - limit}건(리포트 참고)")
+    for d in result.diagnostics:
+        print(f"  ! 내부 오류({d.get('failed_rule')}): {d.get('error')}")
+
+
+def _exit_code(result, fail_on: str) -> int:
+    level = FAIL_LEVEL.get(fail_on, -1)
+    if level < 0:
+        return 0
+    worst = min((FAIL_LEVEL[f.severity] for f in result.findings), default=99)
+    return 1 if worst <= level else 0
+
+
+def cmd_check(args: argparse.Namespace) -> int:
+    import json
+    from pathlib import Path
+
+    from ksfix.api import check_bytes, report_dict
+    from ksfix.io import InputError, read_input
+
+    try:
+        data = read_input(args.file)
+        result = check_bytes(data, rules=args.rules)
+    except (InputError, ValueError) as exc:
+        print(f"오류: {exc}", file=sys.stderr)
+        return 2
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    src = Path(args.file)
+    report = report_dict(result, source_name=src.name)
+    target = out / f"{src.stem}.ksfix-report.json"
+    target.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    _print_summary(result, src.name)
+    print(f"  리포트: {target}")
+    return _exit_code(result, args.fail_on)
+
+
+def cmd_rules(args: argparse.Namespace) -> int:
+    from ksfix.rules.registry import implemented_ids, load_catalog
+
+    cat = load_catalog()
+    impl = implemented_ids()
+    if args.markdown:
+        print(rules_markdown(cat, impl))
+        return 0
+    print(
+        f"{cat.title} — 규칙 {len(cat.rules)}종, 구현 {sum(r['id'] in impl for r in cat.rules)}종"
+    )
+    for r in cat.rules:
+        mark = "●" if r["id"] in impl else "○"
+        print(
+            f" {mark} {r['id']:7} {r['priority']:3} {SEV_KO[r['severity']]:2} {r['autofix']:7} {r['title']}"
+        )
+    return 0
+
+
+def rules_markdown(cat, impl: set[str]) -> str:
+    autofix_ko = {"auto": "자동", "suggest": "제안", "none": "메모"}
+    method_ko = {"deterministic": "결정", "llm": "LLM", "hybrid": "결정+LLM"}
+    lines = [
+        "# 규칙 목록 (RULES)",
+        "",
+        f"`ksfix rules --markdown`으로 생성 · 규칙팩 {cat.pack} {cat.version} · "
+        f"전체 {len(cat.rules)}종 중 구현 {sum(r['id'] in impl for r in cat.rules)}종",
+        "",
+        "근거는 KS A 0001:2023의 절·부속서 번호입니다(요약 서술). "
+        "수정: 자동 = 변경추적 자동 수정 / 제안 = 메모·제안 / 메모 = 지적만.",
+        "",
+    ]
+    by_cat: dict[str, list[dict]] = {}
+    for r in cat.rules:
+        by_cat.setdefault(r["category"], []).append(r)
+    for name, rules in by_cat.items():
+        lines += [
+            f"## {name}",
+            "",
+            "| ID | 구현 | 우선 | 심각도 | 방식 | 수정 | 점검 내용 | 근거 |",
+            "|---|---|---|---|---|---|---|---|",
+        ]
+        for r in rules:
+            lines.append(
+                f"| {r['id']} | {'●' if r['id'] in impl else '○'} | {r['priority']} | "
+                f"{SEV_KO[r['severity']]} | {method_ko.get(r['method'], r['method'])} | "
+                f"{autofix_ko.get(r['autofix'], r['autofix'])} | {r['title']} | {r['clause']} |"
+            )
+        lines.append("")
+    return "\n".join(lines)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="ksfix", description=DESCRIPTION)
     parser.add_argument("--version", action="version", version=f"ksfix {__version__}")
@@ -72,7 +186,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="never",
         help="이 심각도 이상의 지적이 있으면 종료 코드 1",
     )
-    p.set_defaults(func=_not_ready("Phase 3"))
+    p.set_defaults(func=cmd_check)
 
     p = sub.add_parser("fix", help="점검 + 교정 문서(변경추적/반영본) + 리포트")
     p.add_argument("file", help="입력 docx")
@@ -95,7 +209,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("rules", help="규칙 목록")
     p.add_argument("--markdown", action="store_true", help="마크다운 표로 출력(docs/RULES.md)")
-    p.set_defaults(func=_not_ready("Phase 3"))
+    p.set_defaults(func=cmd_rules)
 
     p = sub.add_parser("eval", help="LLM 골드셋 평가(모델 비종속 입증)")
     p.add_argument("--profiles", required=True, help="쉼표로 구분한 프로필 이름")

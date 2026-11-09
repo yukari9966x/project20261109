@@ -810,11 +810,11 @@ def write_clause6_7(g: Gen) -> None:
         t = g.table([["항목", "글자 높이"], ["제조자명", "3 mm 이상"], ["세부 항목", ""]])
         cell = t.cell(2, 1)
         inner = cell.add_table(rows=1, cols=2)
-        for c_i, val in enumerate(("내부 표 1", "내부 표 2")):
+        for c_i, val in enumerate(("하위 칸 1", "하위 칸 2")):
             para = inner.cell(0, c_i).paragraphs[0]
             para.add_run(val)
             g.tag(para, "table_cell")
-        g.expect("TBL-03", "내부 표")
+        g.expect("TBL-03", "하위 칸")
     else:
         g.heading(2, "표시 방법")
         g.p("표시는 쉽게 지워지지 않는 방법으로 하여야 한다.")

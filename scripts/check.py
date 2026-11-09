@@ -20,13 +20,15 @@ STEPS: list[list[str]] = [
     [sys.executable, "-m", "pytest", "-q"],
 ]
 
-# Phase 4(수정 엔진) 전까지는 구조 보기로 샘플 처리 스모크 검사를 한다.
+# Phase 4(수정 엔진) 전까지는 점검만으로 샘플 처리 검사를 한다.
 SAMPLE_STEP = [
     sys.executable,
     "-m",
     "ksfix",
-    "inspect",
+    "check",
     str(SAMPLE.relative_to(ROOT)),
+    "-o",
+    "out/ci",
 ]
 
 # 값이 붙은 비밀값 할당만 잡는다(예: api_key = "sk-..."). 환경변수 이름 참조는 허용.

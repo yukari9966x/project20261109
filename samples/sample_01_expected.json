@@ -189,7 +189,7 @@
  },
  {
   "rule_id": "TBL-03",
-  "where": "내부 표"
+  "where": "하위 칸"
  },
  {
   "rule_id": "NUM-01",

@@ -1,11 +1,11 @@
 import json
 
 import pytest
-from tests.helpers import ks_skeleton, make_docx
 
 from ksfix.api import analyze
 from ksfix.classify.heuristics import plausible_next
 from ksfix.model import Role
+from tests.helpers import ks_skeleton, make_docx
 
 
 @pytest.mark.parametrize(

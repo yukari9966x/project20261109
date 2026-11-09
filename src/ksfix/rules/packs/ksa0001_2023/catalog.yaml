@@ -1,0 +1,149 @@
+# KS A 0001:2023 규칙팩. 근거는 KS A 0001:2023의 절·부속서 번호(요약 서술, 원문 복제 아님).
+# method: deterministic | llm | hybrid,  autofix: auto | suggest | none,  priority: P0 | P0b | P1 | P2
+pack: ksa0001-2023
+title: "KS A 0001:2023 표준의 서식과 작성방법"
+version: "0.9.0"
+categories:
+  STR: "구조·요소"
+  NUM: "번호"
+  BLT: "정형문"
+  VRB: "문장 말미"
+  PUN: "문장부호·표기"
+  QTY: "숫자·단위"
+  TBL: "표·그림"
+  FIG: "표·그림"
+  NTE: "비고·보기"
+  REF: "참조"
+  NRF: "인용표준·참고문헌"
+  TRM: "용어와 정의"
+  TOC: "목차·제목"
+  TTL: "목차·제목"
+  FMT: "KSDT 서식"
+  INV: "신뢰성"
+rules:
+  # ── A. 구조·요소 ─────────────────────────────
+  - {id: STR-01, title: "필수 요소(머리말·제목·적용범위·인용표준·용어와 정의)", clause: "5.1.3 표 3, 6.1.3, 6.3", severity: error, method: deterministic, autofix: suggest, priority: P0b}
+  - {id: STR-02, title: "요소 순서(목차→머리말→개요→제목→적용범위→…→해설)", clause: "5.1.3 표 3, 5.2.7~5.2.9", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: STR-03, title: "미결문단(절 제목과 첫 하위 항 사이의 번호 없는 문단)", clause: "5.2.4", severity: warning, method: deterministic, autofix: suggest, priority: P0}
+  - {id: STR-04, title: "참고 요소(머리말·개요·적용범위·비고·보기·참고 등)의 요구·권고·허용 표현", clause: "6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9", severity: error, method: hybrid, autofix: none, priority: P0}
+  - {id: STR-05, title: "머리말의 그림·표", clause: "6.1.3", severity: warning, method: deterministic, autofix: none, priority: P1}
+  - {id: STR-06, title: "참고문헌은 마지막 부속서 뒤", clause: "5.2.7", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: STR-07, title: "표·그림 목차는 필요한 경우에만", clause: "6.1.2 비고", severity: info, method: deterministic, autofix: none, priority: P1}
+  # ── B. 번호 ──────────────────────────────────
+  - {id: NUM-01, title: "절 번호는 적용범위 = 1부터 연속", clause: "5.2.2", severity: error, method: deterministic, autofix: none, priority: P0}
+  - {id: NUM-02, title: "같은 단계의 항이 하나뿐", clause: "5.2.3", severity: error, method: deterministic, autofix: none, priority: P0}
+  - {id: NUM-03, title: "세분은 최대 5단계", clause: "5.2.3", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: NUM-04, title: "같은 단계 항의 제목 유무 일관", clause: "5.2.3", severity: info, method: deterministic, autofix: none, priority: P1}
+  - {id: NUM-05, title: "손으로 친 절 번호 → 자동번호 제목 스타일", clause: "5.2.2, 5.2.3, 6.1.2", severity: warning, method: deterministic, autofix: auto, priority: P1}
+  - {id: NUM-06, title: "부속서 번호·지위 표시·하위 번호", clause: "5.2.6", severity: error, method: deterministic, autofix: suggest, priority: P0b}
+  - {id: NUM-07, title: "그림·표·식 번호는 1부터 연속, 식 세분 금지", clause: "J.1.3, J.2.2, J.4.3", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: NUM-08, title: "목록 기호(—, •, a), 1))", clause: "5.2.5", severity: warning, method: deterministic, autofix: auto, priority: P1}
+  # ── C. 정형문 ────────────────────────────────
+  - {id: BLT-01, title: "머리말 발행정보 정형문", clause: "6.1.3, 부속서 E.1", severity: warning, method: deterministic, autofix: suggest, priority: P1}
+  - {id: BLT-02, title: "머리말 저작권·특허 정형문", clause: "6.1.3, 부속서 E.1", severity: error, method: deterministic, autofix: auto, priority: P0}
+  - {id: BLT-03, title: "인용표준 도입 정형문", clause: "6.4.1", severity: error, method: deterministic, autofix: auto, priority: P0}
+  - {id: BLT-04, title: "용어와 정의 도입 정형문", clause: "6.4.2", severity: error, method: deterministic, autofix: auto, priority: P0}
+  - {id: BLT-05, title: "적용범위 표현", clause: "6.3.2", severity: info, method: llm, autofix: suggest, priority: P1}
+  - {id: BLT-06, title: "해설 도입문", clause: "부속서 N", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: BLT-07, title: "부합화 표준 개요의 원국제표준 정형문", clause: "6.2, 부속서 E.2", severity: warning, method: deterministic, autofix: suggest, priority: P1}
+  # ── D. 문장 말미 ─────────────────────────────
+  - {id: VRB-01, title: "'반드시 ~하여야 한다'는 외적 제약에만", clause: "부속서 I 표 I.1, 표 I.5", severity: warning, method: hybrid, autofix: suggest, priority: P0}
+  - {id: VRB-02, title: "허용은 '~해도 된다', 가능성은 '~할 수 있다'", clause: "부속서 I 표 I.3, 표 I.4", severity: info, method: llm, autofix: suggest, priority: P0}
+  - {id: VRB-03, title: "허용 문맥의 '가능하다/불가능하다'", clause: "부속서 I 표 I.3", severity: info, method: llm, autofix: suggest, priority: P1}
+  - {id: VRB-04, title: "금지 표현은 '~하여서는 안 된다'", clause: "부속서 I 표 I.1", severity: warning, method: deterministic, autofix: suggest, priority: P0b}
+  - {id: VRB-05, title: "권고 표현", clause: "부속서 I 표 I.2", severity: info, method: llm, autofix: suggest, priority: P1}
+  - {id: VRB-06, title: "(선택) '~해야 한다' → '~하여야 한다'", clause: "부속서 I 표 I.1", severity: info, method: deterministic, autofix: auto, priority: P2, default: false}
+  # ── E. 문장부호·표기 ─────────────────────────
+  - {id: PUN-01, title: "반쌍점(;) 사용", clause: "부속서 H.3.2(문장 부호)", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - id: PUN-02
+    title: "연속부호는 '∼'(U+223C)"
+    clause: "부속서 H.3.4(연속부호)"
+    severity: warning
+    method: deterministic
+    autofix: auto
+    priority: P0
+    applies_to: [body, list_item, note, example, remark, table_cell, definition, foreword, intro, commentary, term_source, normref_entry, biblio_entry, table_caption, figure_caption, heading, unit_label]
+    message: "연속부호는 '∼'(U+223C)를 씁니다."
+  - {id: PUN-03, title: "법령 인용(「 」) 지양", clause: "부속서 H.3.3(인용부호), 6.4.1", severity: info, method: deterministic, autofix: none, priority: P1}
+  - {id: PUN-04, title: "가운뎃점 사용", clause: "부속서 H.3.2.3(가운뎃점)", severity: info, method: deterministic, autofix: none, priority: P1}
+  - {id: PUN-05, title: "'및/또는'", clause: "부속서 H.2.2.4", severity: info, method: deterministic, autofix: none, priority: P2}
+  - {id: PUN-06, title: "중복 마침표·문장부호 앞 공백·이중 공백", clause: "부속서 H.3.2.1(마침표)", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  # ── F. 숫자·단위 ─────────────────────────────
+  - id: QTY-01
+    title: "수치와 단위기호 사이 띄어쓰기"
+    clause: "부속서 L, J.3"
+    severity: warning
+    method: deterministic
+    autofix: auto
+    priority: P0
+    applies_to: [body, list_item, note, example, remark, table_cell, definition, unit_label, commentary, intro]
+    params:
+      auto_units: [mm, cm, km, µm, μm, nm, kg, mg, kN, MPa, kPa, GPa, Pa, kV, mV, mA, kA, kW, MW, kHz, MHz, GHz, Hz, ms, μs, µs, min, dB, mL, "℃", "°C", "%", "Ω", "kΩ", "MΩ", "mΩ", "Wh", "kWh", "lx", "cd", "rpm", "N·m", "m²", "m³", "cm²", "mm²", "m/s", "km/h"]
+      suggest_only_units: [m, g, N, V, A, W, s, h, K, L, J, C, F, T]
+      space_char: " "
+    message: "수치와 단위기호 사이를 한 칸 띄웁니다(예: 5 mm, 60 %)."
+  - {id: QTY-02, title: "소수점은 마침표, 1 미만 소수 앞의 0", clause: "J.3", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: QTY-03, title: "세 자리 묶음은 공백(연도 제외)", clause: "J.3", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - id: QTY-04
+    title: "허용오차 표기 '(23 ± 2) ℃'"
+    clause: "부속서 L, J.4.4"
+    severity: warning
+    method: deterministic
+    autofix: auto
+    priority: P0
+    applies_to: [body, list_item, note, example, remark, table_cell, definition, commentary]
+    message: "허용오차가 있는 값은 괄호로 묶고 단위를 뒤에 씁니다(예: (23 ± 2) ℃)."
+  - {id: QTY-05, title: "범위의 단위 '10 ℃ ∼ 40 ℃' 또는 '(10 ∼ 40) ℃'", clause: "부속서 H.3.4, 부속서 L", severity: warning, method: deterministic, autofix: auto, priority: P0}
+  - {id: QTY-06, title: "곱셈 기호 '×'", clause: "J.3", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: QTY-07, title: "단위 지수 위첨자(mm2 → mm²)", clause: "부속서 L", severity: warning, method: deterministic, autofix: auto, priority: P1}
+  - {id: QTY-08, title: "'%(m/m)', 'wt%' → '질량분율'", clause: "부속서 L", severity: info, method: deterministic, autofix: suggest, priority: P1}
+  # ── G. 표·그림 ───────────────────────────────
+  - {id: TBL-01, title: "표 호칭·제목 '표 N — 제목'", clause: "J.2.3", severity: warning, method: deterministic, autofix: auto, priority: P0, message: "표 호칭과 제목은 줄표로 구분합니다(예: 표 1 — 제목)."}
+  - {id: TBL-02, title: "표 제목은 표 위·가운데", clause: "J.2.3", severity: warning, method: deterministic, autofix: auto, priority: P0}
+  - {id: TBL-03, title: "표 안의 표", clause: "J.2.1", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: TBL-04, title: "모든 표는 본문에서 참조", clause: "6.4.4.4", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: TBL-05, title: "공통 단위는 '단위: mm'로 표 오른쪽 위", clause: "J.2.4", severity: info, method: deterministic, autofix: auto, priority: P1}
+  - {id: TBL-06, title: "여러 쪽 표의 머리행 반복", clause: "J.2.5", severity: info, method: deterministic, autofix: auto, priority: P1}
+  - {id: TBL-07, title: "표의 비고·각주는 표 틀 안", clause: "J.2.6, J.2.7", severity: info, method: deterministic, autofix: none, priority: P2}
+  - {id: FIG-01, title: "그림 호칭·제목 '그림 N — 제목'", clause: "J.1.4", severity: warning, method: deterministic, autofix: auto, priority: P0, message: "그림 호칭과 제목은 줄표로 구분합니다(예: 그림 1 — 제목)."}
+  - {id: FIG-02, title: "그림 제목은 그림 아래·가운데", clause: "J.1.4", severity: warning, method: deterministic, autofix: auto, priority: P0}
+  - {id: FIG-03, title: "모든 그림은 본문에서 참조", clause: "6.4.4.4", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: FIG-04, title: "공통 단위는 '단위: mm'로 그림 오른쪽 위", clause: "J.1.5", severity: info, method: deterministic, autofix: auto, priority: P1}
+  # ── H. 비고·보기 ─────────────────────────────
+  - {id: NTE-01, title: "비고·보기 라벨과 번호", clause: "6.5.2", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: NTE-02, title: "보기는 비고보다 앞", clause: "6.5.2", severity: info, method: deterministic, autofix: none, priority: P2}
+  - {id: NTE-03, title: "본문 각주 표시", clause: "6.5.3", severity: info, method: deterministic, autofix: none, priority: P2}
+  # ── I. 참조 ──────────────────────────────────
+  - {id: REF-01, title: "참조 대상 존재(절·표·그림·부속서·식)", clause: "6.4.4", severity: error, method: deterministic, autofix: none, priority: P0}
+  - {id: REF-02, title: "'3.2.1항' 꼴 금지", clause: "6.4.4.3", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: REF-03, title: "모호한 참조('이 절', '위의 표')", clause: "6.4.4.3", severity: info, method: deterministic, autofix: none, priority: P1}
+  - {id: REF-04, title: "표준번호·연도 표기 'KS C IEC 60974-1:2017'", clause: "6.3.1, 6.4.4.5", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  # ── J. 인용표준·참고문헌 ─────────────────────
+  - {id: NRF-01, title: "인용표준 순서(국가→국제→가이드→단체)", clause: "6.4.1 표 5", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: NRF-02, title: "본문에서 인용한 표준은 인용표준·참고문헌에", clause: "6.4.1, 부속서 A", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: NRF-03, title: "인용표준에 법규·기술규정 금지", clause: "6.4.1", severity: warning, method: deterministic, autofix: none, priority: P0b}
+  - {id: NRF-04, title: "인용표준 항목 꼴 '번호[:연도], 제목'", clause: "6.4.1", severity: info, method: deterministic, autofix: auto, priority: P1}
+  - {id: NRF-05, title: "참고문헌 번호 '[1]'부터 연속", clause: "6.5.4", severity: warning, method: deterministic, autofix: auto, priority: P1}
+  # ── K. 용어와 정의 ───────────────────────────
+  - {id: TRM-01, title: "용어 '국문(영문)' 꼴", clause: "6.4.2", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: TRM-02, title: "정의문 끝 마침표 금지", clause: "6.4.2", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: TRM-03, title: "정의한 용어의 본문 사용", clause: "6.4.2, 부속서 A", severity: info, method: deterministic, autofix: none, priority: P1}
+  - {id: TRM-04, title: "출처 표기 '[출처: …]'", clause: "6.4.2", severity: info, method: deterministic, autofix: auto, priority: P1}
+  - {id: TRM-05, title: "용어와 정의 하위 항은 목차에 넣지 않음", clause: "6.1.2", severity: info, method: deterministic, autofix: none, priority: P1}
+  # ── L. 목차·제목·표준번호 ────────────────────
+  - {id: TOC-01, title: "목차는 자동 생성(TOC 필드)", clause: "6.1.2", severity: warning, method: deterministic, autofix: none, priority: P0}
+  - {id: TOC-02, title: "목차 항목과 실제 제목 일치", clause: "6.1.2", severity: warning, method: deterministic, autofix: auto, priority: P0}
+  - {id: TTL-01, title: "제목 요소 구분자 ' — '", clause: "6.3.1", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: TTL-02, title: "제목 요소는 3개 이하", clause: "6.3.1, 부속서 D", severity: info, method: deterministic, autofix: none, priority: P1}
+  - {id: TTL-03, title: "한글 제목 아래 영문 제목", clause: "6.3.1", severity: warning, method: deterministic, autofix: none, priority: P1}
+  - {id: TTL-04, title: "표준번호 꼴 'KS C IEC 60974-11:2021'", clause: "6.3.1", severity: warning, method: deterministic, autofix: auto, priority: P0b}
+  - {id: TTL-05, title: "표지·뒤표지 제목 = 본문 제목", clause: "6.1.1, 부속서 A", severity: info, method: deterministic, autofix: none, priority: P1}
+  # ── M. KSDT 서식 ─────────────────────────────
+  - {id: FMT-01, title: "역할별 KSDT 스타일", clause: "부속서 A(KSDT의 적용)", severity: info, method: deterministic, autofix: auto, priority: P0b}
+  - {id: FMT-02, title: "본문 직접 서식 제거", clause: "KSDT", severity: info, method: deterministic, autofix: auto, priority: P2}
+  - {id: FMT-03, title: "용지 A4·여백", clause: "KSDT", severity: info, method: deterministic, autofix: auto, priority: P2}
+  - {id: FMT-04, title: "쪽 머리 표준번호·쪽 번호", clause: "부속서 C 비고", severity: info, method: deterministic, autofix: none, priority: P2}
+  # ── N. 신뢰성(자체) ──────────────────────────
+  - {id: INV-01, title: "기술적 내용 불변(수치·단위·표준번호·표 값)", clause: "자체 규칙", severity: error, method: deterministic, autofix: none, priority: P0}
+  - {id: INV-02, title: "입력 파일 불변·산출물 별도 위치", clause: "참가 안내서 6(원본 보호)", severity: error, method: deterministic, autofix: none, priority: P0}
+  - {id: INV-03, title: "출력 docx 무결성", clause: "자체 규칙", severity: error, method: deterministic, autofix: none, priority: P0}
