@@ -118,6 +118,77 @@ def cmd_check(args: argparse.Namespace) -> int:
     return _exit_code(result, args.fail_on)
 
 
+OUT_SUFFIX = {"tracked": ".ksfix-tracked.docx", "clean": ".ksfix-clean.docx"}
+
+
+def cmd_fix(args: argparse.Namespace) -> int:
+    import json
+    from pathlib import Path
+
+    from ksfix.api import fix_bytes, report_dict
+    from ksfix.io import InputError, read_input, sha256
+
+    src = Path(args.file)
+    try:
+        data = read_input(src)
+        before_hash = sha256(data)
+        result = fix_bytes(
+            data,
+            mode=args.mode,
+            rules=args.rules,
+            accept_existing_changes=args.accept_existing_changes,
+        )
+    except (InputError, ValueError) as exc:
+        print(f"오류: {exc}", file=sys.stderr)
+        return 2
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    written = []
+    if result.output is not None:
+        target = out / f"{src.stem}{OUT_SUFFIX[args.mode]}"
+        if target.resolve() == src.resolve():
+            print("오류: 출력 파일이 입력 파일과 같습니다.", file=sys.stderr)
+            return 2
+        target.write_bytes(result.output)
+        written.append(target)
+    audit_path = out / f"{src.stem}.ksfix-audit.jsonl"
+    with audit_path.open("w", encoding="utf-8") as fh:
+        for row in result.audit:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    written.append(audit_path)
+    input_ok = sha256(read_input(src)) == before_hash
+    extra = {
+        "fix": result.summary(),
+        "invariants": result.invariants,
+        "integrity": result.integrity,
+        "input_unchanged": input_ok,
+        "after": None
+        if result.after is None
+        else {"summary": result.after.summary(), "findings": len(result.after.findings)},
+    }
+    report = report_dict(result.check, source_name=src.name, extra=extra)
+    report["timings"] = result.timings
+    rep_path = out / f"{src.stem}.ksfix-report.json"
+    rep_path.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    written.insert(0, rep_path)
+    _print_summary(result.check, src.name, limit=10)
+    s = result.summary()
+    print(
+        f"  교정({args.mode}): 자동수정 {s['applied']}건 · 제안 {s['suggested']}건 · 메모 {s['comments']}건 · "
+        f"규칙 통과율 {s['pass_rate_before']}% → {s['pass_rate_after']}%"
+    )
+    print(
+        f"  검증: 기술적 내용 불변 {'통과' if s['invariants_ok'] else '실패(편집 철회)'} · "
+        f"출력 무결성 {'통과' if s['integrity_ok'] else '실패: ' + '; '.join(result.integrity)} · "
+        f"입력 파일 불변 {'통과' if input_ok else '실패'}"
+    )
+    for path in written:
+        print(f"  출력: {path}")
+    if not input_ok or result.integrity:
+        return 3
+    return 0
+
+
 def cmd_rules(args: argparse.Namespace) -> int:
     from ksfix.rules.registry import implemented_ids, load_catalog
 
@@ -199,7 +270,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="기존 변경추적이 있는 문서도 자동 수정한다(기본: 메모만)",
     )
-    p.set_defaults(func=_not_ready("Phase 4"))
+    p.set_defaults(func=cmd_fix)
 
     p = sub.add_parser("inspect", help="블록별 역할·번호·스타일 보기(디버깅·시연용)")
     p.add_argument("file", help="입력 docx")

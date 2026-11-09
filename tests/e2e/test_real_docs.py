@@ -60,3 +60,25 @@ def test_real_docs_structure_boundaries(real_docs):
         assert tops == [str(i) for i in range(1, len(tops) + 1)], path.name
         assert doc.meta["std_number"] and doc.meta["std_number"].startswith("KS")
         assert doc.meta["title_ko"] and doc.meta["title_en"]
+
+
+def test_real_docs_fix_integrity_and_comments(real_docs):
+    """실제 문서 교정: 무결성·불변성 통과, 기존 메모 보존, 15초 이내(내용은 출력하지 않는다)."""
+    import io
+
+    import docx
+
+    from ksfix.api import fix_bytes
+
+    for path in real_docs:
+        data = read_input(path)
+        before = docx.Document(io.BytesIO(data))
+        n_existing = len(list(before.comments))
+        t0 = time.perf_counter()
+        r = fix_bytes(data, mode="tracked")
+        assert time.perf_counter() - t0 < 15, path.name
+        assert not r.integrity, (path.name, r.integrity)
+        assert r.invariants["ok"], path.name
+        out = docx.Document(io.BytesIO(r.output))
+        assert sum(1 for c in out.comments if c.author != "KS-Fix") == n_existing
+        assert r.remaining_autofix == 0

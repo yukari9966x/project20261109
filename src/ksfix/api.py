@@ -173,3 +173,108 @@ def report_dict(
         "timings": result.timings,
         **(extra or {}),
     }
+
+
+@dataclass
+class FixResult:
+    check: CheckResult
+    mode: str
+    output: bytes | None
+    decisions: list
+    audit: list[dict]
+    after: CheckResult | None
+    invariants: dict
+    integrity: list[str]
+    comments: int
+    timings: dict[str, float]
+    remaining_autofix: int = 0
+
+    def summary(self) -> dict[str, Any]:
+        before = self.check.summary()
+        applied = sum(1 for d in self.decisions if d.action == "apply")
+        out = {
+            "mode": self.mode,
+            "applied": applied,
+            "suggested": sum(1 for d in self.decisions if d.action == "suggest"),
+            "reported": sum(1 for d in self.decisions if d.action == "report"),
+            "comments": self.comments,
+            "pass_rate_before": before["pass_rate"],
+            "pass_rate_after": self.after.summary()["pass_rate"] if self.after else None,
+            "findings_after": len(self.after.findings) if self.after else None,
+            "remaining_autofix": self.remaining_autofix,
+            "invariants_ok": self.invariants.get("ok", True),
+            "integrity_ok": not self.integrity,
+        }
+        return out
+
+
+def _reset(findings: list[Finding]) -> None:
+    for f in findings:
+        f.status = "open"
+
+
+def _render(data: bytes, findings: list[Finding], mode: str, allow_edits: bool, date: str | None):
+    from ksfix.fix import apply_decisions, plan
+
+    doc = analyze(data)
+    decisions = plan(doc, findings, mode, allow_edits=allow_edits)
+    res = apply_decisions(doc, decisions, mode, date=date)
+    return res, decisions
+
+
+def fix_bytes(
+    data: bytes,
+    *,
+    mode: str = "tracked",
+    rules: str | None = None,
+    llm: Any = None,
+    accept_existing_changes: bool = False,
+    date: str | None = None,
+) -> FixResult:
+    """docx bytes → 교정 문서 bytes(tracked|clean) 또는 리포트만(report)."""
+    from ksfix.fix import plan
+    from ksfix.fix.invariants import diff, doc_tokens, integrity_problems, is_clean
+
+    if mode not in ("tracked", "clean", "report"):
+        raise ValueError(f"알 수 없는 모드: {mode}")
+    t0 = time.perf_counter()
+    chk = check_bytes(data, rules=rules, llm=llm)
+    allow = accept_existing_changes or not chk.doc.meta.get("has_tracked_changes")
+    res, decisions = _render(data, chk.findings, mode, allow, date)
+    t1 = time.perf_counter()
+    invariants: dict[str, Any] = {"ok": True}
+    integrity: list[str] = []
+    after = None
+    remaining = 0
+    if res.data is not None:
+        integrity = integrity_problems(res.data)
+        after = check_bytes(res.data, rules=rules)
+        d = diff(doc_tokens(chk.doc), doc_tokens(after.doc), res.allowed_extra)
+        if not is_clean(d):
+            # INV-01 안전망: 편집을 모두 철회하고 메모만 남긴 문서로 다시 만든다
+            _reset(chk.findings)
+            res, decisions = _render(data, chk.findings, mode, False, date)
+            for dec in decisions:
+                if dec.finding.fix is not None and dec.finding.fix.auto:
+                    dec.reason = "INV-01: 결과 문서 검증에서 기술적 내용 변화가 발견되어 철회"
+            integrity = integrity_problems(res.data) if res.data else []
+            after = check_bytes(res.data, rules=rules) if res.data else None
+            invariants = {"ok": False, "reverted": True, **d}
+        if after is not None:
+            remaining = sum(
+                1 for x in plan(after.doc, after.findings, "clean") if x.action == "apply"
+            )
+    t2 = time.perf_counter()
+    return FixResult(
+        check=chk,
+        mode=mode,
+        output=res.data,
+        decisions=decisions,
+        audit=res.audit,
+        after=after,
+        invariants=invariants,
+        integrity=integrity,
+        comments=res.comments,
+        timings={**chk.timings, "fix": round(t1 - t0, 3), "verify": round(t2 - t1, 3)},
+        remaining_autofix=remaining,
+    )
