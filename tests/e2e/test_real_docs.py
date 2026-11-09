@@ -44,3 +44,19 @@ def test_toc_cache_labels_match_resolved_numbering(real_docs):
                 mismatched += 1
         assert checked >= 10, path.name
         assert mismatched == 0, path.name
+
+
+def test_real_docs_structure_boundaries(real_docs):
+    """앞부분·본체·참고문헌·해설·뒤표지 경계와 절 번호 연속성(내용은 출력하지 않는다)."""
+    from ksfix.api import analyze
+
+    for path in real_docs:
+        doc = analyze(read_input(path))
+        parts = doc.meta["parts"]
+        for key in ("cover", "front", "body", "biblio", "commentary", "back_cover"):
+            assert key in parts, (path.name, key)
+        assert parts["front"][1] < parts["body"][0] < parts["biblio"][0] < parts["commentary"][0]
+        tops = [n.number for n in doc.tree.children if n.kind == "clause"]
+        assert tops == [str(i) for i in range(1, len(tops) + 1)], path.name
+        assert doc.meta["std_number"] and doc.meta["std_number"].startswith("KS")
+        assert doc.meta["title_ko"] and doc.meta["title_en"]
