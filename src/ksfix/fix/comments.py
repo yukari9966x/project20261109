@@ -31,6 +31,7 @@ class Commenter:
         c = self.comments.add_comment(text=text, author=AUTHOR, initials=INITIALS)
         cid = self.rev.new_id()
         c._comment_elm.id = cid
+        c._comment_elm.set(w("date"), self.rev.date)  # 변경추적과 같은 시각(재현 가능한 출력)
         self.count += 1
         return cid
 
