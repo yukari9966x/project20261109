@@ -13,7 +13,7 @@ from functools import cache
 
 from ksfix._paths import read_pkg_text
 from ksfix.fix.invariants import text_tokens
-from ksfix.llm.base import LLMConnectionError, LLMError
+from ksfix.llm.base import LLMConnectionError, LLMError, LLMTimeoutError
 
 PROMPT_VERSION = (
     "modal_verbs.v2"  # v1 = 계획서 부록 F 원본(예시가 단건 출력이라 일부 모델이 첫 문장만 답함)
@@ -145,7 +145,9 @@ def judge(llm, items: list[dict], batch_size: int = 8) -> dict[str, Judgment]:
     system, tmpl = load_prompt()
     out: dict[str, Judgment] = {}
     model = getattr(llm, "model", "") or getattr(llm, "name", "")
-    down: str | None = None  # 서버에 닿지 못하면 남은 문장은 묻지 않는다
+    down: str | None = (
+        None  # 서버에 닿지 못하면 남은 문장은 묻지 않는다(묶음 시간 초과는 한 문장씩 재시도)
+    )
     for i in range(0, len(items), batch_size):
         batch = items[i : i + batch_size]
         by_id: dict[str, dict] = {}
@@ -165,7 +167,8 @@ def judge(llm, items: list[dict], batch_size: int = 8) -> dict[str, Judgment]:
                 continue
             try:
                 by_id.update(_ask(llm, system, tmpl, [it]))
-            except LLMConnectionError as exc:
+            except (LLMConnectionError, LLMTimeoutError) as exc:
+                # 서버가 없거나 한 문장도 제한 시간 안에 못 끝내면 남은 문장은 묻지 않는다
                 down = errors[str(it["id"])] = f"LLM 오류: {exc}"
             except LLMError as exc:
                 errors[str(it["id"])] = f"LLM 오류: {exc}"

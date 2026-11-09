@@ -246,6 +246,36 @@ def test_connection_failure_and_timeout():
         c.complete_json("s", "u", SCHEMA)
 
 
+def test_batch_timeout_retries_single_sentences():
+    from ksfix.llm.base import LLMTimeoutError
+    from ksfix.llm.tasks.modal_verbs import judge
+
+    class Slow(FakeLLM):
+        def complete_json(self, system, user, schema, **kw):
+            if "(1개)" not in user:
+                self.calls += 1
+                raise LLMTimeoutError("응답 시간 초과(300초)")  # 묶음은 너무 길어 시간 초과
+            return super().complete_json(system, user, schema, **kw)
+
+    items = [
+        {"id": str(i), "text": t, "where": "", "role": "body"} for i, t in enumerate(DOC_BODY[1:])
+    ]
+    llm = Slow()
+    js = judge(llm, items, batch_size=8)
+    assert all(j.category != "판단보류" for j in js.values())  # 한 문장씩 다시 물어 모두 판정
+    assert llm.calls == 1 + len(items)
+
+    class Slower(FakeLLM):
+        def complete_json(self, *a, **kw):
+            self.calls += 1
+            raise LLMTimeoutError("응답 시간 초과(300초)")
+
+    llm2 = Slower()
+    js2 = judge(llm2, items, batch_size=8)
+    assert llm2.calls == 2  # 묶음 1회 + 한 문장 1회 뒤 중단
+    assert all(j.rejected and "시간 초과" in j.rejected for j in js2.values())
+
+
 def test_unreachable_llm_stops_and_warns():
     from ksfix.llm.base import LLMConnectionError
 

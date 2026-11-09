@@ -12,7 +12,11 @@ class LLMError(RuntimeError):
 
 
 class LLMConnectionError(LLMError):
-    """서버에 닿지 못함(연결 실패·시간 초과). 같은 서버에 더 묻지 않는다."""
+    """서버에 닿지 못함(연결 거부·주소 오류·연결 시간 초과). 같은 서버에 더 묻지 않는다."""
+
+
+class LLMTimeoutError(LLMError):
+    """연결은 됐지만 응답이 제한 시간 안에 오지 않음(느린 CPU 추론 등). 더 짧게 다시 물을 수 있다."""
 
 
 class LLMHTTPError(LLMError):
