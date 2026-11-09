@@ -95,11 +95,11 @@ def _exit_code(result, fail_on: str) -> int:
 
 
 def cmd_check(args: argparse.Namespace) -> int:
-    import json
     from pathlib import Path
 
-    from ksfix.api import check_bytes, report_dict
+    from ksfix.api import check_bytes
     from ksfix.io import InputError, read_input
+    from ksfix.report import build_report
 
     try:
         data = read_input(args.file)
@@ -110,12 +110,24 @@ def cmd_check(args: argparse.Namespace) -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     src = Path(args.file)
-    report = report_dict(result, source_name=src.name)
-    target = out / f"{src.stem}.ksfix-report.json"
-    target.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    report = build_report(result, None, source_name=src.name)
+    paths = write_reports(report, out, src.stem)
     _print_summary(result, src.name)
-    print(f"  리포트: {target}")
+    for path in paths:
+        print(f"  리포트: {path}")
     return _exit_code(result, args.fail_on)
+
+
+def write_reports(report: dict, out, stem: str) -> list:
+    import json
+
+    from ksfix.report import render_html
+
+    jpath = out / f"{stem}.ksfix-report.json"
+    jpath.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    hpath = out / f"{stem}.ksfix-report.html"
+    hpath.write_text(render_html(report), encoding="utf-8")
+    return [hpath, jpath]
 
 
 OUT_SUFFIX = {"tracked": ".ksfix-tracked.docx", "clean": ".ksfix-clean.docx"}
@@ -125,8 +137,9 @@ def cmd_fix(args: argparse.Namespace) -> int:
     import json
     from pathlib import Path
 
-    from ksfix.api import fix_bytes, report_dict
+    from ksfix.api import fix_bytes
     from ksfix.io import InputError, read_input, sha256
+    from ksfix.report import build_report
 
     src = Path(args.file)
     try:
@@ -157,20 +170,8 @@ def cmd_fix(args: argparse.Namespace) -> int:
             fh.write(json.dumps(row, ensure_ascii=False) + "\n")
     written.append(audit_path)
     input_ok = sha256(read_input(src)) == before_hash
-    extra = {
-        "fix": result.summary(),
-        "invariants": result.invariants,
-        "integrity": result.integrity,
-        "input_unchanged": input_ok,
-        "after": None
-        if result.after is None
-        else {"summary": result.after.summary(), "findings": len(result.after.findings)},
-    }
-    report = report_dict(result.check, source_name=src.name, extra=extra)
-    report["timings"] = result.timings
-    rep_path = out / f"{src.stem}.ksfix-report.json"
-    rep_path.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
-    written.insert(0, rep_path)
+    report = build_report(result.check, result, source_name=src.name, input_unchanged=input_ok)
+    written = write_reports(report, out, src.stem) + written
     _print_summary(result.check, src.name, limit=10)
     s = result.summary()
     print(

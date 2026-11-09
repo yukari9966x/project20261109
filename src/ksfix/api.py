@@ -6,8 +6,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from ksfix import __version__
-from ksfix.model import KSDoc, Para, Role, Table
+from ksfix.model import KSDoc, Para, Table
 from ksfix.model.builder import build
 from ksfix.rules.base import SEVERITY_ORDER, Finding
 from ksfix.rules.registry import load_catalog, make_context, run_rules, select_rules
@@ -122,57 +121,6 @@ def check_bytes(data: bytes, *, rules: str | None = None, llm: Any = None) -> Ch
         timings={"analyze": round(t1 - t0, 3), "rules": round(t2 - t1, 3)},
         warnings=doc_warnings(doc),
     )
-
-
-def findings_json(result: CheckResult) -> list[dict[str, Any]]:
-    out = []
-    paras = result.doc.paras
-    for f in result.findings:
-        d = f.to_dict()
-        p = paras[f.block] if 0 <= f.block < len(paras) else None
-        d["role"] = p.role.value if p is not None else None
-        d["clause_no"] = p.clause_no if p is not None else None
-        d["location"] = _location(p)
-        out.append(d)
-    return out
-
-
-def _location(p: Para | None) -> str:
-    if p is None:
-        return ""
-    if p.role == Role.HEADING and p.attrs.get("number"):
-        return f"{p.attrs['number']} 제목"
-    where = p.clause_no or {
-        "foreword": "머리말",
-        "intro": "개요",
-        "toc": "목차",
-        "title": "제목",
-        "biblio": "참고문헌",
-        "commentary": "해설",
-        "cover": "표지",
-        "back_cover": "뒤표지",
-    }.get(p.attrs.get("zone", ""), "")
-    if p.in_table:
-        return f"{where} 표 {p.table_idx + 1 if p.table_idx is not None else ''}".strip()
-    return where
-
-
-def report_dict(
-    result: CheckResult, *, source_name: str, extra: dict | None = None
-) -> dict[str, Any]:
-    doc = result.doc
-    meta = {k: v for k, v in doc.meta.items() if k not in ("rule_timings",)}
-    return {
-        "tool": {"name": "KS-Fix", "version": __version__},
-        "source": {"name": source_name, "sha256": doc.meta.get("sha256")},
-        "summary": result.summary(),
-        "warnings": result.warnings,
-        "document": meta,
-        "findings": findings_json(result),
-        "diagnostics": result.diagnostics,
-        "timings": result.timings,
-        **(extra or {}),
-    }
 
 
 @dataclass

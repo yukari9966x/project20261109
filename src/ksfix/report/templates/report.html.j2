@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KS-Fix 리포트 — {{ r.source.name }}</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#1c2230;--muted:#5d6676;--line:#e2e5ea;--err:#c0392b;--warn:#a15c00;--info:#2d6aa8;--ok:#1d7a4b;--accent:#24478f;--chip:#eef1f6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+header{background:#1f2f57;color:#fff;padding:18px 24px}
+header h1{margin:0;font-size:20px;letter-spacing:-.2px}
+header .sub{opacity:.85;font-size:13px;margin-top:4px}
+.badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;background:rgba(255,255,255,.18);margin-left:6px}
+main{max-width:1180px;margin:0 auto;padding:18px 16px 40px}
+.warn-box{background:#fff7e6;border:1px solid #f2d39b;border-radius:8px;padding:10px 14px;margin-bottom:14px;color:#6b4500}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card .k{color:var(--muted);font-size:12.5px}
+.card .v{font-size:26px;font-weight:700;margin-top:2px}
+.card .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+.sev-error{color:var(--err)}.sev-warning{color:var(--warn)}.sev-info{color:var(--info)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.panel h2{font-size:15px;margin:0 0 10px}
+.bars .row{display:grid;grid-template-columns:120px 1fr 64px;align-items:center;gap:10px;margin:5px 0;font-size:13px}
+.bars .track{background:var(--chip);border-radius:6px;height:14px;overflow:hidden;position:relative}
+.bars .fill{background:#8ea6d8;height:100%}
+.bars .fixed{background:var(--accent);height:100%;position:absolute;left:0;top:0}
+.legend{font-size:12px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px}
+.tabs{display:flex;gap:4px;margin:0 0 -1px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);border-bottom:none;background:#e9ecf1;padding:8px 14px;border-radius:8px 8px 0 0;cursor:pointer;font:inherit;color:var(--ink)}
+.tabs button.on{background:var(--card);font-weight:700}
+.tab{display:none;background:var(--card);border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:14px 16px}
+.tab.on{display:block}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;font-size:13px}
+.filters select,.filters input[type=search]{font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+th{background:#f0f2f6;font-weight:600;position:sticky;top:0}
+td.rule{white-space:nowrap;font-family:Consolas,monospace}
+td.sev,th.sev{white-space:nowrap;width:52px}
+td.loc{white-space:nowrap}
+.pill{display:inline-block;padding:0 7px;border-radius:9px;font-size:12px;background:var(--chip);white-space:nowrap}
+.pill.fixed{background:#e3f3ea;color:var(--ok)}.pill.sugg{background:#eef3fb;color:var(--info)}.pill.review{background:#fdf0ec;color:var(--err)}
+.pill.pass{background:#e3f3ea;color:var(--ok)}.pill.fail{background:#fdf0ec;color:var(--err)}.pill.part{background:#fff4e0;color:var(--warn)}.pill.man{background:#eceef2;color:var(--muted)}
+.snip{color:var(--muted)}
+.arrow{color:var(--accent);font-weight:700}
+.ref{color:var(--muted);font-size:12px}
+dl{display:grid;grid-template-columns:200px 1fr;gap:6px 12px;margin:0;font-size:13px}
+dt{color:var(--muted)}dd{margin:0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media print{.tabs,.filters{display:none}.tab{display:block!important;border-radius:10px;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>KS-Fix 점검 리포트 <span class="badge">{{ mode_ko }}</span></h1>
+  <div class="sub">{{ r.source.name }} · {{ r.generated_at }} · 규칙팩 {{ r.rule_pack.pack }} {{ r.rule_pack.version }} · LLM {{ r.llm.model or "끔" }}</div>
+</header>
+<main>
+{% for w in r.warnings %}<div class="warn-box">⚠ {{ w }}</div>{% endfor %}
+{% set s = r.summary %}
+<section class="cards" id="summary-cards">
+  <div class="card" data-key="findings" data-value="{{ s.findings }}"><div class="k">지적</div><div class="v">{{ s.findings }}</div>
+    <div class="d"><span class="sev-error">오류 {{ s.by_severity.error }}</span> · <span class="sev-warning">경고 {{ s.by_severity.warning }}</span> · <span class="sev-info">참고 {{ s.by_severity.info }}</span></div></div>
+  {% if r.mode == "check" %}
+  <div class="card" data-key="autofixable" data-value="{{ s.autofixable }}"><div class="k">자동수정 가능</div><div class="v">{{ s.autofixable }}</div><div class="d">변경추적으로 고칠 수 있는 지적</div></div>
+  {% else %}
+  <div class="card" data-key="applied" data-value="{{ s.applied }}"><div class="k">자동수정</div><div class="v">{{ s.applied }}</div><div class="d">Word 변경추적으로 반영(수락·거절 가능)</div></div>
+  {% endif %}
+  <div class="card" data-key="needs_review" data-value="{{ s.needs_review }}"><div class="k">검토 필요</div><div class="v">{{ s.needs_review }}</div><div class="d">제안·판단 필요(메모로 표시)</div></div>
+  <div class="card" data-key="pass_rate" data-value="{{ s.pass_rate_before }}"><div class="k">규칙 통과율</div>
+    <div class="v">{{ s.pass_rate_before }}%{% if s.pass_rate_after is not none %} <span class="arrow">→</span> {{ s.pass_rate_after }}%{% endif %}</div>
+    <div class="d">지적 0건인 규칙 {{ s.rules_passed }} / 적용 규칙 {{ s.rules_applied }}</div></div>
+  {% set cs = r.checklist.summary %}
+  <div class="card" data-key="checklist" data-value="{{ cs.total }}"><div class="k">부속서 A 검토 항목</div><div class="v">{{ cs.total }}</div>
+    <div class="d">자동 통과 {{ cs.auto_pass }} · 지적 {{ cs.auto_fail }} · 부분 {{ cs.partial }} · 수동 {{ cs.manual }}</div></div>
+</section>
+
+<section class="panel">
+  <h2>분류별 지적</h2>
+  {% set maxc = (r.categories | map(attribute="count") | max) if r.categories else 1 %}
+  <div class="bars">
+  {% for c in r.categories %}
+    <div class="row"><div>{{ c.name }}</div>
+      <div class="track"><div class="fill" style="width:{{ (100 * c.count / maxc) | round(1) }}%"></div><div class="fixed" style="width:{{ (100 * c.fixed / maxc) | round(1) }}%"></div></div>
+      <div>{{ c.count }}건{% if c.fixed %} ({{ c.fixed }}){% endif %}</div></div>
+  {% else %}<div class="snip">지적이 없습니다.</div>
+  {% endfor %}
+  </div>
+  {% if r.categories %}<div class="legend"><i style="background:#8ea6d8"></i>지적 <i style="background:var(--accent)"></i>자동수정(괄호 안 숫자)</div>{% endif %}
+</section>
+
+<div class="tabs" role="tablist">
+  <button class="on" data-tab="findings">지적 목록 ({{ s.findings }})</button>
+  <button data-tab="checklist">부속서 A 체크리스트 ({{ cs.total }})</button>
+  <button data-tab="info">문서·처리 정보</button>
+</div>
+
+<section class="tab on" id="tab-findings">
+  <div class="filters">
+    <label><input type="checkbox" class="f-sev" value="error" checked> 오류</label>
+    <label><input type="checkbox" class="f-sev" value="warning" checked> 경고</label>
+    <label><input type="checkbox" class="f-sev" value="info" checked> 참고</label>
+    <select id="f-cat"><option value="">모든 분류</option>{% for c in r.categories %}<option>{{ c.name }}</option>{% endfor %}</select>
+    <select id="f-status"><option value="">모든 상태</option>{% for st in statuses %}<option>{{ st }}</option>{% endfor %}</select>
+    <input type="search" id="f-q" placeholder="규칙 ID·내용 검색">
+    <span id="f-count" class="snip"></span>
+  </div>
+  <table id="findings">
+    <thead><tr><th class="sev">심각도</th><th>규칙</th><th>분류</th><th>위치</th><th>내용</th><th>원문 → 수정</th><th>상태</th></tr></thead>
+    <tbody>
+    {% for f in r.findings %}
+      <tr data-sev="{{ f.severity }}" data-cat="{{ f.category }}" data-status="{{ f.status_label }}">
+        <td class="sev sev-{{ f.severity }}">{{ sev_ko[f.severity] }}</td>
+        <td class="rule">{{ f.rule_id }}</td>
+        <td>{{ f.category }}</td>
+        <td class="loc">{{ f.location }}</td>
+        <td>{{ f.message }}<div class="ref">{{ f.clause_ref }}</div></td>
+        <td><span class="snip">{{ f.snippet }}</span>{% if f.suggestion %}<br><span class="arrow">→</span> {{ f.suggestion }}{% endif %}</td>
+        <td><span class="pill {{ pill[f.status_label] }}">{{ f.status_label }}</span>{% if f.reason %}<div class="ref">{{ f.reason }}</div>{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="tab" id="tab-checklist">
+  <p class="snip">KS A 0001:2023 부속서 A(문서 작성자와 편집자를 위한 검토 항목)를 규칙 결과에 대응시켰습니다. 항목 문구는 요약입니다.</p>
+  <table id="checklist">
+    <thead><tr><th>번호</th><th>구분</th><th>검토 항목(요약)</th><th>관련 규칙</th><th>상태</th></tr></thead>
+    <tbody>
+    {% for it in r.checklist["items"] %}
+      <tr data-status="{{ it.status }}">
+        <td class="rule">{{ it.id }}</td><td>{{ it.group }}<div class="ref">{{ it.ref }}</div></td>
+        <td>{{ it.summary }}{% if it.manual %}<div class="ref">수동: {{ it.manual }}</div>{% endif %}</td>
+        <td class="ref">{{ it.rules | join(", ") }}</td>
+        <td><span class="pill {{ cl_pill[it.status] }}">{{ it.label }}</span></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="tab" id="tab-info">
+  {% set d = r.document %}
+  <dl>
+    <dt>파일</dt><dd>{{ r.source.name }}</dd>
+    <dt>SHA-256(입력)</dt><dd style="font-family:Consolas,monospace;font-size:12px">{{ r.source.sha256 }}</dd>
+    <dt>표준번호 · 제목</dt><dd>{{ d.std_number or "-" }} · {{ d.title_ko or "-" }}</dd>
+    <dt>영문 제목</dt><dd>{{ d.title_en or "-" }}</dd>
+    <dt>구성</dt><dd>문단 {{ d.paragraph_count }} · 표 {{ d.table_count }} · 구역 {{ d.sections }} · 한글 비율 {{ (100 * (d.hangul_ratio or 0)) | round(0) | int }}% · 기존 메모 {{ d.comment_count }}</dd>
+    <dt>처리 모드</dt><dd>{{ mode_ko }}{% if r.summary.comments %} · 메모 {{ r.summary.comments }}건{% endif %}</dd>
+    {% if r.verification.invariants is not none %}
+    <dt>기술적 내용 불변(INV-01)</dt><dd>{{ "통과" if r.verification.invariants.ok else "실패 → 편집 철회" }}</dd>
+    <dt>출력 무결성(INV-03)</dt><dd>{{ "통과" if not r.verification.integrity else r.verification.integrity | join("; ") }}</dd>
+    {% endif %}
+    {% if r.verification.input_unchanged is not none %}<dt>입력 파일 불변(INV-02)</dt><dd>{{ "통과" if r.verification.input_unchanged else "실패" }}</dd>{% endif %}
+    {% if r.after %}<dt>수정 후 재점검</dt><dd>지적 {{ r.after.findings }}건 · 자동수정 가능 잔여 {{ r.summary.remaining_autofix }}건</dd>{% endif %}
+    <dt>처리 시간</dt><dd>{% for k, v in r.timings.items() %}{{ k }} {{ v }}초{% if not loop.last %} · {% endif %}{% endfor %}</dd>
+    <dt>규칙팩</dt><dd>{{ r.rule_pack.title }} ({{ r.rule_pack.pack }} {{ r.rule_pack.version }}) · 적용 규칙 {{ r.summary.rules_applied }}종</dd>
+    <dt>LLM</dt><dd>{{ r.llm.profile }}{% if r.llm.model %} · {{ r.llm.model }}{% endif %}</dd>
+    <dt>도구</dt><dd>{{ r.tool.name }} {{ r.tool.version }}</dd>
+    {% if r.diagnostics %}<dt>내부 진단</dt><dd>{% for x in r.diagnostics %}{{ x.failed_rule }}: {{ x.error }}<br>{% endfor %}</dd>{% endif %}
+  </dl>
+</section>
+</main>
+<footer>KS-Fix {{ r.tool.version }} · 이 리포트는 외부 리소스 없이 열립니다 · 근거는 KS A 0001:2023의 절·부속서 번호(요약)</footer>
+<script type="application/json" id="ksfix-data">{{ data_json | safe }}</script>
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.tabs button');
+  tabs.forEach(function(b){b.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+    document.getElementById('tab-'+b.dataset.tab).classList.add('on');});});
+  var rows=[].slice.call(document.querySelectorAll('#findings tbody tr'));
+  function apply(){
+    var sev=[].slice.call(document.querySelectorAll('.f-sev:checked')).map(function(x){return x.value});
+    var cat=document.getElementById('f-cat').value, st=document.getElementById('f-status').value;
+    var q=document.getElementById('f-q').value.trim().toLowerCase(), n=0;
+    rows.forEach(function(r){
+      var ok=sev.indexOf(r.dataset.sev)>=0&&(!cat||r.dataset.cat===cat)&&(!st||r.dataset.status===st)&&(!q||r.textContent.toLowerCase().indexOf(q)>=0);
+      r.style.display=ok?'':'none'; if(ok)n++;});
+    document.getElementById('f-count').textContent=n+'건 표시';
+  }
+  document.querySelectorAll('.f-sev,#f-cat,#f-status').forEach(function(e){e.addEventListener('change',apply)});
+  document.getElementById('f-q').addEventListener('input',apply);
+  apply();
+})();
+</script>
+</body>
+</html>

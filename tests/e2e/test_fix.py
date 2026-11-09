@@ -126,7 +126,9 @@ def test_cli_fix_outputs(tmp_path, samples_dir):
     out = tmp_path / "out"
     assert (out / "in.ksfix-tracked.docx").exists()
     rep = json.loads((out / "in.ksfix-report.json").read_text(encoding="utf-8"))
-    assert rep["input_unchanged"] and rep["fix"]["integrity_ok"] and rep["fix"]["invariants_ok"]
+    v = rep["verification"]
+    assert v["input_unchanged"] and v["integrity"] == [] and v["invariants"]["ok"]
+    assert (out / "in.ksfix-report.html").exists()
     lines = (out / "in.ksfix-audit.jsonl").read_text(encoding="utf-8").splitlines()
     assert lines and all(json.loads(x)["rule_id"] for x in lines)
 
