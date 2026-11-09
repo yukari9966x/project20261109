@@ -1,0 +1,1309 @@
+[
+ {
+  "permission_accuracy": 0.967,
+  "permission_recall": 0.9,
+  "permission_false_positive": 1,
+  "must_accuracy": 0.778,
+  "suggestions_used": 6,
+  "suggestions_rejected": 5,
+  "cached": true,
+  "profile": "ollama-exaone",
+  "model": "exaone3.5:7.8b",
+  "n": 60,
+  "accuracy": 0.8,
+  "compliance_accuracy": 0.717,
+  "held": 0,
+  "seconds": 0.0,
+  "sec_per_sentence": 0.0,
+  "per_category": {
+   "요구사항": 1.0,
+   "권고사항": 1.0,
+   "허용": 0.9,
+   "가능성/역량": 0.6,
+   "외적 제약": 0.5,
+   "설명": 0.8
+  },
+  "confusion": {
+   "요구사항": {
+    "요구사항": 10
+   },
+   "권고사항": {
+    "권고사항": 10
+   },
+   "허용": {
+    "허용": 9,
+    "가능성/역량": 1
+   },
+   "가능성/역량": {
+    "가능성/역량": 6,
+    "설명": 4
+   },
+   "외적 제약": {
+    "요구사항": 5,
+    "외적 제약": 5
+   },
+   "설명": {
+    "설명": 8,
+    "허용": 1,
+    "가능성/역량": 1
+   }
+  },
+  "rows": [
+   {
+    "id": "r01",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r02",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": "표시는 쉽게 지워지지 않는 방법으로 하도록 하여야 한다.",
+    "rejected": null
+   },
+   {
+    "id": "r03",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r04",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "시험자는 보호 안경을 착용하여야 한다.",
+    "rejected": null
+   },
+   {
+    "id": "r05",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": "케이블의 피복은 시험 후 손상되어서는 안 된다. (손상되지 않아야 한다로 명확히 표현 가능)",
+    "rejected": null
+   },
+   {
+    "id": "r06",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r07",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "숫자·단위·표준번호가 바뀌는 제안이라 폐기"
+   },
+   {
+    "id": "r08",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "시험 중에는 시료를 이동하여서는 안 된다.",
+    "rejected": null
+   },
+   {
+    "id": "r09",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "r10",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "c01",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c02",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c03",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c04",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c05",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c06",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c07",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c08",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c09",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c10",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p01",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p02",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p03",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p04",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p05",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p06",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p07",
+    "gold": "허용",
+    "pred": "가능성/역량",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p08",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p09",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p10",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a01",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a02",
+    "gold": "가능성/역량",
+    "pred": "설명",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a03",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a04",
+    "gold": "가능성/역량",
+    "pred": "설명",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a05",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a06",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a07",
+    "gold": "가능성/역량",
+    "pred": "설명",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a08",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a09",
+    "gold": "가능성/역량",
+    "pred": "설명",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a10",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e01",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "e02",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "e03",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e04",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e05",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e06",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "식품에 닿는 재료는 식품위생법에서 정한 기준을 만족해야 한다.",
+    "rejected": null
+   },
+   {
+    "id": "e07",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "건축 자재는 건축법에서 정한 불연 성능을 만족해야 한다.",
+    "rejected": null
+   },
+   {
+    "id": "e08",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e09",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e10",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s01",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s02",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s03",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s04",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s05",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s06",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s07",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s08",
+    "gold": "설명",
+    "pred": "허용",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s09",
+    "gold": "설명",
+    "pred": "가능성/역량",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s10",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   }
+  ]
+ },
+ {
+  "permission_accuracy": 0.967,
+  "permission_recall": 1.0,
+  "permission_false_positive": 2,
+  "must_accuracy": 0.889,
+  "suggestions_used": 6,
+  "suggestions_rejected": 3,
+  "cached": true,
+  "profile": "ollama-gemma",
+  "model": "gemma3:4b",
+  "n": 60,
+  "accuracy": 0.817,
+  "compliance_accuracy": 0.65,
+  "held": 0,
+  "seconds": 0.0,
+  "sec_per_sentence": 0.0,
+  "per_category": {
+   "요구사항": 0.8,
+   "권고사항": 1.0,
+   "허용": 1.0,
+   "가능성/역량": 1.0,
+   "외적 제약": 0.6,
+   "설명": 0.5
+  },
+  "confusion": {
+   "요구사항": {
+    "요구사항": 8,
+    "권고사항": 1,
+    "허용": 1
+   },
+   "권고사항": {
+    "권고사항": 10
+   },
+   "허용": {
+    "허용": 10
+   },
+   "가능성/역량": {
+    "가능성/역량": 10
+   },
+   "외적 제약": {
+    "외적 제약": 6,
+    "요구사항": 4
+   },
+   "설명": {
+    "설명": 5,
+    "요구사항": 1,
+    "가능성/역량": 1,
+    "외적 제약": 1,
+    "허용": 1,
+    "권고사항": 1
+   }
+  },
+  "rows": [
+   {
+    "id": "r01",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "r02",
+    "gold": "요구사항",
+    "pred": "권고사항",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": "표시는 쉽게 지워지지 않는 방법으로 하여야 할 것이다.",
+    "rejected": null
+   },
+   {
+    "id": "r03",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r04",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r05",
+    "gold": "요구사항",
+    "pred": "허용",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r06",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r07",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r08",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r09",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "r10",
+    "gold": "요구사항",
+    "pred": "요구사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c01",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c02",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c03",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c04",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c05",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c06",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c07",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c08",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c09",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "c10",
+    "gold": "권고사항",
+    "pred": "권고사항",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p01",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p02",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "이 표준의 다른 시험들은 편리한 순서에 따라 수행해도 된다.",
+    "rejected": null
+   },
+   {
+    "id": "p03",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p04",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p05",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "치수가 작은 제품은 형식 표시를 생략해도 된다.",
+    "rejected": null
+   },
+   {
+    "id": "p06",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p07",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "시험 장치는 동등한 성능을 가진 다른 장치로 대체해도 된다.",
+    "rejected": null
+   },
+   {
+    "id": "p08",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "p09",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": "제조자가 요청하면 예비 시험을 생략해도 된다.",
+    "rejected": null
+   },
+   {
+    "id": "p10",
+    "gold": "허용",
+    "pred": "허용",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a01",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a02",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a03",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a04",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a05",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a06",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a07",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a08",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a09",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "a10",
+    "gold": "가능성/역량",
+    "pred": "가능성/역량",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e01",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "e02",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": "문장 앞부분이 바뀌는 제안이라 폐기(서술어만 고칠 수 있음)"
+   },
+   {
+    "id": "e03",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e04",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e05",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e06",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e07",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e08",
+    "gold": "외적 제약",
+    "pred": "외적 제약",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e09",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "e10",
+    "gold": "외적 제약",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": false,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s01",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s02",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s03",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s04",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s05",
+    "gold": "설명",
+    "pred": "요구사항",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s06",
+    "gold": "설명",
+    "pred": "가능성/역량",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s07",
+    "gold": "설명",
+    "pred": "외적 제약",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s08",
+    "gold": "설명",
+    "pred": "허용",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   },
+   {
+    "id": "s09",
+    "gold": "설명",
+    "pred": "권고사항",
+    "ok": false,
+    "compliant_gold": true,
+    "compliant_pred": false,
+    "suggestion": "이 시험에는 약 2 h가 걸리는 것이 좋다.",
+    "rejected": null
+   },
+   {
+    "id": "s10",
+    "gold": "설명",
+    "pred": "설명",
+    "ok": true,
+    "compliant_gold": true,
+    "compliant_pred": true,
+    "suggestion": null,
+    "rejected": null
+   }
+  ]
+ }
+]
