@@ -15,8 +15,8 @@
 | 6 | 웹 UI + Docker ★ 제출 가능 최소선 | 완료(v0.9.0) |
 | 7 | LLM 계층 + 모델 2종 평가 | 완료(평가표 추가 예정) |
 | 8 | 규칙 확장 | 완료(P0·P0b 전부) |
-| 9 | 배포 산출물(P1) | 대기 |
-| 10 | 문서화·제출 패키지 | 대기 |
+| 9 | 배포 산출물(P1) | 완료(Windows 실행파일·브라우저 데모) |
+| 10 | 문서화·제출 패키지 | 진행 중(v1.0.0) |
 | 11 | 공공 GitLab 이관·동결 | 대기 |
 
 ## 작업 환경 메모
@@ -152,3 +152,18 @@
   - 실제 문서(로컬): 60974-11 1.1초·지적 26건(오류 1·경고 19·참고 6)·자동수정 18건·통과율 87 → 89 %, 60384-22 3.7초·지적 53건(오류 4·경고 35·참고 14)·자동수정 33건·통과율 83 → 89 %. 실제 위반 예: 목차 미갱신(장지/방지), 개요의 "사용해야 한다", 반쌍점, 비고 안의 허용 표현, "있다..", "표 13 —최대", 정의문 끝 마침표, 이전 판 정형문
 - 검사: `python scripts/check.py` 통과(pytest 123건)
 - 남은 일: Phase 9(배포물 P1, 시간 상자) → Phase 10·11
+
+### Phase 9 — 배포 산출물(P1: Windows 실행파일·브라우저 데모) (2026-11-09)
+
+- 9a Windows 실행파일
+  - `packaging/launcher.py`: 빈 포트(기본 8765)로 로컬 서버를 띄우고 브라우저를 엶, `check`·`fix` 등 CLI 하위 명령 위임, `--selftest`(내장 합성 샘플로 교정 문서 생성·무결성·불변성·자동수정·체크리스트 53항목·HTML 리포트·웹 UI 파일 7개 항목 확인)
+  - `packaging/ksfix.spec`: 폴더형 PyInstaller 빌드(규칙팩·템플릿·프롬프트·웹 UI·샘플 포함). python-docx는 모듈 위치 기준으로 템플릿을 찾으므로 `module_collection_mode={"docx": "pyz+py"}`
+  - 패키지 데이터는 `ksfix/_paths.py`(패키지 디렉터리 기준)로 읽어 소스·휠·실행파일·Pyodide에서 똑같이 동작
+  - `.github/workflows/release.yml`: 휠 + `ksfix-win64.zip`(windows-latest에서 빌드 후 `--selftest`), GitHub Release 게시는 `v*` 태그에서만
+  - 결과: 로컬 Linux 빌드 47 MB·자체 시험 통과. GitHub Actions Windows 빌드는 처음에 리다이렉트된 표준 출력(cp1252)에서 한국어 출력 오류 → 파일·파이프 출력은 UTF-8로 바꿔 해결, 이후 빌드·자체 시험 통과(커밋 ee09a39)
+- 9b 브라우저 데모(Pyodide 0.27.2)
+  - `webapp/pyodide-worker.js`(Web Worker에서 같은 Python 코어 실행), `engine-pyodide.js`(서버 엔진과 같은 인터페이스, 결과는 Blob URL), `scripts/build_pages.py`(webapp + ksfix·python-docx 휠 → `site/`), `pages.yml`(변수 `KSFIX_PAGES=true` 또는 수동 실행 시 배포)
+  - 결과: 첫 로딩 5.8초 + 샘플 1 처리 0.9초(합계 7.2초, 기준 60초 이내), 서버판과 같은 결과
+  - GitHub Pages 공개는 저장소 공개(또는 유료 플랜)가 필요해 사용자 결정 대기 — README ‘접속 주소’는 ‘준비 중’
+- 검사: `python scripts/check.py` 통과
+

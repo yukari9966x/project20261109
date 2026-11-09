@@ -2,7 +2,7 @@
 # method: deterministic | llm | hybrid,  autofix: auto | suggest | none,  priority: P0 | P0b | P1 | P2
 pack: ksa0001-2023
 title: "KS A 0001:2023 표준의 서식과 작성방법"
-version: "0.9.0"
+version: "1.0.0"
 categories:
   STR: "구조·요소"
   NUM: "번호"

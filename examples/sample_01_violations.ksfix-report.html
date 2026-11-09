@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KS-Fix 리포트 — sample_01_violations.docx</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#1c2230;--muted:#5d6676;--line:#e2e5ea;--err:#c0392b;--warn:#a15c00;--info:#2d6aa8;--ok:#1d7a4b;--accent:#24478f;--chip:#eef1f6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+header{background:#1f2f57;color:#fff;padding:18px 24px}
+header h1{margin:0;font-size:20px;letter-spacing:-.2px}
+header .sub{opacity:.85;font-size:13px;margin-top:4px}
+.badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;background:rgba(255,255,255,.18);margin-left:6px}
+main{max-width:1180px;margin:0 auto;padding:18px 16px 40px}
+.warn-box{background:#fff7e6;border:1px solid #f2d39b;border-radius:8px;padding:10px 14px;margin-bottom:14px;color:#6b4500}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card .k{color:var(--muted);font-size:12.5px}
+.card .v{font-size:26px;font-weight:700;margin-top:2px}
+.card .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+.sev-error{color:var(--err)}.sev-warning{color:var(--warn)}.sev-info{color:var(--info)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.panel h2{font-size:15px;margin:0 0 10px}
+.bars .row{display:grid;grid-template-columns:120px 1fr 64px;align-items:center;gap:10px;margin:5px 0;font-size:13px}
+.bars .track{background:var(--chip);border-radius:6px;height:14px;overflow:hidden;position:relative}
+.bars .fill{background:#8ea6d8;height:100%}
+.bars .fixed{background:var(--accent);height:100%;position:absolute;left:0;top:0}
+.legend{font-size:12px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px}
+.tabs{display:flex;gap:4px;margin:0 0 -1px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);border-bottom:none;background:#e9ecf1;padding:8px 14px;border-radius:8px 8px 0 0;cursor:pointer;font:inherit;color:var(--ink)}
+.tabs button.on{background:var(--card);font-weight:700}
+.tab{display:none;background:var(--card);border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:14px 16px}
+.tab.on{display:block}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;font-size:13px}
+.filters select,.filters input[type=search]{font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+th{background:#f0f2f6;font-weight:600;position:sticky;top:0}
+td.rule{white-space:nowrap;font-family:Consolas,monospace}
+td.sev,th.sev{white-space:nowrap;width:52px}
+td.loc{white-space:nowrap}
+.pill{display:inline-block;padding:0 7px;border-radius:9px;font-size:12px;background:var(--chip);white-space:nowrap}
+.pill.fixed{background:#e3f3ea;color:var(--ok)}.pill.sugg{background:#eef3fb;color:var(--info)}.pill.review{background:#fdf0ec;color:var(--err)}
+.pill.pass{background:#e3f3ea;color:var(--ok)}.pill.fail{background:#fdf0ec;color:var(--err)}.pill.part{background:#fff4e0;color:var(--warn)}.pill.man{background:#eceef2;color:var(--muted)}
+.snip{color:var(--muted)}
+.arrow{color:var(--accent);font-weight:700}
+.ref{color:var(--muted);font-size:12px}
+dl{display:grid;grid-template-columns:200px 1fr;gap:6px 12px;margin:0;font-size:13px}
+dt{color:var(--muted)}dd{margin:0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media print{.tabs,.filters{display:none}.tab{display:block!important;border-radius:10px;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>KS-Fix 점검 리포트 <span class="badge">변경추적 교정</span></h1>
+  <div class="sub">sample_01_violations.docx · 2026-11-11T00:00:00Z · 규칙팩 ksa0001-2023 1.0.0 · LLM 끔</div>
+</header>
+<main>
+<section class="cards" id="summary-cards">
+  <div class="card" data-key="findings" data-value="57"><div class="k">지적</div><div class="v">57</div>
+    <div class="d"><span class="sev-error">오류 13</span> · <span class="sev-warning">경고 40</span> · <span class="sev-info">참고 4</span></div></div>
+  <div class="card" data-key="applied" data-value="25"><div class="k">자동수정</div><div class="v">25</div><div class="d">Word 변경추적으로 반영(수락·거절 가능)</div></div>
+  <div class="card" data-key="needs_review" data-value="32"><div class="k">검토 필요</div><div class="v">32</div><div class="d">제안·판단 필요(메모로 표시)</div></div>
+  <div class="card" data-key="pass_rate" data-value="0.0"><div class="k">규칙 통과율</div>
+    <div class="v">0.0% <span class="arrow">→</span> 51.1%</div>
+    <div class="d">지적 0건인 규칙 0 / 적용 규칙 47</div></div>
+  <div class="card" data-key="checklist" data-value="53"><div class="k">부속서 A 검토 항목</div><div class="v">53</div>
+    <div class="d">자동 통과 0 · 지적 13 · 부분 20 · 수동 20</div></div>
+</section>
+
+<section class="panel">
+  <h2>분류별 지적</h2>
+  <div class="bars">
+    <div class="row"><div>번호</div>
+      <div class="track"><div class="fill" style="width:100.0%"></div><div class="fixed" style="width:0.0%"></div></div>
+      <div>8건</div></div>
+    <div class="row"><div>구조·요소</div>
+      <div class="track"><div class="fill" style="width:87.5%"></div><div class="fixed" style="width:0.0%"></div></div>
+      <div>7건</div></div>
+    <div class="row"><div>표·그림</div>
+      <div class="track"><div class="fill" style="width:87.5%"></div><div class="fixed" style="width:50.0%"></div></div>
+      <div>7건 (4)</div></div>
+    <div class="row"><div>목차·제목</div>
+      <div class="track"><div class="fill" style="width:75.0%"></div><div class="fixed" style="width:25.0%"></div></div>
+      <div>6건 (2)</div></div>
+    <div class="row"><div>숫자·단위</div>
+      <div class="track"><div class="fill" style="width:75.0%"></div><div class="fixed" style="width:75.0%"></div></div>
+      <div>6건 (6)</div></div>
+    <div class="row"><div>정형문</div>
+      <div class="track"><div class="fill" style="width:50.0%"></div><div class="fixed" style="width:50.0%"></div></div>
+      <div>4건 (4)</div></div>
+    <div class="row"><div>인용표준·참고문헌</div>
+      <div class="track"><div class="fill" style="width:50.0%"></div><div class="fixed" style="width:0.0%"></div></div>
+      <div>4건</div></div>
+    <div class="row"><div>문장 말미</div>
+      <div class="track"><div class="fill" style="width:50.0%"></div><div class="fixed" style="width:0.0%"></div></div>
+      <div>4건</div></div>
+    <div class="row"><div>참조</div>
+      <div class="track"><div class="fill" style="width:37.5%"></div><div class="fixed" style="width:25.0%"></div></div>
+      <div>3건 (2)</div></div>
+    <div class="row"><div>문장부호·표기</div>
+      <div class="track"><div class="fill" style="width:37.5%"></div><div class="fixed" style="width:25.0%"></div></div>
+      <div>3건 (2)</div></div>
+    <div class="row"><div>용어와 정의</div>
+      <div class="track"><div class="fill" style="width:25.0%"></div><div class="fixed" style="width:25.0%"></div></div>
+      <div>2건 (2)</div></div>
+    <div class="row"><div>KSDT 서식</div>
+      <div class="track"><div class="fill" style="width:25.0%"></div><div class="fixed" style="width:25.0%"></div></div>
+      <div>2건 (2)</div></div>
+    <div class="row"><div>비고·보기</div>
+      <div class="track"><div class="fill" style="width:12.5%"></div><div class="fixed" style="width:12.5%"></div></div>
+      <div>1건 (1)</div></div>
+  </div>
+<div class="legend"><i style="background:#8ea6d8"></i>지적 <i style="background:var(--accent)"></i>자동수정(괄호 안 숫자)</div></section>
+
+<div class="tabs" role="tablist">
+  <button class="on" data-tab="findings">지적 목록 (57)</button>
+  <button data-tab="checklist">부속서 A 체크리스트 (53)</button>
+  <button data-tab="info">문서·처리 정보</button>
+</div>
+
+<section class="tab on" id="tab-findings">
+  <div class="filters">
+    <label><input type="checkbox" class="f-sev" value="error" checked> 오류</label>
+    <label><input type="checkbox" class="f-sev" value="warning" checked> 경고</label>
+    <label><input type="checkbox" class="f-sev" value="info" checked> 참고</label>
+    <select id="f-cat"><option value="">모든 분류</option><option>번호</option><option>구조·요소</option><option>표·그림</option><option>목차·제목</option><option>숫자·단위</option><option>정형문</option><option>인용표준·참고문헌</option><option>문장 말미</option><option>참조</option><option>문장부호·표기</option><option>용어와 정의</option><option>KSDT 서식</option><option>비고·보기</option></select>
+    <select id="f-status"><option value="">모든 상태</option><option>검토 필요</option><option>자동수정</option><option>제안</option><option>판단 필요</option></select>
+    <input type="search" id="f-q" placeholder="규칙 ID·내용 검색">
+    <span id="f-count" class="snip"></span>
+  </div>
+  <table id="findings">
+    <thead><tr><th class="sev">심각도</th><th>규칙</th><th>분류</th><th>위치</th><th>내용</th><th>원문 → 수정</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr data-sev="warning" data-cat="목차·제목" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TOC-01</td>
+        <td>목차·제목</td>
+        <td class="loc">목차</td>
+        <td>목차를 손으로 썼습니다. Word의 자동 목차(TOC 필드)로 만들어 제목과 쪽 번호가 갱신되게 합니다.<div class="ref">KS A 0001:2023 6.1.2</div></td>
+        <td><span class="snip">목    차</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="목차·제목" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TOC-02</td>
+        <td>목차·제목</td>
+        <td class="loc">목차</td>
+        <td>목차 항목 &#39;5 시험&#39;이(가) 본문 제목과 다릅니다. 목차를 갱신해야 합니다.<div class="ref">KS A 0001:2023 6.1.2</div></td>
+        <td><span class="snip">5	시험	3</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="목차·제목" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TOC-02</td>
+        <td>목차·제목</td>
+        <td class="loc">목차</td>
+        <td>목차 항목 &#39;6.2 표시 방법&#39;에 해당하는 절이 본문에 없습니다.<div class="ref">KS A 0001:2023 6.1.2</div></td>
+        <td><span class="snip">6.2	표시 방법	4</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="목차·제목" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TOC-02</td>
+        <td>목차·제목</td>
+        <td class="loc">목차</td>
+        <td>목차 항목 &#39;7 포장&#39;에 해당하는 절이 본문에 없습니다.<div class="ref">KS A 0001:2023 6.1.2</div></td>
+        <td><span class="snip">7	포장	4</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="구조·요소" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">STR-04</td>
+        <td>구조·요소</td>
+        <td class="loc">개요</td>
+        <td>개요에는 요구·권고·허용 표현(&#39;하여야 한다&#39;)을 쓰지 않습니다.<div class="ref">KS A 0001:2023 6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9</div></td>
+        <td><span class="snip">체중계는 KS X 9999-2에 따라 시험하여야 한다.</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="정형문" data-status="자동수정">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">BLT-02</td>
+        <td>정형문</td>
+        <td class="loc">머리말</td>
+        <td>머리말에 저작권 정형문(둘째 문장)이(가) 없습니다.<div class="ref">KS A 0001:2023 6.1.3, 부속서 E.1</div></td>
+        <td><span class="snip">머  리  말</span><br><span class="arrow">→</span> 이 표준의 내용 일부 또는 전부가 ISOㆍIEC 등에서 제정한 표준을 참고하여 제정 또는 개정된 경우, 해당 표준의 저작권을 보유하고 있는 ISOㆍIEC 등의 저작권 보호 규정 등에 따라 보호되어야 한다.</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="구조·요소" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">STR-02</td>
+        <td>구조·요소</td>
+        <td class="loc">머리말</td>
+        <td>요소 순서가 맞지 않습니다: &#39;머리말&#39;은(는) &#39;개요&#39;보다 앞에 와야 합니다.<div class="ref">KS A 0001:2023 5.1.3 표 3, 5.2.7~5.2.9</div></td>
+        <td><span class="snip">머  리  말</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="목차·제목" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TTL-04</td>
+        <td>목차·제목</td>
+        <td class="loc">제목</td>
+        <td>표준번호는 &#39;KS C IEC 60974-11:2021&#39;처럼 씁니다(&#39;KS X 9999 : 2026&#39; → &#39;KS X 9999:2026&#39;).<div class="ref">KS A 0001:2023 6.3.1</div></td>
+        <td><span class="snip">KS X 9999 : 2026</span><br><span class="arrow">→</span> KS X 9999:2026</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="구조·요소" data-status="제안">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">STR-01</td>
+        <td>구조·요소</td>
+        <td class="loc">제목</td>
+        <td>필수 요소가 없습니다: 영문 제목.<div class="ref">KS A 0001:2023 5.1.3 표 3, 6.1.3, 6.3</div></td>
+        <td><span class="snip">디지털 체중계 - 제1부: 일반 요구사항</span><br><span class="arrow">→</span> &#39;영문 제목&#39; 요소를 KS A 0001 5.1.3 표 3의 위치에 넣습니다.</td>
+        <td><span class="pill sugg">제안</span><div class="ref">판단이 필요한 수정이라 제안만</div></td>
+      </tr>
+      <tr data-sev="warning" data-cat="목차·제목" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TTL-01</td>
+        <td>목차·제목</td>
+        <td class="loc">제목</td>
+        <td>제목 요소 사이는 줄표(—) 앞뒤를 한 칸씩 띄워 구분합니다(&#39;-&#39; → &#39; — &#39;).<div class="ref">KS A 0001:2023 6.3.1</div></td>
+        <td><span class="snip">디지털 체중계 - 제1부: 일반 요구사항</span><br><span class="arrow">→</span>  — </td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="구조·요소" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">STR-04</td>
+        <td>구조·요소</td>
+        <td class="loc">1절</td>
+        <td>적용범위에는 요구·권고·허용 표현(&#39;하여야 한다&#39;)을 쓰지 않습니다.<div class="ref">KS A 0001:2023 6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9</div></td>
+        <td><span class="snip">체중계는 이 표준에 적합하여야 한다.</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="정형문" data-status="자동수정">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">BLT-03</td>
+        <td>정형문</td>
+        <td class="loc">2절</td>
+        <td>인용표준 도입 정형문의 문구가 KS A 0001과 다릅니다(유사도 0.97).<div class="ref">KS A 0001:2023 6.4.1</div></td>
+        <td><span class="snip">다음의 인용표준은 전체 또는 부분적으로 이 표준의 적용을 위해 필요하다. 발행연도가 표기된 인용표준은 인용된 판만을 적용한다. 발행연도가 표기되지 않은 인용표준은 최신판(모든 추록을 포함)을 적용한다.</span><br><span class="arrow">→</span> 다음의 인용표준은 전체 또는 부분적으로 이 표준의 적용을 위해 필수적이다. 발행연도가 표기된 인용표준은 인용된 판만을 적용한다. 발행연도가 표기되지 않은 인용표준은 최신판(모든 추록을 포함)을 적용한다.</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="인용표준·참고문헌" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NRF-01</td>
+        <td>인용표준·참고문헌</td>
+        <td class="loc">2절</td>
+        <td>인용표준은 국가표준 → 국제표준 → 가이드 → 단체표준 순서로 적습니다(국가표준(KS)가 국제표준(ISO·IEC) 뒤에 있음).<div class="ref">KS A 0001:2023 6.4.1 표 5</div></td>
+        <td><span class="snip">KS A 0006, 시험 장소의 표준 상태</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="인용표준·참고문헌" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NRF-01</td>
+        <td>인용표준·참고문헌</td>
+        <td class="loc">2절</td>
+        <td>인용표준은 국가표준 → 국제표준 → 가이드 → 단체표준 순서로 적습니다(국가표준(KS)가 국제표준(ISO·IEC) 뒤에 있음).<div class="ref">KS A 0001:2023 6.4.1 표 5</div></td>
+        <td><span class="snip">KS C IEC 60068-2-6 : 2007, 환경 시험 — 제2-6부: 시험 — 시험 Fc: 진동(정현파)</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="참조" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">REF-04</td>
+        <td>참조</td>
+        <td class="loc">2절</td>
+        <td>표준번호와 연도는 쌍점(:)을 붙여 씁니다(&#39;KS C IEC 60068-2-6 : 2007&#39; → &#39;KS C IEC 60068-2-6:2007&#39;).<div class="ref">KS A 0001:2023 6.3.1, 6.4.4.5</div></td>
+        <td><span class="snip">KS C IEC 60068-2-6 : 2007, 환경 시험 — 제2-6부: 시험 — 시험…</span><br><span class="arrow">→</span> KS C IEC 60068-2-6:2007</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="인용표준·참고문헌" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NRF-03</td>
+        <td>인용표준·참고문헌</td>
+        <td class="loc">2절</td>
+        <td>법규·기술규정은 인용표준에 넣지 않습니다. 필요하면 참고문헌에 적습니다.<div class="ref">KS A 0001:2023 6.4.1</div></td>
+        <td><span class="snip">계량에 관한 법률</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="정형문" data-status="자동수정">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">BLT-04</td>
+        <td>정형문</td>
+        <td class="loc">3 제목</td>
+        <td>용어와 정의 도입 정형문이 없습니다.<div class="ref">KS A 0001:2023 6.4.2</div></td>
+        <td><span class="snip">용어와 정의</span><br><span class="arrow">→</span> 이 표준의 목적을 위하여 다음의 용어와 정의를 적용한다.</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="용어와 정의" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TRM-01</td>
+        <td>용어와 정의</td>
+        <td class="loc">3절</td>
+        <td>용어와 괄호 사이를 띄우지 않습니다(예: 최대 칭량(maximum capacity)).<div class="ref">KS A 0001:2023 6.4.2</div></td>
+        <td><span class="snip"> 눈금 간격 (scale interval)</span><br><span class="arrow">→</span> 눈금 간격(scale interval)</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="용어와 정의" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TRM-02</td>
+        <td>용어와 정의</td>
+        <td class="loc">3절</td>
+        <td>정의문 끝에는 마침표를 찍지 않습니다.<div class="ref">KS A 0001:2023 6.4.2</div></td>
+        <td><span class="snip">인접한 두 표시값 사이의 차이.</span><br><span class="arrow">→</span> 인접한 두 표시값 사이의 차이</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="구조·요소" data-status="제안">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">STR-03</td>
+        <td>구조·요소</td>
+        <td class="loc">4절</td>
+        <td>미결문단입니다: 4 제목과 첫 하위 항 사이에 번호 없는 문단이 있습니다.<div class="ref">KS A 0001:2023 5.2.4</div></td>
+        <td><span class="snip">이 절은 체중계의 일반 요구사항을 규정한다.</span><br><span class="arrow">→</span> &#39;4.1 일반사항&#39; 항을 새로 만들어 이 문단을 옮깁니다.</td>
+        <td><span class="pill sugg">제안</span><div class="ref">판단이 필요한 수정이라 제안만</div></td>
+      </tr>
+      <tr data-sev="warning" data-cat="숫자·단위" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">QTY-06</td>
+        <td>숫자·단위</td>
+        <td class="loc">4.1</td>
+        <td>곱셈 기호는 &#39;×&#39;를 씁니다(&#39;x&#39; → &#39;×&#39;).<div class="ref">KS A 0001:2023 J.3</div></td>
+        <td><span class="snip">미끄럼 방지 패드는 40 mm x 40 mm 이상이어야 한다.</span><br><span class="arrow">→</span> ×</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="숫자·단위" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">QTY-03</td>
+        <td>숫자·단위</td>
+        <td class="loc">4.1</td>
+        <td>세 자리마다 공백으로 묶습니다(&#39;2,000&#39; → &#39;2 000&#39;).<div class="ref">KS A 0001:2023 J.3</div></td>
+        <td><span class="snip">받침판은 2,000 N의 하중에 견뎌야 한다.</span><br><span class="arrow">→</span> 2 000</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="숫자·단위" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">QTY-01</td>
+        <td>숫자·단위</td>
+        <td class="loc">4.1</td>
+        <td>수치와 단위기호 사이를 한 칸 띄웁니다(&#39;150kg&#39; → &#39;150 kg&#39;).<div class="ref">KS A 0001:2023 부속서 L, J.3</div></td>
+        <td><span class="snip">체중계의 최대 칭량은 150kg 이상이어야 한다.</span><br><span class="arrow">→</span> 150 kg</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">FIG-01</td>
+        <td>표·그림</td>
+        <td class="loc">4.1</td>
+        <td>그림 호칭과 제목은 &#39;그림 N — 제목&#39;처럼 줄표(—) 앞뒤를 한 칸씩 띄워 씁니다.<div class="ref">KS A 0001:2023 J.1.4</div></td>
+        <td><span class="snip">그림1. 구조</span><br><span class="arrow">→</span> 그림 1 — 구조</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">FIG-02</td>
+        <td>표·그림</td>
+        <td class="loc">4.1</td>
+        <td>그림 제목은 그림 아래에 둡니다(지금은 그림 위에 있음).<div class="ref">KS A 0001:2023 J.1.4</div></td>
+        <td><span class="snip">그림1. 구조</span><br><span class="arrow">→</span> 그림 아래로 옮김</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">FIG-03</td>
+        <td>표·그림</td>
+        <td class="loc">4.1</td>
+        <td>그림 1을(를) 본문에서 참조하지 않습니다.<div class="ref">KS A 0001:2023 6.4.4.4</div></td>
+        <td><span class="snip">그림1. 구조</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="info" data-cat="KSDT 서식" data-status="자동수정">
+        <td class="sev sev-info">참고</td>
+        <td class="rule">FMT-01</td>
+        <td>KSDT 서식</td>
+        <td class="loc">4.1</td>
+        <td>그림 제목에는 KSDT 스타일 &#39;[KSDT] 그림제목&#39;을(를) 씁니다(지금: Normal).<div class="ref">KS A 0001:2023 부속서 A(KSDT의 적용)</div></td>
+        <td><span class="snip">그림1. 구조</span><br><span class="arrow">→</span> [KSDT] 그림제목</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="숫자·단위" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">QTY-02</td>
+        <td>숫자·단위</td>
+        <td class="loc">4.2</td>
+        <td>1보다 작은 소수는 앞에 0을 씁니다(&#39;.1&#39; → &#39;0.1&#39;).<div class="ref">KS A 0001:2023 J.3</div></td>
+        <td><span class="snip">눈금 간격은 .1 kg 이하이어야 한다.</span><br><span class="arrow">→</span> 0.1</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="문장부호·표기" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">PUN-01</td>
+        <td>문장부호·표기</td>
+        <td class="loc">4.2</td>
+        <td>반쌍점(;)은 쓰지 않습니다. 문장을 나누거나 쉼표를 씁니다.<div class="ref">KS A 0001:2023 부속서 H.3.2(문장 부호)</div></td>
+        <td><span class="snip">전원은 건전지를 사용한다; 어댑터는 별매품이다.</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="비고·보기" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NTE-01</td>
+        <td>비고·보기</td>
+        <td class="loc">4.2</td>
+        <td>같은 곳에 비고가 하나뿐이면 번호를 붙이지 않습니다(&#39;비고 1&#39; → &#39;비고&#39;).<div class="ref">KS A 0001:2023 6.5.2</div></td>
+        <td><span class="snip">비고 1 표시부의 밝기는 주위 조도에 따라 자동으로…</span><br><span class="arrow">→</span> 비고</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="숫자·단위" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">QTY-04</td>
+        <td>숫자·단위</td>
+        <td class="loc">5.1</td>
+        <td>허용오차가 있는 값은 괄호로 묶고 단위를 뒤에 씁니다(&#39;23 ± 2 ℃&#39; → &#39;(23 ± 2) ℃&#39;).<div class="ref">KS A 0001:2023 부속서 L, J.4.4</div></td>
+        <td><span class="snip">…S A 0006에 따른 표준 상태에서 온도 23 ± 2 ℃, 상대 습도 (50 ± 10) %로 한다.</span><br><span class="arrow">→</span> (23 ± 2) ℃</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="구조·요소" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">STR-04</td>
+        <td>구조·요소</td>
+        <td class="loc">5.1</td>
+        <td>비고에는 요구·권고·허용 표현(&#39;어야 한다&#39;)을 쓰지 않습니다.<div class="ref">KS A 0001:2023 6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9</div></td>
+        <td><span class="snip">비고 시험 장소에는 진동원이 없어야 한다.</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="info" data-cat="문장 말미" data-status="판단 필요">
+        <td class="sev sev-info">참고</td>
+        <td class="rule">VRB-02</td>
+        <td>문장 말미</td>
+        <td class="loc">5.1</td>
+        <td>&#39;바꿀 수 있다&#39;이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.<div class="ref">KS A 0001:2023 부속서 I 표 I.3, 표 I.4</div></td>
+        <td><span class="snip">5.2와 5.3의 시험은 순서를 바꿀 수 있다.</span></td>
+        <td><span class="pill sugg">판단 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TBL-01</td>
+        <td>표·그림</td>
+        <td class="loc">5.2</td>
+        <td>표 호칭과 제목은 &#39;표 N — 제목&#39;처럼 줄표(—) 앞뒤를 한 칸씩 띄워 씁니다.<div class="ref">KS A 0001:2023 J.2.3</div></td>
+        <td><span class="snip">&lt;표 1&gt; 시험 하중과 허용 오차</span><br><span class="arrow">→</span> 표 1 — 시험 하중과 허용 오차</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TBL-02</td>
+        <td>표·그림</td>
+        <td class="loc">5.2</td>
+        <td>표 제목은 표 위에 둡니다(지금은 표 아래에 있음).<div class="ref">KS A 0001:2023 J.2.3</div></td>
+        <td><span class="snip">&lt;표 1&gt; 시험 하중과 허용 오차</span><br><span class="arrow">→</span> 표 위로 옮김</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="info" data-cat="KSDT 서식" data-status="자동수정">
+        <td class="sev sev-info">참고</td>
+        <td class="rule">FMT-01</td>
+        <td>KSDT 서식</td>
+        <td class="loc">5.2</td>
+        <td>표 제목에는 KSDT 스타일 &#39;[KSDT] 표제목&#39;을(를) 씁니다(지금: Normal).<div class="ref">KS A 0001:2023 부속서 A(KSDT의 적용)</div></td>
+        <td><span class="snip">&lt;표 1&gt; 시험 하중과 허용 오차</span><br><span class="arrow">→</span> [KSDT] 표제목</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="문장 말미" data-status="제안">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">VRB-01</td>
+        <td>문장 말미</td>
+        <td class="loc">5.2</td>
+        <td>&#39;반드시 ~하여야 한다&#39;는 법령 등 문서 밖의 의무(외적 제약)에만 씁니다. 이 표준의 요구사항이면 &#39;반드시&#39;를 뺍니다.<div class="ref">KS A 0001:2023 부속서 I 표 I.1, 표 I.5</div></td>
+        <td><span class="snip">측정 전에는 반드시 영점 조정을 하여야 한다.</span><br><span class="arrow">→</span> 측정 전에는 영점 조정을 하여야 한다.</td>
+        <td><span class="pill sugg">제안</span><div class="ref">판단이 필요한 수정이라 제안만</div></td>
+      </tr>
+      <tr data-sev="warning" data-cat="문장부호·표기" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">PUN-06</td>
+        <td>문장부호·표기</td>
+        <td class="loc">5.2</td>
+        <td>마침표가 두 번 찍혀 있습니다.<div class="ref">KS A 0001:2023 부속서 H.3.2.1(마침표)</div></td>
+        <td><span class="snip">… 차이는 표 1의 허용 오차 이내이어야 한다..</span><br><span class="arrow">→</span> .</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="참조" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">REF-01</td>
+        <td>참조</td>
+        <td class="loc">5.2</td>
+        <td>참조한 표 &#39;표 5&#39;이(가) 이 문서에 없습니다.<div class="ref">KS A 0001:2023 6.4.4</div></td>
+        <td><span class="snip">자세한 시험 조건은 표 5 참조.</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="문장 말미" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">VRB-04</td>
+        <td>문장 말미</td>
+        <td class="loc">5.2</td>
+        <td>금지는 &#39;~하여서는 안 된다&#39;로 씁니다(&#39;이동하면 안 된다&#39;).<div class="ref">KS A 0001:2023 부속서 I 표 I.1</div></td>
+        <td><span class="snip">측정 중에 체중계를 이동하면 안 된다.</span><br><span class="arrow">→</span> ~하여서는 안 된다</td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NUM-03</td>
+        <td>번호</td>
+        <td class="loc">5.3.1.1.1.1 제목</td>
+        <td>세분은 5단계까지입니다(5.3.1.1.1.1은 6단계).<div class="ref">KS A 0001:2023 5.2.3</div></td>
+        <td><span class="snip">볼트 고정</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NUM-03</td>
+        <td>번호</td>
+        <td class="loc">5.3.1.1.1.2 제목</td>
+        <td>세분은 5단계까지입니다(5.3.1.1.1.2은 6단계).<div class="ref">KS A 0001:2023 5.2.3</div></td>
+        <td><span class="snip">클램프 고정</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="참조" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">REF-02</td>
+        <td>참조</td>
+        <td class="loc">5.3.2</td>
+        <td>절·항은 번호만으로 참조합니다(&#39;5.2항&#39; → &#39;5.2&#39;).<div class="ref">KS A 0001:2023 6.4.4.3</div></td>
+        <td><span class="snip">… Hz ∼ 55 Hz의 진동을 가한 후에도 5.2항의 요구사항을 만족하여야 한다.</span><br><span class="arrow">→</span> 5.2</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="숫자·단위" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">QTY-05</td>
+        <td>숫자·단위</td>
+        <td class="loc">5.3.2</td>
+        <td>범위는 수치마다 단위를 붙입니다(&#39;5 ~ 40 ℃&#39; → &#39;5 ℃ ∼ 40 ℃&#39;). &#39;(5 ∼ 40) ℃&#39;도 됩니다.<div class="ref">KS A 0001:2023 부속서 H.3.4, 부속서 L</div></td>
+        <td><span class="snip">시험 온도는 5 ~ 40 ℃로 한다.</span><br><span class="arrow">→</span> 5 ℃ ∼ 40 ℃</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="문장부호·표기" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">PUN-02</td>
+        <td>문장부호·표기</td>
+        <td class="loc">5.3.2</td>
+        <td>연속부호는 &#39;∼&#39;(U+223C)를 씁니다(&#39;~&#39; → &#39;∼&#39;).<div class="ref">KS A 0001:2023 부속서 H.3.4(연속부호)</div></td>
+        <td><span class="snip">시험 온도는 5 ~ 40 ℃로 한다.</span><br><span class="arrow">→</span> ∼</td>
+        <td><span class="pill fixed">자동수정</span><div class="ref">QTY-05 수정에 포함</div></td>
+      </tr>
+      <tr data-sev="warning" data-cat="인용표준·참고문헌" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NRF-02</td>
+        <td>인용표준·참고문헌</td>
+        <td class="loc">5.3.2</td>
+        <td>본문에서 인용한 KS C IEC 61000-4-2이(가) 인용표준이나 참고문헌에 없습니다.<div class="ref">KS A 0001:2023 6.4.1, 부속서 A</div></td>
+        <td><span class="snip">정전기 방전 시험은 KS C IEC 61000-4-2에 따른다.</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">NUM-02</td>
+        <td>번호</td>
+        <td class="loc">6.1 제목</td>
+        <td>같은 단계에 항이 하나뿐입니다(6 아래 6.1만 있음). 항은 둘 이상이어야 합니다.<div class="ref">KS A 0001:2023 5.2.3</div></td>
+        <td><span class="snip">표시 사항</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">NUM-07</td>
+        <td>번호</td>
+        <td class="loc">6.1</td>
+        <td>표 번호는 1부터 이어서 붙입니다(표 2 자리에 표 3).<div class="ref">KS A 0001:2023 J.1.3, J.2.2, J.4.3</div></td>
+        <td><span class="snip">표 3 — 표시 항목의 글자 크기</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TBL-04</td>
+        <td>표·그림</td>
+        <td class="loc">6.1</td>
+        <td>표 3을(를) 본문에서 참조하지 않습니다.<div class="ref">KS A 0001:2023 6.4.4.4</div></td>
+        <td><span class="snip">표 3 — 표시 항목의 글자 크기</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="표·그림" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">TBL-03</td>
+        <td>표·그림</td>
+        <td class="loc">6.1 · 표 안</td>
+        <td>표 안에 표를 넣지 않습니다.<div class="ref">KS A 0001:2023 J.2.1</div></td>
+        <td><span class="snip">하위 칸 1</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">NUM-01</td>
+        <td>번호</td>
+        <td class="loc">8 제목</td>
+        <td>절 번호가 이어지지 않습니다(6 다음 8).<div class="ref">KS A 0001:2023 5.2.2</div></td>
+        <td><span class="snip">포장</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="구조·요소" data-status="검토 필요">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">STR-06</td>
+        <td>구조·요소</td>
+        <td class="loc">참고문헌</td>
+        <td>참고문헌은 마지막 부속서 뒤에 둡니다(뒤에 부속서 2개가 있음).<div class="ref">KS A 0001:2023 5.2.7</div></td>
+        <td><span class="snip">참고문헌</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">NUM-06</td>
+        <td>번호</td>
+        <td class="loc">부속서 B</td>
+        <td>첫 부속서는 부속서 A입니다(부속서 B).<div class="ref">KS A 0001:2023 5.2.6</div></td>
+        <td><span class="snip">부속서 B
+(참고)
+
+사용상의 주의</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">NUM-02</td>
+        <td>번호</td>
+        <td class="loc">B.1 제목</td>
+        <td>같은 단계에 항이 하나뿐입니다(부속서 B 아래 B.1만 있음). 항은 둘 이상이어야 합니다.<div class="ref">KS A 0001:2023 5.2.3</div></td>
+        <td><span class="snip">B.1 설치</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="info" data-cat="문장 말미" data-status="판단 필요">
+        <td class="sev sev-info">참고</td>
+        <td class="rule">VRB-02</td>
+        <td>문장 말미</td>
+        <td class="loc">B.1</td>
+        <td>&#39;표시될 수 있다&#39;이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.<div class="ref">KS A 0001:2023 부속서 I 표 I.3, 표 I.4</div></td>
+        <td><span class="snip">…울어진 바닥에 두면 측정값이 실제보다 작게 표시될 수 있다.</span></td>
+        <td><span class="pill sugg">판단 필요</span></td>
+      </tr>
+      <tr data-sev="error" data-cat="번호" data-status="검토 필요">
+        <td class="sev sev-error">오류</td>
+        <td class="rule">NUM-06</td>
+        <td>번호</td>
+        <td class="loc">부속서 A</td>
+        <td>부속서는 A부터 순서대로 둡니다(부속서 B 다음에 부속서 A).<div class="ref">KS A 0001:2023 5.2.6</div></td>
+        <td><span class="snip">부속서 A
+(규정)
+
+교정 절차</span></td>
+        <td><span class="pill review">검토 필요</span></td>
+      </tr>
+      <tr data-sev="warning" data-cat="정형문" data-status="자동수정">
+        <td class="sev sev-warning">경고</td>
+        <td class="rule">BLT-06</td>
+        <td>정형문</td>
+        <td class="loc">해설</td>
+        <td>해설 도입문(이 해설은 … 표준의 일부는 아니다.)이 없습니다.<div class="ref">KS A 0001:2023 부속서 N</div></td>
+        <td><span class="snip">KS X 9999:2026
+해  설</span><br><span class="arrow">→</span> 이 해설은 이 표준과 관련된 사항을 설명하는 것으로 표준의 일부는 아니다.</td>
+        <td><span class="pill fixed">자동수정</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="tab" id="tab-checklist">
+  <p class="snip">KS A 0001:2023 부속서 A(문서 작성자와 편집자를 위한 검토 항목)를 규칙 결과에 대응시켰습니다. 항목 문구는 요약입니다.</p>
+  <table id="checklist">
+    <thead><tr><th>번호</th><th>구분</th><th>검토 항목(요약)</th><th>관련 규칙</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr data-status="partial_fail">
+        <td class="rule">A01</td><td>KSDT의 적용<div class="ref">부속서 A</div></td>
+        <td>표준 작성용 프로그램(KSDT)으로 작성<div class="ref">수동: KSDT 프로그램 사용 여부</div></td>
+        <td class="ref">FMT-01</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 2건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A02</td><td>표지<div class="ref">6.1.1</div></td>
+        <td>표지 제목 = 본문 제목</td>
+        <td class="ref">TTL-05</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A03</td><td>표지<div class="ref">6.1.1</div></td>
+        <td>본문 영문 제목 = 뒤표지 영문 제목</td>
+        <td class="ref">TTL-05</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A04</td><td>표지<div class="ref">6.1.1</div></td>
+        <td>심의회·원안작성협력 정보의 최신성·정확성</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A05</td><td>표지<div class="ref">6.1.1</div></td>
+        <td>표준정보란 기재</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A06</td><td>표지<div class="ref">6.1.1</div></td>
+        <td>뒤표지 ICS 코드의 적정성</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A07</td><td>표지<div class="ref">6.1.1, 그림 C.1~C.4</div></td>
+        <td>표지 양식<div class="ref">수동: 표지 양식 전체</div></td>
+        <td class="ref">TTL-04</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A08</td><td>목차<div class="ref">6.1.2</div></td>
+        <td>목차가 본문 절·항·부속서와 일치</td>
+        <td class="ref">TOC-01, TOC-02</td>
+        <td><span class="pill fail">자동 지적 4건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A09</td><td>목차<div class="ref">6.1.2</div></td>
+        <td>용어와 정의의 세부 항은 목차에서 제외</td>
+        <td class="ref">TRM-05</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A10</td><td>머리말<div class="ref">6.1.3, E.1</div></td>
+        <td>도입부 정형문(발행정보·저작권)</td>
+        <td class="ref">BLT-01, BLT-02</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A11</td><td>머리말<div class="ref">6.1.3, 부속서 M</div></td>
+        <td>특허 대상 기술의 조사·승낙서 검토</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A12</td><td>머리말<div class="ref">6.1.3, M.2.4</div></td>
+        <td>특허 포함 표준의 기재 사항</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A13</td><td>개요<div class="ref">6.2</div></td>
+        <td>개요에 요구사항 없음</td>
+        <td class="ref">STR-04</td>
+        <td><span class="pill fail">자동 지적 3건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A14</td><td>개요<div class="ref">6.2, E.2</div></td>
+        <td>개요 도입부 정형문(부합화 표준)</td>
+        <td class="ref">BLT-07</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A15</td><td>제목<div class="ref">6.3.1</div></td>
+        <td>제목 구성(요소 3개 이하·구분자)<div class="ref">수동: 제목의 명확성·간결성</div></td>
+        <td class="ref">TTL-01, TTL-02</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A16</td><td>제목<div class="ref">6.3.1</div></td>
+        <td>제목이 적용범위를 의도치 않게 제한하지 않음</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A17</td><td>제목<div class="ref">6.3.1, 그림 C.3</div></td>
+        <td>본문 제목 양식(국문·영문·표준번호)</td>
+        <td class="ref">TTL-03, TTL-04</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A18</td><td>적용범위<div class="ref">6.3.2</div></td>
+        <td>주제와 적용 대상을 사실로 설명<div class="ref">수동: 서술 내용의 타당성</div></td>
+        <td class="ref">BLT-05</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A19</td><td>적용범위<div class="ref">6.3.2</div></td>
+        <td>적용범위에 요구사항 없음</td>
+        <td class="ref">STR-04</td>
+        <td><span class="pill fail">자동 지적 3건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A20</td><td>적용범위<div class="ref">6.3.2</div></td>
+        <td>표현 양식·어법<div class="ref">수동: 어법</div></td>
+        <td class="ref">BLT-05</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A21</td><td>인용표준<div class="ref">6.4.1</div></td>
+        <td>본문에서 인용한 표준을 모두 제시</td>
+        <td class="ref">NRF-02</td>
+        <td><span class="pill fail">자동 지적 1건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A22</td><td>인용표준<div class="ref">6.4.1</div></td>
+        <td>발행연도 표기가 필요한 인용표준<div class="ref">수동: 연도 표기 필요성 판단</div></td>
+        <td class="ref">REF-04</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A23</td><td>인용표준<div class="ref">6.4.1</div></td>
+        <td>국제·국가표준이 아닌 인용표준의 대체 가능성<div class="ref">수동: 대체 표준 존재 여부(저작권 검토)</div></td>
+        <td class="ref">NRF-03</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A24</td><td>인용표준<div class="ref">6.4.1 표 5</div></td>
+        <td>인용표준 목록 순서</td>
+        <td class="ref">NRF-01</td>
+        <td><span class="pill fail">자동 지적 2건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A25</td><td>인용표준<div class="ref">6.4.1</div></td>
+        <td>도입부 정형문</td>
+        <td class="ref">BLT-03</td>
+        <td><span class="pill fail">자동 지적 1건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A26</td><td>용어와 정의<div class="ref">6.4.2</div></td>
+        <td>정의한 용어를 본문에서 사용</td>
+        <td class="ref">TRM-03</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A27</td><td>용어와 정의<div class="ref">6.4.2</div></td>
+        <td>정의의 작성 꼴<div class="ref">수동: 정의 내용의 정확성</div></td>
+        <td class="ref">TRM-01, TRM-02, TRM-04</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 2건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A28</td><td>용어와 정의<div class="ref">6.4.2</div></td>
+        <td>용어 배치와 상호 인용</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A29</td><td>용어와 정의<div class="ref">6.4.2</div></td>
+        <td>도입부 정형문</td>
+        <td class="ref">BLT-04</td>
+        <td><span class="pill fail">자동 지적 1건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A30</td><td>용어와 정의<div class="ref">6.4.2, 부속서 G</div></td>
+        <td>정의할 개념 선정</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A31</td><td>요구사항<div class="ref">6.4.3, 부속서 I</div></td>
+        <td>문장 말미 형태(요구·권고·허용)<div class="ref">수동: 의미 판단(AI 보조)</div></td>
+        <td class="ref">VRB-01, VRB-02, VRB-03, VRB-04, VRB-05</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 4건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A32</td><td>요구사항<div class="ref">6.4.3, 부속서 L</div></td>
+        <td>양과 단위의 적용</td>
+        <td class="ref">QTY-01, QTY-02, QTY-03, QTY-04, QTY-05, QTY-06, QTY-07, QTY-08</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 6건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A33</td><td>언어의 사용<div class="ref">부속서 G, 부속서 B</div></td>
+        <td>언어·전문용어 참고자료 검토</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A34</td><td>언어의 사용<div class="ref">I.1</div></td>
+        <td>본문의 정확성·간결성</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A35</td><td>언어의 사용<div class="ref">I.2, 부속서 H</div></td>
+        <td>구두법(문장부호) 일관성</td>
+        <td class="ref">PUN-01, PUN-02, PUN-03, PUN-04, PUN-05, PUN-06</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 3건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A36</td><td>그림 및 표<div class="ref">부속서 J</div></td>
+        <td>그림·표 제목의 꼴(간결성은 수동)<div class="ref">수동: 제목의 간결성</div></td>
+        <td class="ref">TBL-01, FIG-01</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 2건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A37</td><td>그림 및 표<div class="ref">부속서 J</div></td>
+        <td>그림·표 번호</td>
+        <td class="ref">NUM-07, TBL-01, FIG-01</td>
+        <td><span class="pill fail">자동 지적 3건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A38</td><td>그림 및 표<div class="ref">부속서 J</div></td>
+        <td>식별부호·비고·각주<div class="ref">수동: 식별부호의 정확성</div></td>
+        <td class="ref">TBL-07, NTE-01</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A39</td><td>부속서<div class="ref">6.6</div></td>
+        <td>부속서 지위(규정/참고) 표시<div class="ref">수동: 지위의 타당성</div></td>
+        <td class="ref">NUM-06</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 2건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A40</td><td>부속서<div class="ref">6.6</div></td>
+        <td>참고 부속서에 요구사항 없음</td>
+        <td class="ref">STR-04</td>
+        <td><span class="pill fail">자동 지적 3건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A41</td><td>비고 및 보기<div class="ref">6.5.2</div></td>
+        <td>비고·보기 표기 방식</td>
+        <td class="ref">NTE-01, NTE-02</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A42</td><td>비고 및 보기<div class="ref">6.5.2</div></td>
+        <td>비고·보기 번호 체계</td>
+        <td class="ref">NTE-01</td>
+        <td><span class="pill fail">자동 지적 1건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A43</td><td>참조<div class="ref">6.4.4</div></td>
+        <td>본문 요소에 맞는 참조 꼴</td>
+        <td class="ref">REF-01, REF-02, REF-03</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 2건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A44</td><td>참조<div class="ref">6.4.4</div></td>
+        <td>그림·표 참조</td>
+        <td class="ref">REF-01, TBL-04, FIG-03</td>
+        <td><span class="pill fail">자동 지적 3건</span></td>
+      </tr>
+      <tr data-status="not_run">
+        <td class="rule">A45</td><td>참고문헌<div class="ref">6.5.4</div></td>
+        <td>참고문헌 항목의 정확성·완전성<div class="ref">수동: 항목 내용의 정확성</div></td>
+        <td class="ref">NRF-05</td>
+        <td><span class="pill man">수동 확인(규칙 미구현)</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A46</td><td>참고문헌<div class="ref">6.5.4</div></td>
+        <td>인용표준으로 옮길 문헌<div class="ref">수동: 인용 성격 판단</div></td>
+        <td class="ref">NRF-02</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A47</td><td>해설<div class="ref">5.2.9</div></td>
+        <td>제정·개정 취지와 경위<div class="ref">수동: 취지·경위의 명확성</div></td>
+        <td class="ref">BLT-06</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A48</td><td>해설<div class="ref">5.2.9</div></td>
+        <td>심의 중 문제 사항 설명</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A49</td><td>표준의 구조<div class="ref">5.1.1, 부속서 F</div></td>
+        <td>주제 세분화의 논리성<div class="ref">수동: 세분화의 논리성</div></td>
+        <td class="ref">NUM-02, NUM-03</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 4건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A50</td><td>표준의 구조<div class="ref">5.1.3</div></td>
+        <td>요소 배열의 일관성</td>
+        <td class="ref">STR-01, STR-02, STR-06</td>
+        <td><span class="pill fail">자동 지적 3건</span></td>
+      </tr>
+      <tr data-status="fail">
+        <td class="rule">A51</td><td>표준의 구조<div class="ref">5.2.4</div></td>
+        <td>미결문단 제거</td>
+        <td class="ref">STR-03</td>
+        <td><span class="pill fail">자동 지적 1건</span></td>
+      </tr>
+      <tr data-status="partial_fail">
+        <td class="rule">A52</td><td>표준의 구조<div class="ref">4.3.7.5</div></td>
+        <td>국제표준 채택 수준과 번호 표시<div class="ref">수동: 채택 수준(IDT/MOD/NEQ) 확인</div></td>
+        <td class="ref">TTL-04</td>
+        <td><span class="pill fail">부분 자동(지적 있음) 1건</span></td>
+      </tr>
+      <tr data-status="manual">
+        <td class="rule">A53</td><td>표준의 구조<div class="ref">4.3.7.2</div></td>
+        <td>기술적 변경이 아닌 사항의 반영</td>
+        <td class="ref"></td>
+        <td><span class="pill man">수동 확인</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="tab" id="tab-info">
+  <dl>
+    <dt>파일</dt><dd>sample_01_violations.docx</dd>
+    <dt>SHA-256(입력)</dt><dd style="font-family:Consolas,monospace;font-size:12px">4e10fc247e00e78bfdadef5cd04b5854897c7167f6246efad10f79b9bc846d9e</dd>
+    <dt>표준번호 · 제목</dt><dd>KS X 9999 : 2026 · 디지털 체중계 - 제1부: 일반 요구사항</dd>
+    <dt>영문 제목</dt><dd>-</dd>
+    <dt>구성</dt><dd>문단 166 · 표 3 · 구역 5 · 한글 비율 78% · 기존 메모 0</dd>
+    <dt>처리 모드</dt><dd>변경추적 교정 · 메모 56건</dd>
+    <dt>기술적 내용 불변(INV-01)</dt><dd>통과</dd>
+    <dt>출력 무결성(INV-03)</dt><dd>통과</dd>
+<dt>입력 파일 불변(INV-02)</dt><dd>통과</dd><dt>수정 후 재점검</dt><dd>지적 32건 · 자동수정 가능 잔여 0건</dd>    <dt>처리 시간</dt><dd>analyze 0.032초 · rules 0.083초 · fix 0.175초 · verify 0.095초</dd>
+    <dt>규칙팩</dt><dd>KS A 0001:2023 표준의 서식과 작성방법 (ksa0001-2023 1.0.0) · 적용 규칙 47종</dd>
+    <dt>LLM</dt><dd>none</dd>
+    <dt>도구</dt><dd>KS-Fix 1.0.0</dd>
+  </dl>
+</section>
+</main>
+<footer>KS-Fix 1.0.0 · 이 리포트는 외부 리소스 없이 열립니다 · 근거는 KS A 0001:2023의 절·부속서 번호(요약)</footer>
+<script type="application/json" id="ksfix-data">{"tool": {"name": "KS-Fix", "version": "1.0.0"}, "generated_at": "2026-11-11T00:00:00Z", "source": {"name": "sample_01_violations.docx", "sha256": "4e10fc247e00e78bfdadef5cd04b5854897c7167f6246efad10f79b9bc846d9e"}, "mode": "tracked", "rule_pack": {"pack": "ksa0001-2023", "version": "1.0.0", "title": "KS A 0001:2023 표준의 서식과 작성방법"}, "llm": {"profile": "none", "model": null}, "summary": {"findings": 57, "by_severity": {"error": 13, "warning": 40, "info": 4}, "autofixable": 25, "needs_review": 32, "rules_applied": 47, "rules_passed": 0, "pass_rate_before": 0.0, "pass_rate_after": 51.1, "applied": 25, "suggested": 3, "reported": 29, "comments": 56, "remaining_autofix": 0}, "categories": [{"name": "번호", "count": 8, "fixed": 0}, {"name": "구조·요소", "count": 7, "fixed": 0}, {"name": "표·그림", "count": 7, "fixed": 4}, {"name": "목차·제목", "count": 6, "fixed": 2}, {"name": "숫자·단위", "count": 6, "fixed": 6}, {"name": "정형문", "count": 4, "fixed": 4}, {"name": "인용표준·참고문헌", "count": 4, "fixed": 0}, {"name": "문장 말미", "count": 4, "fixed": 0}, {"name": "참조", "count": 3, "fixed": 2}, {"name": "문장부호·표기", "count": 3, "fixed": 2}, {"name": "용어와 정의", "count": 2, "fixed": 2}, {"name": "KSDT 서식", "count": 2, "fixed": 2}, {"name": "비고·보기", "count": 1, "fixed": 1}], "warnings": [], "document": {"paragraph_count": 166, "table_count": 3, "sections": 5, "hangul_ratio": 0.778, "std_number": "KS X 9999 : 2026", "title_ko": "디지털 체중계 - 제1부: 일반 요구사항", "title_en": null, "adoption": null, "comment_count": 0, "has_tracked_changes": false, "has_toc_field": false, "parts": {"cover": [0, 12], "front": [14, 44], "body": [47, 142], "biblio": [144, 146], "annex": [148, 155], "commentary": [156, 160], "back_cover": [162, 165]}, "ks_target": true, "low_confidence": 0}, "findings": [{"rule_id": "TOC-01", "severity": "warning", "message": "목차를 손으로 썼습니다. Word의 자동 목차(TOC 필드)로 만들어 제목과 쪽 번호가 갱신되게 합니다.", "clause_ref": "KS A 0001:2023 6.1.2", "block": 14, "start": null, "end": null, "snippet": "목    차", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "목차·제목", "priority": "P0", "title": "목차는 자동 생성(TOC 필드)", "suggestion": null, "status": "reported", "extra": {}, "role": "toc_title", "clause_no": null, "location": "목차", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "TOC-02", "severity": "warning", "message": "목차 항목 '5 시험'이(가) 본문 제목과 다릅니다. 목차를 갱신해야 합니다.", "clause_ref": "KS A 0001:2023 6.1.2", "block": 24, "start": null, "end": null, "snippet": "5\t시험\t3", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "목차·제목", "priority": "P0", "title": "목차 항목과 실제 제목 일치", "suggestion": null, "status": "reported", "extra": {"toc_title": "시험", "number": "5"}, "role": "toc_entry", "clause_no": null, "location": "목차", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "TOC-02", "severity": "warning", "message": "목차 항목 '6.2 표시 방법'에 해당하는 절이 본문에 없습니다.", "clause_ref": "KS A 0001:2023 6.1.2", "block": 30, "start": null, "end": null, "snippet": "6.2\t표시 방법\t4", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "목차·제목", "priority": "P0", "title": "목차 항목과 실제 제목 일치", "suggestion": null, "status": "reported", "extra": {"toc_title": "표시 방법", "number": "6.2"}, "role": "toc_entry", "clause_no": null, "location": "목차", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "TOC-02", "severity": "warning", "message": "목차 항목 '7 포장'에 해당하는 절이 본문에 없습니다.", "clause_ref": "KS A 0001:2023 6.1.2", "block": 31, "start": null, "end": null, "snippet": "7\t포장\t4", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "목차·제목", "priority": "P0", "title": "목차 항목과 실제 제목 일치", "suggestion": null, "status": "reported", "extra": {"toc_title": "포장", "number": "7"}, "role": "toc_entry", "clause_no": null, "location": "목차", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "STR-04", "severity": "error", "message": "개요에는 요구·권고·허용 표현('하여야 한다')을 쓰지 않습니다.", "clause_ref": "KS A 0001:2023 6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9", "block": 39, "start": 23, "end": 29, "snippet": "체중계는 KS X 9999-2에 따라 시험하여야 한다.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0", "title": "참고 요소(머리말·개요·적용범위·비고·보기·참고 등)의 요구·권고·허용 표현", "suggestion": null, "status": "reported", "extra": {"where": "개요"}, "role": "intro", "clause_no": null, "location": "개요", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "BLT-02", "severity": "error", "message": "머리말에 저작권 정형문(둘째 문장)이(가) 없습니다.", "clause_ref": "KS A 0001:2023 6.1.3, 부속서 E.1", "block": 41, "start": null, "end": null, "snippet": "머  리  말", "fix": {"kind": "insert_paragraph_after", "target": 43, "start": null, "end": null, "text": "이 표준의 내용 일부 또는 전부가 ISOㆍIEC 등에서 제정한 표준을 참고하여 제정 또는 개정된 경우, 해당 표준의 저작권을 보유하고 있는 ISOㆍIEC 등의 저작권 보호 규정 등에 따라 보호되어야 한다.", "style": "body", "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "정형문", "priority": "P0", "title": "머리말 저작권·특허 정형문", "suggestion": "이 표준의 내용 일부 또는 전부가 ISOㆍIEC 등에서 제정한 표준을 참고하여 제정 또는 개정된 경우, 해당 표준의 저작권을 보유하고 있는 ISOㆍIEC 등의 저작권 보호 규정 등에 따라 보호되어야 한다.", "status": "fixed", "extra": {}, "role": "foreword_title", "clause_no": null, "location": "머리말", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "STR-02", "severity": "warning", "message": "요소 순서가 맞지 않습니다: '머리말'은(는) '개요'보다 앞에 와야 합니다.", "clause_ref": "KS A 0001:2023 5.1.3 표 3, 5.2.7~5.2.9", "block": 41, "start": null, "end": null, "snippet": "머  리  말", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0b", "title": "요소 순서(목차→머리말→개요→제목→적용범위→…→해설)", "suggestion": null, "status": "reported", "extra": {"element": "머리말"}, "role": "foreword_title", "clause_no": null, "location": "머리말", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "TTL-04", "severity": "warning", "message": "표준번호는 'KS C IEC 60974-11:2021'처럼 씁니다('KS X 9999 : 2026' → 'KS X 9999:2026').", "clause_ref": "KS A 0001:2023 6.3.1", "block": 48, "start": 0, "end": 16, "snippet": "KS X 9999 : 2026", "fix": {"kind": "replace_text", "target": 48, "start": 0, "end": 16, "text": "KS X 9999:2026", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "목차·제목", "priority": "P0b", "title": "표준번호 꼴 'KS C IEC 60974-11:2021'", "suggestion": "KS X 9999:2026", "status": "fixed", "extra": {}, "role": "std_number", "clause_no": null, "location": "제목", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "STR-01", "severity": "error", "message": "필수 요소가 없습니다: 영문 제목.", "clause_ref": "KS A 0001:2023 5.1.3 표 3, 6.1.3, 6.3", "block": 49, "start": null, "end": null, "snippet": "디지털 체중계 - 제1부: 일반 요구사항", "fix": {"kind": "insert_paragraph_after", "target": 49, "start": null, "end": null, "text": "영문 제목", "style": null, "props": null, "auto": false}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0b", "title": "필수 요소(머리말·제목·적용범위·인용표준·용어와 정의)", "suggestion": "'영문 제목' 요소를 KS A 0001 5.1.3 표 3의 위치에 넣습니다.", "status": "suggested", "extra": {"missing": "영문 제목"}, "role": "title_ko", "clause_no": null, "location": "제목", "action": "suggest", "status_label": "제안", "reason": "판단이 필요한 수정이라 제안만"}, {"rule_id": "TTL-01", "severity": "warning", "message": "제목 요소 사이는 줄표(—) 앞뒤를 한 칸씩 띄워 구분합니다('-' → ' — ').", "clause_ref": "KS A 0001:2023 6.3.1", "block": 49, "start": 7, "end": 10, "snippet": "디지털 체중계 - 제1부: 일반 요구사항", "fix": {"kind": "replace_text", "target": 49, "start": 7, "end": 10, "text": " — ", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "목차·제목", "priority": "P0b", "title": "제목 요소 구분자 ' — '", "suggestion": " — ", "status": "fixed", "extra": {}, "role": "title_ko", "clause_no": null, "location": "제목", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "STR-04", "severity": "error", "message": "적용범위에는 요구·권고·허용 표현('하여야 한다')을 쓰지 않습니다.", "clause_ref": "KS A 0001:2023 6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9", "block": 54, "start": 13, "end": 19, "snippet": "체중계는 이 표준에 적합하여야 한다.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0", "title": "참고 요소(머리말·개요·적용범위·비고·보기·참고 등)의 요구·권고·허용 표현", "suggestion": null, "status": "reported", "extra": {"where": "적용범위"}, "role": "body", "clause_no": "1", "location": "1절", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "BLT-03", "severity": "error", "message": "인용표준 도입 정형문의 문구가 KS A 0001과 다릅니다(유사도 0.97).", "clause_ref": "KS A 0001:2023 6.4.1", "block": 56, "start": 0, "end": 112, "snippet": "다음의 인용표준은 전체 또는 부분적으로 이 표준의 적용을 위해 필요하다. 발행연도가 표기된 인용표준은 인용된 판만을 적용한다. 발행연도가 표기되지 않은 인용표준은 최신판(모든 추록을 포함)을 적용한다.", "fix": {"kind": "replace_text", "target": 56, "start": 0, "end": 112, "text": "다음의 인용표준은 전체 또는 부분적으로 이 표준의 적용을 위해 필수적이다. 발행연도가 표기된 인용표준은 인용된 판만을 적용한다. 발행연도가 표기되지 않은 인용표준은 최신판(모든 추록을 포함)을 적용한다.", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 0.97, "llm_model": null, "category": "정형문", "priority": "P0", "title": "인용표준 도입 정형문", "suggestion": "다음의 인용표준은 전체 또는 부분적으로 이 표준의 적용을 위해 필수적이다. 발행연도가 표기된 인용표준은 인용된 판만을 적용한다. 발행연도가 표기되지 않은 인용표준은 최신판(모든 추록을 포함)을 적용한다.", "status": "fixed", "extra": {}, "role": "normref_intro", "clause_no": "2", "location": "2절", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "NRF-01", "severity": "warning", "message": "인용표준은 국가표준 → 국제표준 → 가이드 → 단체표준 순서로 적습니다(국가표준(KS)가 국제표준(ISO·IEC) 뒤에 있음).", "clause_ref": "KS A 0001:2023 6.4.1 표 5", "block": 58, "start": null, "end": null, "snippet": "KS A 0006, 시험 장소의 표준 상태", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "인용표준·참고문헌", "priority": "P0b", "title": "인용표준 순서(국가→국제→가이드→단체)", "suggestion": null, "status": "reported", "extra": {}, "role": "normref_entry", "clause_no": "2", "location": "2절", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NRF-01", "severity": "warning", "message": "인용표준은 국가표준 → 국제표준 → 가이드 → 단체표준 순서로 적습니다(국가표준(KS)가 국제표준(ISO·IEC) 뒤에 있음).", "clause_ref": "KS A 0001:2023 6.4.1 표 5", "block": 59, "start": null, "end": null, "snippet": "KS C IEC 60068-2-6 : 2007, 환경 시험 — 제2-6부: 시험 — 시험 Fc: 진동(정현파)", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "인용표준·참고문헌", "priority": "P0b", "title": "인용표준 순서(국가→국제→가이드→단체)", "suggestion": null, "status": "reported", "extra": {}, "role": "normref_entry", "clause_no": "2", "location": "2절", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "REF-04", "severity": "warning", "message": "표준번호와 연도는 쌍점(:)을 붙여 씁니다('KS C IEC 60068-2-6 : 2007' → 'KS C IEC 60068-2-6:2007').", "clause_ref": "KS A 0001:2023 6.3.1, 6.4.4.5", "block": 59, "start": 0, "end": 25, "snippet": "KS C IEC 60068-2-6 : 2007, 환경 시험 — 제2-6부: 시험 — 시험…", "fix": {"kind": "replace_text", "target": 59, "start": 18, "end": 21, "text": ":", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "참조", "priority": "P0b", "title": "표준번호·연도 표기 'KS C IEC 60974-1:2017'", "suggestion": "KS C IEC 60068-2-6:2007", "status": "fixed", "extra": {}, "role": "normref_entry", "clause_no": "2", "location": "2절", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "NRF-03", "severity": "warning", "message": "법규·기술규정은 인용표준에 넣지 않습니다. 필요하면 참고문헌에 적습니다.", "clause_ref": "KS A 0001:2023 6.4.1", "block": 60, "start": 7, "end": 9, "snippet": "계량에 관한 법률", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "인용표준·참고문헌", "priority": "P0b", "title": "인용표준에 법규·기술규정 금지", "suggestion": null, "status": "reported", "extra": {}, "role": "normref_entry", "clause_no": "2", "location": "2절", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "BLT-04", "severity": "error", "message": "용어와 정의 도입 정형문이 없습니다.", "clause_ref": "KS A 0001:2023 6.4.2", "block": 61, "start": null, "end": null, "snippet": "용어와 정의", "fix": {"kind": "insert_paragraph_after", "target": 61, "start": null, "end": null, "text": "이 표준의 목적을 위하여 다음의 용어와 정의를 적용한다.", "style": "body", "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "정형문", "priority": "P0", "title": "용어와 정의 도입 정형문", "suggestion": "이 표준의 목적을 위하여 다음의 용어와 정의를 적용한다.", "status": "fixed", "extra": {}, "role": "heading", "clause_no": "3", "location": "3 제목", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "TRM-01", "severity": "warning", "message": "용어와 괄호 사이를 띄우지 않습니다(예: 최대 칭량(maximum capacity)).", "clause_ref": "KS A 0001:2023 6.4.2", "block": 64, "start": 6, "end": 8, "snippet": " 눈금 간격 (scale interval)", "fix": {"kind": "replace_text", "target": 64, "start": 6, "end": 7, "text": "", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "용어와 정의", "priority": "P0b", "title": "용어 '국문(영문)' 꼴", "suggestion": "눈금 간격(scale interval)", "status": "fixed", "extra": {}, "role": "term", "clause_no": "3", "location": "3절", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "TRM-02", "severity": "warning", "message": "정의문 끝에는 마침표를 찍지 않습니다.", "clause_ref": "KS A 0001:2023 6.4.2", "block": 65, "start": 16, "end": 17, "snippet": "인접한 두 표시값 사이의 차이.", "fix": {"kind": "replace_text", "target": 65, "start": 16, "end": 17, "text": "", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "용어와 정의", "priority": "P0b", "title": "정의문 끝 마침표 금지", "suggestion": "인접한 두 표시값 사이의 차이", "status": "fixed", "extra": {}, "role": "definition", "clause_no": "3", "location": "3절", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "STR-03", "severity": "warning", "message": "미결문단입니다: 4 제목과 첫 하위 항 사이에 번호 없는 문단이 있습니다.", "clause_ref": "KS A 0001:2023 5.2.4", "block": 71, "start": null, "end": null, "snippet": "이 절은 체중계의 일반 요구사항을 규정한다.", "fix": {"kind": "insert_paragraph_before", "target": 71, "start": null, "end": null, "text": "4.1 일반사항", "style": null, "props": null, "auto": false}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0", "title": "미결문단(절 제목과 첫 하위 항 사이의 번호 없는 문단)", "suggestion": "'4.1 일반사항' 항을 새로 만들어 이 문단을 옮깁니다.", "status": "suggested", "extra": {}, "role": "body", "clause_no": "4", "location": "4절", "action": "suggest", "status_label": "제안", "reason": "판단이 필요한 수정이라 제안만"}, {"rule_id": "QTY-06", "severity": "warning", "message": "곱셈 기호는 '×'를 씁니다('x' → '×').", "clause_ref": "KS A 0001:2023 J.3", "block": 73, "start": 17, "end": 18, "snippet": "미끄럼 방지 패드는 40 mm x 40 mm 이상이어야 한다.", "fix": {"kind": "replace_text", "target": 73, "start": 17, "end": 18, "text": "×", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "숫자·단위", "priority": "P0b", "title": "곱셈 기호 '×'", "suggestion": "×", "status": "fixed", "extra": {}, "role": "body", "clause_no": "4.1", "location": "4.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "QTY-03", "severity": "warning", "message": "세 자리마다 공백으로 묶습니다('2,000' → '2 000').", "clause_ref": "KS A 0001:2023 J.3", "block": 74, "start": 5, "end": 10, "snippet": "받침판은 2,000 N의 하중에 견뎌야 한다.", "fix": {"kind": "replace_text", "target": 74, "start": 5, "end": 10, "text": "2 000", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "숫자·단위", "priority": "P0b", "title": "세 자리 묶음은 공백(연도 제외)", "suggestion": "2 000", "status": "fixed", "extra": {}, "role": "body", "clause_no": "4.1", "location": "4.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "QTY-01", "severity": "warning", "message": "수치와 단위기호 사이를 한 칸 띄웁니다('150kg' → '150 kg').", "clause_ref": "KS A 0001:2023 부속서 L, J.3", "block": 75, "start": 12, "end": 17, "snippet": "체중계의 최대 칭량은 150kg 이상이어야 한다.", "fix": {"kind": "replace_text", "target": 75, "start": 15, "end": 15, "text": " ", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "숫자·단위", "priority": "P0", "title": "수치와 단위기호 사이 띄어쓰기", "suggestion": "150 kg", "status": "fixed", "extra": {}, "role": "body", "clause_no": "4.1", "location": "4.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "FIG-01", "severity": "warning", "message": "그림 호칭과 제목은 '그림 N — 제목'처럼 줄표(—) 앞뒤를 한 칸씩 띄워 씁니다.", "clause_ref": "KS A 0001:2023 J.1.4", "block": 77, "start": 0, "end": 7, "snippet": "그림1. 구조", "fix": {"kind": "replace_text", "target": 77, "start": 0, "end": 7, "text": "그림 1 — 구조", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0", "title": "그림 호칭·제목 '그림 N — 제목'", "suggestion": "그림 1 — 구조", "status": "fixed", "extra": {}, "role": "figure_caption", "clause_no": "4.1", "location": "4.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "FIG-02", "severity": "warning", "message": "그림 제목은 그림 아래에 둡니다(지금은 그림 위에 있음).", "clause_ref": "KS A 0001:2023 J.1.4", "block": 77, "start": null, "end": null, "snippet": "그림1. 구조", "fix": {"kind": "move_paragraph", "target": 77, "start": null, "end": null, "text": null, "style": null, "props": {"to": 78, "where": "after"}, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0", "title": "그림 제목은 그림 아래·가운데", "suggestion": "그림 아래로 옮김", "status": "fixed", "extra": {}, "role": "figure_caption", "clause_no": "4.1", "location": "4.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "FIG-03", "severity": "warning", "message": "그림 1을(를) 본문에서 참조하지 않습니다.", "clause_ref": "KS A 0001:2023 6.4.4.4", "block": 77, "start": null, "end": null, "snippet": "그림1. 구조", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0b", "title": "모든 그림은 본문에서 참조", "suggestion": null, "status": "reported", "extra": {}, "role": "figure_caption", "clause_no": "4.1", "location": "4.1", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "FMT-01", "severity": "info", "message": "그림 제목에는 KSDT 스타일 '[KSDT] 그림제목'을(를) 씁니다(지금: Normal).", "clause_ref": "KS A 0001:2023 부속서 A(KSDT의 적용)", "block": 77, "start": null, "end": null, "snippet": "그림1. 구조", "fix": {"kind": "set_style", "target": 77, "start": null, "end": null, "text": null, "style": "[KSDT] 그림제목", "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "KSDT 서식", "priority": "P0b", "title": "역할별 KSDT 스타일", "suggestion": "[KSDT] 그림제목", "status": "fixed", "extra": {}, "role": "figure_caption", "clause_no": "4.1", "location": "4.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "QTY-02", "severity": "warning", "message": "1보다 작은 소수는 앞에 0을 씁니다('.1' → '0.1').", "clause_ref": "KS A 0001:2023 J.3", "block": 81, "start": 7, "end": 9, "snippet": "눈금 간격은 .1 kg 이하이어야 한다.", "fix": {"kind": "replace_text", "target": 81, "start": 7, "end": 7, "text": "0", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "숫자·단위", "priority": "P0b", "title": "소수점은 마침표, 1 미만 소수 앞의 0", "suggestion": "0.1", "status": "fixed", "extra": {}, "role": "body", "clause_no": "4.2", "location": "4.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "PUN-01", "severity": "warning", "message": "반쌍점(;)은 쓰지 않습니다. 문장을 나누거나 쉼표를 씁니다.", "clause_ref": "KS A 0001:2023 부속서 H.3.2(문장 부호)", "block": 82, "start": 13, "end": 14, "snippet": "전원은 건전지를 사용한다; 어댑터는 별매품이다.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "문장부호·표기", "priority": "P0b", "title": "반쌍점(;) 사용", "suggestion": null, "status": "reported", "extra": {}, "role": "body", "clause_no": "4.2", "location": "4.2", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NTE-01", "severity": "warning", "message": "같은 곳에 비고가 하나뿐이면 번호를 붙이지 않습니다('비고 1' → '비고').", "clause_ref": "KS A 0001:2023 6.5.2", "block": 83, "start": 0, "end": 4, "snippet": "비고 1 표시부의 밝기는 주위 조도에 따라 자동으로…", "fix": {"kind": "replace_text", "target": 83, "start": 0, "end": 4, "text": "비고", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "비고·보기", "priority": "P0b", "title": "비고·보기 라벨과 번호", "suggestion": "비고", "status": "fixed", "extra": {}, "role": "note", "clause_no": "4.2", "location": "4.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "QTY-04", "severity": "warning", "message": "허용오차가 있는 값은 괄호로 묶고 단위를 뒤에 씁니다('23 ± 2 ℃' → '(23 ± 2) ℃').", "clause_ref": "KS A 0001:2023 부속서 L, J.4.4", "block": 87, "start": 29, "end": 37, "snippet": "…S A 0006에 따른 표준 상태에서 온도 23 ± 2 ℃, 상대 습도 (50 ± 10) %로 한다.", "fix": {"kind": "replace_text", "target": 87, "start": 29, "end": 37, "text": "(23 ± 2) ℃", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "숫자·단위", "priority": "P0", "title": "허용오차 표기 '(23 ± 2) ℃'", "suggestion": "(23 ± 2) ℃", "status": "fixed", "extra": {}, "role": "body", "clause_no": "5.1", "location": "5.1", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "STR-04", "severity": "error", "message": "비고에는 요구·권고·허용 표현('어야 한다')을 쓰지 않습니다.", "clause_ref": "KS A 0001:2023 6.1.3, 6.2, 6.3.2, 6.5.2, 6.5.3, 6.6.2, 5.2.9", "block": 89, "start": 17, "end": 22, "snippet": "비고 시험 장소에는 진동원이 없어야 한다.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0", "title": "참고 요소(머리말·개요·적용범위·비고·보기·참고 등)의 요구·권고·허용 표현", "suggestion": null, "status": "reported", "extra": {"where": "비고"}, "role": "note", "clause_no": "5.1", "location": "5.1", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "VRB-02", "severity": "info", "message": "'바꿀 수 있다'이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.", "clause_ref": "KS A 0001:2023 부속서 I 표 I.3, 표 I.4", "block": 90, "start": 18, "end": 25, "snippet": "5.2와 5.3의 시험은 순서를 바꿀 수 있다.", "fix": null, "source": "rule", "confidence": 0.5, "llm_model": null, "category": "문장 말미", "priority": "P0", "title": "허용은 '~해도 된다', 가능성은 '~할 수 있다'", "suggestion": null, "status": "reported", "extra": {"needs_judgement": true, "llm_status": null}, "role": "body", "clause_no": "5.1", "location": "5.1", "action": "report", "status_label": "판단 필요", "reason": null}, {"rule_id": "TBL-01", "severity": "warning", "message": "표 호칭과 제목은 '표 N — 제목'처럼 줄표(—) 앞뒤를 한 칸씩 띄워 씁니다.", "clause_ref": "KS A 0001:2023 J.2.3", "block": 102, "start": 0, "end": 18, "snippet": "<표 1> 시험 하중과 허용 오차", "fix": {"kind": "replace_text", "target": 102, "start": 0, "end": 18, "text": "표 1 — 시험 하중과 허용 오차", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0", "title": "표 호칭·제목 '표 N — 제목'", "suggestion": "표 1 — 시험 하중과 허용 오차", "status": "fixed", "extra": {}, "role": "table_caption", "clause_no": "5.2", "location": "5.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "TBL-02", "severity": "warning", "message": "표 제목은 표 위에 둡니다(지금은 표 아래에 있음).", "clause_ref": "KS A 0001:2023 J.2.3", "block": 102, "start": null, "end": null, "snippet": "<표 1> 시험 하중과 허용 오차", "fix": {"kind": "move_paragraph", "target": 102, "start": null, "end": null, "text": null, "style": null, "props": {"where": "before", "to_table": 0}, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0", "title": "표 제목은 표 위·가운데", "suggestion": "표 위로 옮김", "status": "fixed", "extra": {}, "role": "table_caption", "clause_no": "5.2", "location": "5.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "FMT-01", "severity": "info", "message": "표 제목에는 KSDT 스타일 '[KSDT] 표제목'을(를) 씁니다(지금: Normal).", "clause_ref": "KS A 0001:2023 부속서 A(KSDT의 적용)", "block": 102, "start": null, "end": null, "snippet": "<표 1> 시험 하중과 허용 오차", "fix": {"kind": "set_style", "target": 102, "start": null, "end": null, "text": null, "style": "[KSDT] 표제목", "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "KSDT 서식", "priority": "P0b", "title": "역할별 KSDT 스타일", "suggestion": "[KSDT] 표제목", "status": "fixed", "extra": {}, "role": "table_caption", "clause_no": "5.2", "location": "5.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "VRB-01", "severity": "warning", "message": "'반드시 ~하여야 한다'는 법령 등 문서 밖의 의무(외적 제약)에만 씁니다. 이 표준의 요구사항이면 '반드시'를 뺍니다.", "clause_ref": "KS A 0001:2023 부속서 I 표 I.1, 표 I.5", "block": 103, "start": 7, "end": 11, "snippet": "측정 전에는 반드시 영점 조정을 하여야 한다.", "fix": {"kind": "replace_text", "target": 103, "start": 7, "end": 11, "text": "", "style": null, "props": null, "auto": false}, "source": "rule", "confidence": 0.7, "llm_model": null, "category": "문장 말미", "priority": "P0", "title": "'반드시 ~하여야 한다'는 외적 제약에만", "suggestion": "측정 전에는 영점 조정을 하여야 한다.", "status": "suggested", "extra": {}, "role": "body", "clause_no": "5.2", "location": "5.2", "action": "suggest", "status_label": "제안", "reason": "판단이 필요한 수정이라 제안만"}, {"rule_id": "PUN-06", "severity": "warning", "message": "마침표가 두 번 찍혀 있습니다.", "clause_ref": "KS A 0001:2023 부속서 H.3.2.1(마침표)", "block": 104, "start": 45, "end": 47, "snippet": "… 차이는 표 1의 허용 오차 이내이어야 한다..", "fix": {"kind": "replace_text", "target": 104, "start": 45, "end": 47, "text": ".", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "문장부호·표기", "priority": "P0b", "title": "중복 마침표·문장부호 앞 공백·이중 공백", "suggestion": ".", "status": "fixed", "extra": {}, "role": "body", "clause_no": "5.2", "location": "5.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "REF-01", "severity": "error", "message": "참조한 표 '표 5'이(가) 이 문서에 없습니다.", "clause_ref": "KS A 0001:2023 6.4.4", "block": 105, "start": 11, "end": 14, "snippet": "자세한 시험 조건은 표 5 참조.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "참조", "priority": "P0", "title": "참조 대상 존재(절·표·그림·부속서·식)", "suggestion": null, "status": "reported", "extra": {"ref_kind": "table", "ref": "5"}, "role": "body", "clause_no": "5.2", "location": "5.2", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "VRB-04", "severity": "warning", "message": "금지는 '~하여서는 안 된다'로 씁니다('이동하면 안 된다').", "clause_ref": "KS A 0001:2023 부속서 I 표 I.1", "block": 106, "start": 11, "end": 20, "snippet": "측정 중에 체중계를 이동하면 안 된다.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "문장 말미", "priority": "P0b", "title": "금지 표현은 '~하여서는 안 된다'", "suggestion": "~하여서는 안 된다", "status": "reported", "extra": {}, "role": "body", "clause_no": "5.2", "location": "5.2", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-03", "severity": "warning", "message": "세분은 5단계까지입니다(5.3.1.1.1.1은 6단계).", "clause_ref": "KS A 0001:2023 5.2.3", "block": 111, "start": null, "end": null, "snippet": "볼트 고정", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0b", "title": "세분은 최대 5단계", "suggestion": null, "status": "reported", "extra": {}, "role": "heading", "clause_no": "5.3.1.1.1.1", "location": "5.3.1.1.1.1 제목", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-03", "severity": "warning", "message": "세분은 5단계까지입니다(5.3.1.1.1.2은 6단계).", "clause_ref": "KS A 0001:2023 5.2.3", "block": 113, "start": null, "end": null, "snippet": "클램프 고정", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0b", "title": "세분은 최대 5단계", "suggestion": null, "status": "reported", "extra": {}, "role": "heading", "clause_no": "5.3.1.1.1.2", "location": "5.3.1.1.1.2 제목", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "REF-02", "severity": "warning", "message": "절·항은 번호만으로 참조합니다('5.2항' → '5.2').", "clause_ref": "KS A 0001:2023 6.4.4.3", "block": 120, "start": 54, "end": 58, "snippet": "… Hz ∼ 55 Hz의 진동을 가한 후에도 5.2항의 요구사항을 만족하여야 한다.", "fix": {"kind": "replace_text", "target": 120, "start": 57, "end": 58, "text": "", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "참조", "priority": "P0b", "title": "'3.2.1항' 꼴 금지", "suggestion": "5.2", "status": "fixed", "extra": {}, "role": "body", "clause_no": "5.3.2", "location": "5.3.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "QTY-05", "severity": "warning", "message": "범위는 수치마다 단위를 붙입니다('5 ~ 40 ℃' → '5 ℃ ∼ 40 ℃'). '(5 ∼ 40) ℃'도 됩니다.", "clause_ref": "KS A 0001:2023 부속서 H.3.4, 부속서 L", "block": 121, "start": 7, "end": 15, "snippet": "시험 온도는 5 ~ 40 ℃로 한다.", "fix": {"kind": "replace_text", "target": 121, "start": 7, "end": 15, "text": "5 ℃ ∼ 40 ℃", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "숫자·단위", "priority": "P0", "title": "범위의 단위 '10 ℃ ∼ 40 ℃' 또는 '(10 ∼ 40) ℃'", "suggestion": "5 ℃ ∼ 40 ℃", "status": "fixed", "extra": {"covers": ["PUN-02"]}, "role": "body", "clause_no": "5.3.2", "location": "5.3.2", "action": "apply", "status_label": "자동수정", "reason": null}, {"rule_id": "PUN-02", "severity": "warning", "message": "연속부호는 '∼'(U+223C)를 씁니다('~' → '∼').", "clause_ref": "KS A 0001:2023 부속서 H.3.4(연속부호)", "block": 121, "start": 9, "end": 10, "snippet": "시험 온도는 5 ~ 40 ℃로 한다.", "fix": {"kind": "replace_text", "target": 121, "start": 9, "end": 10, "text": "∼", "style": null, "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "문장부호·표기", "priority": "P0", "title": "연속부호는 '∼'(U+223C)", "suggestion": "∼", "status": "fixed", "extra": {}, "role": "body", "clause_no": "5.3.2", "location": "5.3.2", "action": "apply", "status_label": "자동수정", "reason": "QTY-05 수정에 포함"}, {"rule_id": "NRF-02", "severity": "warning", "message": "본문에서 인용한 KS C IEC 61000-4-2이(가) 인용표준이나 참고문헌에 없습니다.", "clause_ref": "KS A 0001:2023 6.4.1, 부속서 A", "block": 122, "start": 11, "end": 29, "snippet": "정전기 방전 시험은 KS C IEC 61000-4-2에 따른다.", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "인용표준·참고문헌", "priority": "P0b", "title": "본문에서 인용한 표준은 인용표준·참고문헌에", "suggestion": null, "status": "reported", "extra": {}, "role": "body", "clause_no": "5.3.2", "location": "5.3.2", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-02", "severity": "error", "message": "같은 단계에 항이 하나뿐입니다(6 아래 6.1만 있음). 항은 둘 이상이어야 합니다.", "clause_ref": "KS A 0001:2023 5.2.3", "block": 125, "start": null, "end": null, "snippet": "표시 사항", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0", "title": "같은 단계의 항이 하나뿐", "suggestion": null, "status": "reported", "extra": {}, "role": "heading", "clause_no": "6.1", "location": "6.1 제목", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-07", "severity": "warning", "message": "표 번호는 1부터 이어서 붙입니다(표 2 자리에 표 3).", "clause_ref": "KS A 0001:2023 J.1.3, J.2.2, J.4.3", "block": 131, "start": null, "end": null, "snippet": "표 3 — 표시 항목의 글자 크기", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0b", "title": "그림·표·식 번호는 1부터 연속, 식 세분 금지", "suggestion": null, "status": "reported", "extra": {}, "role": "table_caption", "clause_no": "6.1", "location": "6.1", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "TBL-04", "severity": "warning", "message": "표 3을(를) 본문에서 참조하지 않습니다.", "clause_ref": "KS A 0001:2023 6.4.4.4", "block": 131, "start": null, "end": null, "snippet": "표 3 — 표시 항목의 글자 크기", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0b", "title": "모든 표는 본문에서 참조", "suggestion": null, "status": "reported", "extra": {}, "role": "table_caption", "clause_no": "6.1", "location": "6.1", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "TBL-03", "severity": "warning", "message": "표 안에 표를 넣지 않습니다.", "clause_ref": "KS A 0001:2023 J.2.1", "block": 138, "start": null, "end": null, "snippet": "하위 칸 1", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "표·그림", "priority": "P0b", "title": "표 안의 표", "suggestion": null, "status": "reported", "extra": {}, "role": "table_cell", "clause_no": "6.1", "location": "6.1 · 표 안", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-01", "severity": "error", "message": "절 번호가 이어지지 않습니다(6 다음 8).", "clause_ref": "KS A 0001:2023 5.2.2", "block": 141, "start": null, "end": null, "snippet": "포장", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0", "title": "절 번호는 적용범위 = 1부터 연속", "suggestion": null, "status": "reported", "extra": {}, "role": "heading", "clause_no": "8", "location": "8 제목", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "STR-06", "severity": "warning", "message": "참고문헌은 마지막 부속서 뒤에 둡니다(뒤에 부속서 2개가 있음).", "clause_ref": "KS A 0001:2023 5.2.7", "block": 144, "start": null, "end": null, "snippet": "참고문헌", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "구조·요소", "priority": "P0b", "title": "참고문헌은 마지막 부속서 뒤", "suggestion": null, "status": "reported", "extra": {}, "role": "biblio_title", "clause_no": null, "location": "참고문헌", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-06", "severity": "error", "message": "첫 부속서는 부속서 A입니다(부속서 B).", "clause_ref": "KS A 0001:2023 5.2.6", "block": 148, "start": null, "end": null, "snippet": "부속서 B\n(참고)\n\n사용상의 주의", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0b", "title": "부속서 번호·지위 표시·하위 번호", "suggestion": null, "status": "reported", "extra": {}, "role": "annex_heading", "clause_no": "B", "location": "부속서 B", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "NUM-02", "severity": "error", "message": "같은 단계에 항이 하나뿐입니다(부속서 B 아래 B.1만 있음). 항은 둘 이상이어야 합니다.", "clause_ref": "KS A 0001:2023 5.2.3", "block": 149, "start": null, "end": null, "snippet": "B.1 설치", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0", "title": "같은 단계의 항이 하나뿐", "suggestion": null, "status": "reported", "extra": {}, "role": "heading", "clause_no": "B.1", "location": "B.1 제목", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "VRB-02", "severity": "info", "message": "'표시될 수 있다'이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.", "clause_ref": "KS A 0001:2023 부속서 I 표 I.3, 표 I.4", "block": 150, "start": 30, "end": 38, "snippet": "…울어진 바닥에 두면 측정값이 실제보다 작게 표시될 수 있다.", "fix": null, "source": "rule", "confidence": 0.5, "llm_model": null, "category": "문장 말미", "priority": "P0", "title": "허용은 '~해도 된다', 가능성은 '~할 수 있다'", "suggestion": null, "status": "reported", "extra": {"needs_judgement": true, "llm_status": null}, "role": "body", "clause_no": "B.1", "location": "B.1", "action": "report", "status_label": "판단 필요", "reason": null}, {"rule_id": "NUM-06", "severity": "error", "message": "부속서는 A부터 순서대로 둡니다(부속서 B 다음에 부속서 A).", "clause_ref": "KS A 0001:2023 5.2.6", "block": 151, "start": null, "end": null, "snippet": "부속서 A\n(규정)\n\n교정 절차", "fix": null, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "번호", "priority": "P0b", "title": "부속서 번호·지위 표시·하위 번호", "suggestion": null, "status": "reported", "extra": {}, "role": "annex_heading", "clause_no": "A", "location": "부속서 A", "action": "report", "status_label": "검토 필요", "reason": null}, {"rule_id": "BLT-06", "severity": "warning", "message": "해설 도입문(이 해설은 … 표준의 일부는 아니다.)이 없습니다.", "clause_ref": "KS A 0001:2023 부속서 N", "block": 156, "start": null, "end": null, "snippet": "KS X 9999:2026\n해  설", "fix": {"kind": "insert_paragraph_after", "target": 156, "start": null, "end": null, "text": "이 해설은 이 표준과 관련된 사항을 설명하는 것으로 표준의 일부는 아니다.", "style": "body", "props": null, "auto": true}, "source": "rule", "confidence": 1.0, "llm_model": null, "category": "정형문", "priority": "P0b", "title": "해설 도입문", "suggestion": "이 해설은 이 표준과 관련된 사항을 설명하는 것으로 표준의 일부는 아니다.", "status": "fixed", "extra": {}, "role": "commentary_title", "clause_no": null, "location": "해설", "action": "apply", "status_label": "자동수정", "reason": null}], "checklist": {"items": [{"id": "A01", "group": "KSDT의 적용", "ref": "부속서 A", "summary": "표준 작성용 프로그램(KSDT)으로 작성", "rules": ["FMT-01"], "rules_run": ["FMT-01"], "type": "partial", "manual": "KSDT 프로그램 사용 여부", "status": "partial_fail", "label": "부분 자동(지적 있음) 2건", "findings": 2}, {"id": "A02", "group": "표지", "ref": "6.1.1", "summary": "표지 제목 = 본문 제목", "rules": ["TTL-05"], "rules_run": [], "type": "auto", "manual": null, "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A03", "group": "표지", "ref": "6.1.1", "summary": "본문 영문 제목 = 뒤표지 영문 제목", "rules": ["TTL-05"], "rules_run": [], "type": "auto", "manual": null, "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A04", "group": "표지", "ref": "6.1.1", "summary": "심의회·원안작성협력 정보의 최신성·정확성", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A05", "group": "표지", "ref": "6.1.1", "summary": "표준정보란 기재", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A06", "group": "표지", "ref": "6.1.1", "summary": "뒤표지 ICS 코드의 적정성", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A07", "group": "표지", "ref": "6.1.1, 그림 C.1~C.4", "summary": "표지 양식", "rules": ["TTL-04"], "rules_run": ["TTL-04"], "type": "partial", "manual": "표지 양식 전체", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A08", "group": "목차", "ref": "6.1.2", "summary": "목차가 본문 절·항·부속서와 일치", "rules": ["TOC-01", "TOC-02"], "rules_run": ["TOC-01", "TOC-02"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 4건", "findings": 4}, {"id": "A09", "group": "목차", "ref": "6.1.2", "summary": "용어와 정의의 세부 항은 목차에서 제외", "rules": ["TRM-05"], "rules_run": [], "type": "auto", "manual": null, "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A10", "group": "머리말", "ref": "6.1.3, E.1", "summary": "도입부 정형문(발행정보·저작권)", "rules": ["BLT-01", "BLT-02"], "rules_run": ["BLT-02"], "type": "auto", "manual": null, "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A11", "group": "머리말", "ref": "6.1.3, 부속서 M", "summary": "특허 대상 기술의 조사·승낙서 검토", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A12", "group": "머리말", "ref": "6.1.3, M.2.4", "summary": "특허 포함 표준의 기재 사항", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A13", "group": "개요", "ref": "6.2", "summary": "개요에 요구사항 없음", "rules": ["STR-04"], "rules_run": ["STR-04"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 3건", "findings": 3}, {"id": "A14", "group": "개요", "ref": "6.2, E.2", "summary": "개요 도입부 정형문(부합화 표준)", "rules": ["BLT-07"], "rules_run": [], "type": "auto", "manual": null, "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A15", "group": "제목", "ref": "6.3.1", "summary": "제목 구성(요소 3개 이하·구분자)", "rules": ["TTL-01", "TTL-02"], "rules_run": ["TTL-01"], "type": "partial", "manual": "제목의 명확성·간결성", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A16", "group": "제목", "ref": "6.3.1", "summary": "제목이 적용범위를 의도치 않게 제한하지 않음", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A17", "group": "제목", "ref": "6.3.1, 그림 C.3", "summary": "본문 제목 양식(국문·영문·표준번호)", "rules": ["TTL-03", "TTL-04"], "rules_run": ["TTL-04"], "type": "auto", "manual": null, "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A18", "group": "적용범위", "ref": "6.3.2", "summary": "주제와 적용 대상을 사실로 설명", "rules": ["BLT-05"], "rules_run": [], "type": "partial", "manual": "서술 내용의 타당성", "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A19", "group": "적용범위", "ref": "6.3.2", "summary": "적용범위에 요구사항 없음", "rules": ["STR-04"], "rules_run": ["STR-04"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 3건", "findings": 3}, {"id": "A20", "group": "적용범위", "ref": "6.3.2", "summary": "표현 양식·어법", "rules": ["BLT-05"], "rules_run": [], "type": "partial", "manual": "어법", "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A21", "group": "인용표준", "ref": "6.4.1", "summary": "본문에서 인용한 표준을 모두 제시", "rules": ["NRF-02"], "rules_run": ["NRF-02"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 1건", "findings": 1}, {"id": "A22", "group": "인용표준", "ref": "6.4.1", "summary": "발행연도 표기가 필요한 인용표준", "rules": ["REF-04"], "rules_run": ["REF-04"], "type": "partial", "manual": "연도 표기 필요성 판단", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A23", "group": "인용표준", "ref": "6.4.1", "summary": "국제·국가표준이 아닌 인용표준의 대체 가능성", "rules": ["NRF-03"], "rules_run": ["NRF-03"], "type": "partial", "manual": "대체 표준 존재 여부(저작권 검토)", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A24", "group": "인용표준", "ref": "6.4.1 표 5", "summary": "인용표준 목록 순서", "rules": ["NRF-01"], "rules_run": ["NRF-01"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 2건", "findings": 2}, {"id": "A25", "group": "인용표준", "ref": "6.4.1", "summary": "도입부 정형문", "rules": ["BLT-03"], "rules_run": ["BLT-03"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 1건", "findings": 1}, {"id": "A26", "group": "용어와 정의", "ref": "6.4.2", "summary": "정의한 용어를 본문에서 사용", "rules": ["TRM-03"], "rules_run": [], "type": "auto", "manual": null, "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A27", "group": "용어와 정의", "ref": "6.4.2", "summary": "정의의 작성 꼴", "rules": ["TRM-01", "TRM-02", "TRM-04"], "rules_run": ["TRM-01", "TRM-02"], "type": "partial", "manual": "정의 내용의 정확성", "status": "partial_fail", "label": "부분 자동(지적 있음) 2건", "findings": 2}, {"id": "A28", "group": "용어와 정의", "ref": "6.4.2", "summary": "용어 배치와 상호 인용", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A29", "group": "용어와 정의", "ref": "6.4.2", "summary": "도입부 정형문", "rules": ["BLT-04"], "rules_run": ["BLT-04"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 1건", "findings": 1}, {"id": "A30", "group": "용어와 정의", "ref": "6.4.2, 부속서 G", "summary": "정의할 개념 선정", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A31", "group": "요구사항", "ref": "6.4.3, 부속서 I", "summary": "문장 말미 형태(요구·권고·허용)", "rules": ["VRB-01", "VRB-02", "VRB-03", "VRB-04", "VRB-05"], "rules_run": ["VRB-01", "VRB-02", "VRB-04"], "type": "partial", "manual": "의미 판단(AI 보조)", "status": "partial_fail", "label": "부분 자동(지적 있음) 4건", "findings": 4}, {"id": "A32", "group": "요구사항", "ref": "6.4.3, 부속서 L", "summary": "양과 단위의 적용", "rules": ["QTY-01", "QTY-02", "QTY-03", "QTY-04", "QTY-05", "QTY-06", "QTY-07", "QTY-08"], "rules_run": ["QTY-01", "QTY-02", "QTY-03", "QTY-04", "QTY-05", "QTY-06"], "type": "auto", "manual": null, "status": "partial_fail", "label": "부분 자동(지적 있음) 6건", "findings": 6}, {"id": "A33", "group": "언어의 사용", "ref": "부속서 G, 부속서 B", "summary": "언어·전문용어 참고자료 검토", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A34", "group": "언어의 사용", "ref": "I.1", "summary": "본문의 정확성·간결성", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A35", "group": "언어의 사용", "ref": "I.2, 부속서 H", "summary": "구두법(문장부호) 일관성", "rules": ["PUN-01", "PUN-02", "PUN-03", "PUN-04", "PUN-05", "PUN-06"], "rules_run": ["PUN-01", "PUN-02", "PUN-06"], "type": "auto", "manual": null, "status": "partial_fail", "label": "부분 자동(지적 있음) 3건", "findings": 3}, {"id": "A36", "group": "그림 및 표", "ref": "부속서 J", "summary": "그림·표 제목의 꼴(간결성은 수동)", "rules": ["TBL-01", "FIG-01"], "rules_run": ["TBL-01", "FIG-01"], "type": "partial", "manual": "제목의 간결성", "status": "partial_fail", "label": "부분 자동(지적 있음) 2건", "findings": 2}, {"id": "A37", "group": "그림 및 표", "ref": "부속서 J", "summary": "그림·표 번호", "rules": ["NUM-07", "TBL-01", "FIG-01"], "rules_run": ["NUM-07", "TBL-01", "FIG-01"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 3건", "findings": 3}, {"id": "A38", "group": "그림 및 표", "ref": "부속서 J", "summary": "식별부호·비고·각주", "rules": ["TBL-07", "NTE-01"], "rules_run": ["NTE-01"], "type": "partial", "manual": "식별부호의 정확성", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A39", "group": "부속서", "ref": "6.6", "summary": "부속서 지위(규정/참고) 표시", "rules": ["NUM-06"], "rules_run": ["NUM-06"], "type": "partial", "manual": "지위의 타당성", "status": "partial_fail", "label": "부분 자동(지적 있음) 2건", "findings": 2}, {"id": "A40", "group": "부속서", "ref": "6.6", "summary": "참고 부속서에 요구사항 없음", "rules": ["STR-04"], "rules_run": ["STR-04"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 3건", "findings": 3}, {"id": "A41", "group": "비고 및 보기", "ref": "6.5.2", "summary": "비고·보기 표기 방식", "rules": ["NTE-01", "NTE-02"], "rules_run": ["NTE-01"], "type": "auto", "manual": null, "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A42", "group": "비고 및 보기", "ref": "6.5.2", "summary": "비고·보기 번호 체계", "rules": ["NTE-01"], "rules_run": ["NTE-01"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 1건", "findings": 1}, {"id": "A43", "group": "참조", "ref": "6.4.4", "summary": "본문 요소에 맞는 참조 꼴", "rules": ["REF-01", "REF-02", "REF-03"], "rules_run": ["REF-01", "REF-02"], "type": "auto", "manual": null, "status": "partial_fail", "label": "부분 자동(지적 있음) 2건", "findings": 2}, {"id": "A44", "group": "참조", "ref": "6.4.4", "summary": "그림·표 참조", "rules": ["REF-01", "TBL-04", "FIG-03"], "rules_run": ["REF-01", "TBL-04", "FIG-03"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 3건", "findings": 3}, {"id": "A45", "group": "참고문헌", "ref": "6.5.4", "summary": "참고문헌 항목의 정확성·완전성", "rules": ["NRF-05"], "rules_run": [], "type": "partial", "manual": "항목 내용의 정확성", "status": "not_run", "label": "수동 확인(규칙 미구현)", "findings": 0}, {"id": "A46", "group": "참고문헌", "ref": "6.5.4", "summary": "인용표준으로 옮길 문헌", "rules": ["NRF-02"], "rules_run": ["NRF-02"], "type": "partial", "manual": "인용 성격 판단", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A47", "group": "해설", "ref": "5.2.9", "summary": "제정·개정 취지와 경위", "rules": ["BLT-06"], "rules_run": ["BLT-06"], "type": "partial", "manual": "취지·경위의 명확성", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A48", "group": "해설", "ref": "5.2.9", "summary": "심의 중 문제 사항 설명", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}, {"id": "A49", "group": "표준의 구조", "ref": "5.1.1, 부속서 F", "summary": "주제 세분화의 논리성", "rules": ["NUM-02", "NUM-03"], "rules_run": ["NUM-02", "NUM-03"], "type": "partial", "manual": "세분화의 논리성", "status": "partial_fail", "label": "부분 자동(지적 있음) 4건", "findings": 4}, {"id": "A50", "group": "표준의 구조", "ref": "5.1.3", "summary": "요소 배열의 일관성", "rules": ["STR-01", "STR-02", "STR-06"], "rules_run": ["STR-01", "STR-02", "STR-06"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 3건", "findings": 3}, {"id": "A51", "group": "표준의 구조", "ref": "5.2.4", "summary": "미결문단 제거", "rules": ["STR-03"], "rules_run": ["STR-03"], "type": "auto", "manual": null, "status": "fail", "label": "자동 지적 1건", "findings": 1}, {"id": "A52", "group": "표준의 구조", "ref": "4.3.7.5", "summary": "국제표준 채택 수준과 번호 표시", "rules": ["TTL-04"], "rules_run": ["TTL-04"], "type": "partial", "manual": "채택 수준(IDT/MOD/NEQ) 확인", "status": "partial_fail", "label": "부분 자동(지적 있음) 1건", "findings": 1}, {"id": "A53", "group": "표준의 구조", "ref": "4.3.7.2", "summary": "기술적 변경이 아닌 사항의 반영", "rules": [], "rules_run": [], "type": "manual", "manual": null, "status": "manual", "label": "수동 확인", "findings": 0}], "summary": {"total": 53, "auto_pass": 0, "auto_fail": 13, "partial": 20, "manual": 20}}, "verification": {"invariants": {"ok": true}, "integrity": [], "input_unchanged": true}, "after": {"summary": {"findings": 32, "by_severity": {"error": 10, "warning": 20, "info": 2}, "autofixable": 0, "needs_review": 32, "rules_applied": 47, "rules_passed": 24, "pass_rate": 51.1, "rule_pack": "ksa0001-2023 1.0.0"}, "findings": 32}, "diagnostics": [], "timings": {"analyze": 0.032, "rules": 0.083, "fix": 0.175, "verify": 0.095}}</script>
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.tabs button');
+  tabs.forEach(function(b){b.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+    document.getElementById('tab-'+b.dataset.tab).classList.add('on');});});
+  var rows=[].slice.call(document.querySelectorAll('#findings tbody tr'));
+  function apply(){
+    var sev=[].slice.call(document.querySelectorAll('.f-sev:checked')).map(function(x){return x.value});
+    var cat=document.getElementById('f-cat').value, st=document.getElementById('f-status').value;
+    var q=document.getElementById('f-q').value.trim().toLowerCase(), n=0;
+    rows.forEach(function(r){
+      var ok=sev.indexOf(r.dataset.sev)>=0&&(!cat||r.dataset.cat===cat)&&(!st||r.dataset.status===st)&&(!q||r.textContent.toLowerCase().indexOf(q)>=0);
+      r.style.display=ok?'':'none'; if(ok)n++;});
+    document.getElementById('f-count').textContent=n+'건 표시';
+  }
+  document.querySelectorAll('.f-sev,#f-cat,#f-status').forEach(function(e){e.addEventListener('change',apply)});
+  document.getElementById('f-q').addEventListener('input',apply);
+  apply();
+})();
+</script>
+</body>
+</html>

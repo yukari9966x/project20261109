@@ -1,0 +1,1095 @@
+{
+ "tool": {
+  "name": "KS-Fix",
+  "version": "1.0.0"
+ },
+ "generated_at": "2026-11-11T00:00:00Z",
+ "source": {
+  "name": "sample_02_clean.docx",
+  "sha256": "6e6a5d0372f417ca2eba86e91215e75b9d220a4afc3d2a4f0aa19eb54e104239"
+ },
+ "mode": "check",
+ "rule_pack": {
+  "pack": "ksa0001-2023",
+  "version": "1.0.0",
+  "title": "KS A 0001:2023 표준의 서식과 작성방법"
+ },
+ "llm": {
+  "profile": "none",
+  "model": null
+ },
+ "summary": {
+  "findings": 3,
+  "by_severity": {
+   "error": 0,
+   "warning": 0,
+   "info": 3
+  },
+  "autofixable": 0,
+  "needs_review": 3,
+  "rules_applied": 47,
+  "rules_passed": 46,
+  "pass_rate_before": 97.9,
+  "pass_rate_after": null,
+  "applied": 0,
+  "suggested": 0,
+  "reported": 0,
+  "comments": 0,
+  "remaining_autofix": null
+ },
+ "categories": [
+  {
+   "name": "문장 말미",
+   "count": 3,
+   "fixed": 0
+  }
+ ],
+ "warnings": [],
+ "document": {
+  "paragraph_count": 151,
+  "table_count": 2,
+  "sections": 5,
+  "hangul_ratio": 0.75,
+  "std_number": "KS X 9999:2026",
+  "title_ko": "디지털 체중계 — 제1부: 일반 요구사항",
+  "title_en": "Digital body weight scales — Part 1: General requirements",
+  "adoption": null,
+  "comment_count": 0,
+  "has_tracked_changes": false,
+  "has_toc_field": true,
+  "parts": {
+   "cover": [
+    0,
+    12
+   ],
+   "front": [
+    14,
+    44
+   ],
+   "body": [
+    47,
+    115
+   ],
+   "annex": [
+    117,
+    134
+   ],
+   "biblio": [
+    136,
+    138
+   ],
+   "commentary": [
+    140,
+    145
+   ],
+   "back_cover": [
+    147,
+    150
+   ]
+  },
+  "ks_target": true,
+  "low_confidence": 0
+ },
+ "findings": [
+  {
+   "rule_id": "VRB-02",
+   "severity": "info",
+   "message": "'견딜 수 있다'이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.",
+   "clause_ref": "KS A 0001:2023 부속서 I 표 I.3, 표 I.4",
+   "block": 104,
+   "start": 30,
+   "end": 37,
+   "snippet": "…대 칭량의 1.5배 하중을 영구 변형 없이 견딜 수 있다.",
+   "fix": null,
+   "source": "rule",
+   "confidence": 0.5,
+   "llm_model": null,
+   "category": "문장 말미",
+   "priority": "P0",
+   "title": "허용은 '~해도 된다', 가능성은 '~할 수 있다'",
+   "suggestion": null,
+   "status": "open",
+   "extra": {
+    "needs_judgement": true,
+    "llm_status": null
+   },
+   "role": "body",
+   "clause_no": "5.3",
+   "location": "5.3",
+   "action": null,
+   "status_label": "판단 필요",
+   "reason": null
+  },
+  {
+   "rule_id": "VRB-02",
+   "severity": "info",
+   "message": "'표시될 수 있다'이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.",
+   "clause_ref": "KS A 0001:2023 부속서 I 표 I.3, 표 I.4",
+   "block": 132,
+   "start": 30,
+   "end": 38,
+   "snippet": "…울어진 바닥에 두면 측정값이 실제보다 작게 표시될 수 있다.",
+   "fix": null,
+   "source": "rule",
+   "confidence": 0.5,
+   "llm_model": null,
+   "category": "문장 말미",
+   "priority": "P0",
+   "title": "허용은 '~해도 된다', 가능성은 '~할 수 있다'",
+   "suggestion": null,
+   "status": "open",
+   "extra": {
+    "needs_judgement": true,
+    "llm_status": null
+   },
+   "role": "body",
+   "clause_no": "B.1",
+   "location": "B.1",
+   "action": null,
+   "status_label": "판단 필요",
+   "reason": null
+  },
+  {
+   "rule_id": "VRB-02",
+   "severity": "info",
+   "message": "'부식될 수 있다'이(가) 허용(…해도 된다)의 뜻인지 가능성·역량(…할 수 있다)의 뜻인지 확인이 필요합니다.",
+   "clause_ref": "KS A 0001:2023 부속서 I 표 I.3, 표 I.4",
+   "block": 134,
+   "start": 24,
+   "end": 32,
+   "snippet": "체중계를 습한 곳에 오래 두면 내부 부품이 부식될 수 있다.",
+   "fix": null,
+   "source": "rule",
+   "confidence": 0.5,
+   "llm_model": null,
+   "category": "문장 말미",
+   "priority": "P0",
+   "title": "허용은 '~해도 된다', 가능성은 '~할 수 있다'",
+   "suggestion": null,
+   "status": "open",
+   "extra": {
+    "needs_judgement": true,
+    "llm_status": null
+   },
+   "role": "body",
+   "clause_no": "B.2",
+   "location": "B.2",
+   "action": null,
+   "status_label": "판단 필요",
+   "reason": null
+  }
+ ],
+ "checklist": {
+  "items": [
+   {
+    "id": "A01",
+    "group": "KSDT의 적용",
+    "ref": "부속서 A",
+    "summary": "표준 작성용 프로그램(KSDT)으로 작성",
+    "rules": [
+     "FMT-01"
+    ],
+    "rules_run": [
+     "FMT-01"
+    ],
+    "type": "partial",
+    "manual": "KSDT 프로그램 사용 여부",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A02",
+    "group": "표지",
+    "ref": "6.1.1",
+    "summary": "표지 제목 = 본문 제목",
+    "rules": [
+     "TTL-05"
+    ],
+    "rules_run": [],
+    "type": "auto",
+    "manual": null,
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A03",
+    "group": "표지",
+    "ref": "6.1.1",
+    "summary": "본문 영문 제목 = 뒤표지 영문 제목",
+    "rules": [
+     "TTL-05"
+    ],
+    "rules_run": [],
+    "type": "auto",
+    "manual": null,
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A04",
+    "group": "표지",
+    "ref": "6.1.1",
+    "summary": "심의회·원안작성협력 정보의 최신성·정확성",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A05",
+    "group": "표지",
+    "ref": "6.1.1",
+    "summary": "표준정보란 기재",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A06",
+    "group": "표지",
+    "ref": "6.1.1",
+    "summary": "뒤표지 ICS 코드의 적정성",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A07",
+    "group": "표지",
+    "ref": "6.1.1, 그림 C.1~C.4",
+    "summary": "표지 양식",
+    "rules": [
+     "TTL-04"
+    ],
+    "rules_run": [
+     "TTL-04"
+    ],
+    "type": "partial",
+    "manual": "표지 양식 전체",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A08",
+    "group": "목차",
+    "ref": "6.1.2",
+    "summary": "목차가 본문 절·항·부속서와 일치",
+    "rules": [
+     "TOC-01",
+     "TOC-02"
+    ],
+    "rules_run": [
+     "TOC-01",
+     "TOC-02"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A09",
+    "group": "목차",
+    "ref": "6.1.2",
+    "summary": "용어와 정의의 세부 항은 목차에서 제외",
+    "rules": [
+     "TRM-05"
+    ],
+    "rules_run": [],
+    "type": "auto",
+    "manual": null,
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A10",
+    "group": "머리말",
+    "ref": "6.1.3, E.1",
+    "summary": "도입부 정형문(발행정보·저작권)",
+    "rules": [
+     "BLT-01",
+     "BLT-02"
+    ],
+    "rules_run": [
+     "BLT-02"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A11",
+    "group": "머리말",
+    "ref": "6.1.3, 부속서 M",
+    "summary": "특허 대상 기술의 조사·승낙서 검토",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A12",
+    "group": "머리말",
+    "ref": "6.1.3, M.2.4",
+    "summary": "특허 포함 표준의 기재 사항",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A13",
+    "group": "개요",
+    "ref": "6.2",
+    "summary": "개요에 요구사항 없음",
+    "rules": [
+     "STR-04"
+    ],
+    "rules_run": [
+     "STR-04"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A14",
+    "group": "개요",
+    "ref": "6.2, E.2",
+    "summary": "개요 도입부 정형문(부합화 표준)",
+    "rules": [
+     "BLT-07"
+    ],
+    "rules_run": [],
+    "type": "auto",
+    "manual": null,
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A15",
+    "group": "제목",
+    "ref": "6.3.1",
+    "summary": "제목 구성(요소 3개 이하·구분자)",
+    "rules": [
+     "TTL-01",
+     "TTL-02"
+    ],
+    "rules_run": [
+     "TTL-01"
+    ],
+    "type": "partial",
+    "manual": "제목의 명확성·간결성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A16",
+    "group": "제목",
+    "ref": "6.3.1",
+    "summary": "제목이 적용범위를 의도치 않게 제한하지 않음",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A17",
+    "group": "제목",
+    "ref": "6.3.1, 그림 C.3",
+    "summary": "본문 제목 양식(국문·영문·표준번호)",
+    "rules": [
+     "TTL-03",
+     "TTL-04"
+    ],
+    "rules_run": [
+     "TTL-04"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A18",
+    "group": "적용범위",
+    "ref": "6.3.2",
+    "summary": "주제와 적용 대상을 사실로 설명",
+    "rules": [
+     "BLT-05"
+    ],
+    "rules_run": [],
+    "type": "partial",
+    "manual": "서술 내용의 타당성",
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A19",
+    "group": "적용범위",
+    "ref": "6.3.2",
+    "summary": "적용범위에 요구사항 없음",
+    "rules": [
+     "STR-04"
+    ],
+    "rules_run": [
+     "STR-04"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A20",
+    "group": "적용범위",
+    "ref": "6.3.2",
+    "summary": "표현 양식·어법",
+    "rules": [
+     "BLT-05"
+    ],
+    "rules_run": [],
+    "type": "partial",
+    "manual": "어법",
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A21",
+    "group": "인용표준",
+    "ref": "6.4.1",
+    "summary": "본문에서 인용한 표준을 모두 제시",
+    "rules": [
+     "NRF-02"
+    ],
+    "rules_run": [
+     "NRF-02"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A22",
+    "group": "인용표준",
+    "ref": "6.4.1",
+    "summary": "발행연도 표기가 필요한 인용표준",
+    "rules": [
+     "REF-04"
+    ],
+    "rules_run": [
+     "REF-04"
+    ],
+    "type": "partial",
+    "manual": "연도 표기 필요성 판단",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A23",
+    "group": "인용표준",
+    "ref": "6.4.1",
+    "summary": "국제·국가표준이 아닌 인용표준의 대체 가능성",
+    "rules": [
+     "NRF-03"
+    ],
+    "rules_run": [
+     "NRF-03"
+    ],
+    "type": "partial",
+    "manual": "대체 표준 존재 여부(저작권 검토)",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A24",
+    "group": "인용표준",
+    "ref": "6.4.1 표 5",
+    "summary": "인용표준 목록 순서",
+    "rules": [
+     "NRF-01"
+    ],
+    "rules_run": [
+     "NRF-01"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A25",
+    "group": "인용표준",
+    "ref": "6.4.1",
+    "summary": "도입부 정형문",
+    "rules": [
+     "BLT-03"
+    ],
+    "rules_run": [
+     "BLT-03"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A26",
+    "group": "용어와 정의",
+    "ref": "6.4.2",
+    "summary": "정의한 용어를 본문에서 사용",
+    "rules": [
+     "TRM-03"
+    ],
+    "rules_run": [],
+    "type": "auto",
+    "manual": null,
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A27",
+    "group": "용어와 정의",
+    "ref": "6.4.2",
+    "summary": "정의의 작성 꼴",
+    "rules": [
+     "TRM-01",
+     "TRM-02",
+     "TRM-04"
+    ],
+    "rules_run": [
+     "TRM-01",
+     "TRM-02"
+    ],
+    "type": "partial",
+    "manual": "정의 내용의 정확성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A28",
+    "group": "용어와 정의",
+    "ref": "6.4.2",
+    "summary": "용어 배치와 상호 인용",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A29",
+    "group": "용어와 정의",
+    "ref": "6.4.2",
+    "summary": "도입부 정형문",
+    "rules": [
+     "BLT-04"
+    ],
+    "rules_run": [
+     "BLT-04"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A30",
+    "group": "용어와 정의",
+    "ref": "6.4.2, 부속서 G",
+    "summary": "정의할 개념 선정",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A31",
+    "group": "요구사항",
+    "ref": "6.4.3, 부속서 I",
+    "summary": "문장 말미 형태(요구·권고·허용)",
+    "rules": [
+     "VRB-01",
+     "VRB-02",
+     "VRB-03",
+     "VRB-04",
+     "VRB-05"
+    ],
+    "rules_run": [
+     "VRB-01",
+     "VRB-02",
+     "VRB-04"
+    ],
+    "type": "partial",
+    "manual": "의미 판단(AI 보조)",
+    "status": "partial_fail",
+    "label": "부분 자동(지적 있음) 3건",
+    "findings": 3
+   },
+   {
+    "id": "A32",
+    "group": "요구사항",
+    "ref": "6.4.3, 부속서 L",
+    "summary": "양과 단위의 적용",
+    "rules": [
+     "QTY-01",
+     "QTY-02",
+     "QTY-03",
+     "QTY-04",
+     "QTY-05",
+     "QTY-06",
+     "QTY-07",
+     "QTY-08"
+    ],
+    "rules_run": [
+     "QTY-01",
+     "QTY-02",
+     "QTY-03",
+     "QTY-04",
+     "QTY-05",
+     "QTY-06"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A33",
+    "group": "언어의 사용",
+    "ref": "부속서 G, 부속서 B",
+    "summary": "언어·전문용어 참고자료 검토",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A34",
+    "group": "언어의 사용",
+    "ref": "I.1",
+    "summary": "본문의 정확성·간결성",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A35",
+    "group": "언어의 사용",
+    "ref": "I.2, 부속서 H",
+    "summary": "구두법(문장부호) 일관성",
+    "rules": [
+     "PUN-01",
+     "PUN-02",
+     "PUN-03",
+     "PUN-04",
+     "PUN-05",
+     "PUN-06"
+    ],
+    "rules_run": [
+     "PUN-01",
+     "PUN-02",
+     "PUN-06"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A36",
+    "group": "그림 및 표",
+    "ref": "부속서 J",
+    "summary": "그림·표 제목의 꼴(간결성은 수동)",
+    "rules": [
+     "TBL-01",
+     "FIG-01"
+    ],
+    "rules_run": [
+     "TBL-01",
+     "FIG-01"
+    ],
+    "type": "partial",
+    "manual": "제목의 간결성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A37",
+    "group": "그림 및 표",
+    "ref": "부속서 J",
+    "summary": "그림·표 번호",
+    "rules": [
+     "NUM-07",
+     "TBL-01",
+     "FIG-01"
+    ],
+    "rules_run": [
+     "NUM-07",
+     "TBL-01",
+     "FIG-01"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A38",
+    "group": "그림 및 표",
+    "ref": "부속서 J",
+    "summary": "식별부호·비고·각주",
+    "rules": [
+     "TBL-07",
+     "NTE-01"
+    ],
+    "rules_run": [
+     "NTE-01"
+    ],
+    "type": "partial",
+    "manual": "식별부호의 정확성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A39",
+    "group": "부속서",
+    "ref": "6.6",
+    "summary": "부속서 지위(규정/참고) 표시",
+    "rules": [
+     "NUM-06"
+    ],
+    "rules_run": [
+     "NUM-06"
+    ],
+    "type": "partial",
+    "manual": "지위의 타당성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A40",
+    "group": "부속서",
+    "ref": "6.6",
+    "summary": "참고 부속서에 요구사항 없음",
+    "rules": [
+     "STR-04"
+    ],
+    "rules_run": [
+     "STR-04"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A41",
+    "group": "비고 및 보기",
+    "ref": "6.5.2",
+    "summary": "비고·보기 표기 방식",
+    "rules": [
+     "NTE-01",
+     "NTE-02"
+    ],
+    "rules_run": [
+     "NTE-01"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A42",
+    "group": "비고 및 보기",
+    "ref": "6.5.2",
+    "summary": "비고·보기 번호 체계",
+    "rules": [
+     "NTE-01"
+    ],
+    "rules_run": [
+     "NTE-01"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A43",
+    "group": "참조",
+    "ref": "6.4.4",
+    "summary": "본문 요소에 맞는 참조 꼴",
+    "rules": [
+     "REF-01",
+     "REF-02",
+     "REF-03"
+    ],
+    "rules_run": [
+     "REF-01",
+     "REF-02"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A44",
+    "group": "참조",
+    "ref": "6.4.4",
+    "summary": "그림·표 참조",
+    "rules": [
+     "REF-01",
+     "TBL-04",
+     "FIG-03"
+    ],
+    "rules_run": [
+     "REF-01",
+     "TBL-04",
+     "FIG-03"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A45",
+    "group": "참고문헌",
+    "ref": "6.5.4",
+    "summary": "참고문헌 항목의 정확성·완전성",
+    "rules": [
+     "NRF-05"
+    ],
+    "rules_run": [],
+    "type": "partial",
+    "manual": "항목 내용의 정확성",
+    "status": "not_run",
+    "label": "수동 확인(규칙 미구현)",
+    "findings": 0
+   },
+   {
+    "id": "A46",
+    "group": "참고문헌",
+    "ref": "6.5.4",
+    "summary": "인용표준으로 옮길 문헌",
+    "rules": [
+     "NRF-02"
+    ],
+    "rules_run": [
+     "NRF-02"
+    ],
+    "type": "partial",
+    "manual": "인용 성격 판단",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A47",
+    "group": "해설",
+    "ref": "5.2.9",
+    "summary": "제정·개정 취지와 경위",
+    "rules": [
+     "BLT-06"
+    ],
+    "rules_run": [
+     "BLT-06"
+    ],
+    "type": "partial",
+    "manual": "취지·경위의 명확성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A48",
+    "group": "해설",
+    "ref": "5.2.9",
+    "summary": "심의 중 문제 사항 설명",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   },
+   {
+    "id": "A49",
+    "group": "표준의 구조",
+    "ref": "5.1.1, 부속서 F",
+    "summary": "주제 세분화의 논리성",
+    "rules": [
+     "NUM-02",
+     "NUM-03"
+    ],
+    "rules_run": [
+     "NUM-02",
+     "NUM-03"
+    ],
+    "type": "partial",
+    "manual": "세분화의 논리성",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A50",
+    "group": "표준의 구조",
+    "ref": "5.1.3",
+    "summary": "요소 배열의 일관성",
+    "rules": [
+     "STR-01",
+     "STR-02",
+     "STR-06"
+    ],
+    "rules_run": [
+     "STR-01",
+     "STR-02",
+     "STR-06"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A51",
+    "group": "표준의 구조",
+    "ref": "5.2.4",
+    "summary": "미결문단 제거",
+    "rules": [
+     "STR-03"
+    ],
+    "rules_run": [
+     "STR-03"
+    ],
+    "type": "auto",
+    "manual": null,
+    "status": "pass",
+    "label": "자동 통과",
+    "findings": 0
+   },
+   {
+    "id": "A52",
+    "group": "표준의 구조",
+    "ref": "4.3.7.5",
+    "summary": "국제표준 채택 수준과 번호 표시",
+    "rules": [
+     "TTL-04"
+    ],
+    "rules_run": [
+     "TTL-04"
+    ],
+    "type": "partial",
+    "manual": "채택 수준(IDT/MOD/NEQ) 확인",
+    "status": "partial_pass",
+    "label": "부분 자동(지적 없음)",
+    "findings": 0
+   },
+   {
+    "id": "A53",
+    "group": "표준의 구조",
+    "ref": "4.3.7.2",
+    "summary": "기술적 변경이 아닌 사항의 반영",
+    "rules": [],
+    "rules_run": [],
+    "type": "manual",
+    "manual": null,
+    "status": "manual",
+    "label": "수동 확인",
+    "findings": 0
+   }
+  ],
+  "summary": {
+   "total": 53,
+   "auto_pass": 13,
+   "auto_fail": 0,
+   "partial": 20,
+   "manual": 20
+  }
+ },
+ "verification": {
+  "invariants": null,
+  "integrity": null,
+  "input_unchanged": null
+ },
+ "after": null,
+ "diagnostics": [],
+ "timings": {
+  "analyze": 0.027,
+  "rules": 0.024
+ }
+}
