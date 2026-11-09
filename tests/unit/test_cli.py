@@ -34,7 +34,7 @@ def test_parser_defaults():
 
 
 def test_module_entrypoint():
-    proc = subprocess.run(
+    proc = subprocess.run(  # nosemgrep  (고정 인자로 현재 파이썬의 ksfix 실행)
         [sys.executable, "-m", "ksfix", "--version"], capture_output=True, text=True, check=True
     )
     assert proc.stdout.strip() == f"ksfix {__version__}"

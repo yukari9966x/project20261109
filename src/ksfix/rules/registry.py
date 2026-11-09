@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import importlib
 import importlib.util
 import time
 import traceback
@@ -65,7 +64,11 @@ def load_catalog(pack: str = DEFAULT_PACK) -> Catalog:
 
 
 def ensure_loaded(pack: str = DEFAULT_PACK) -> dict[str, Callable[..., Any]]:
-    importlib.import_module(f"ksfix.rules.packs.{pack}")
+    """규칙팩 모듈을 불러와 @rule 등록을 마친다. 규칙팩은 이름 문자열로 동적 import하지 않고 명시한다."""
+    if pack != DEFAULT_PACK:
+        raise ValueError(f"알 수 없는 규칙팩입니다: {pack}")
+    from ksfix.rules.packs import ksa0001_2023  # noqa: F401  (import 시 규칙이 등록됨)
+
     return _REGISTRY
 
 

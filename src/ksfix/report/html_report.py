@@ -38,7 +38,8 @@ CL_PILL = {
 
 @cache
 def _env() -> Environment:
-    return Environment(
+    # 검토함: 템플릿(report.html.j2)은 자동 이스케이프가 켜져 있다(select_autoescape: html·j2)
+    return Environment(  # nosemgrep
         loader=FileSystemLoader(str(pkg_path("report", "templates"))),
         autoescape=select_autoescape(["html", "j2"]),
         trim_blocks=True,

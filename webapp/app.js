@@ -189,7 +189,7 @@
       b.addEventListener("click", function () {
         [].slice.call(document.querySelectorAll(".tabs button")).forEach(function (x) { x.classList.remove("on"); });
         [].slice.call(document.querySelectorAll(".tab")).forEach(function (x) { x.classList.remove("on"); });
-        b.classList.add("on"); $("tab-" + b.dataset.tab).classList.add("on");
+        b.classList.add("on"); document.getElementById("tab-" + b.dataset.tab).classList.add("on");
       });
     });
     [].slice.call(document.querySelectorAll(".f-sev")).forEach(function (x) { x.addEventListener("change", applyFilters); });

@@ -40,8 +40,11 @@ def build(out: Path) -> Path:
     wheels = out / "wheels"
     wheels.mkdir()
     pip = [sys.executable, "-m", "pip"]
-    subprocess.run([*pip, "wheel", "--no-deps", "-q", "-w", str(wheels), str(ROOT)], check=True)
-    subprocess.run(
+    # 검토함: 현재 파이썬의 pip를 고정 인자로 실행(셸 미사용, 외부 입력 없음)
+    subprocess.run(  # nosemgrep
+        [*pip, "wheel", "--no-deps", "-q", "-w", str(wheels), str(ROOT)], check=True
+    )
+    subprocess.run(  # nosemgrep
         [
             *pip,
             "download",

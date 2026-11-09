@@ -93,9 +93,12 @@ def hygiene() -> bool:
 
 def run(step: list[str], quiet: bool = False) -> bool:
     print("$", " ".join(step), flush=True)
+    # 검토함: step은 이 스크립트 안에 고정된 명령 목록(셸 미사용, 외부 입력 없음)
     if not quiet:
-        return subprocess.run(step, cwd=ROOT).returncode == 0
-    proc = subprocess.run(step, cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
+        return subprocess.run(step, cwd=ROOT).returncode == 0  # nosemgrep
+    proc = subprocess.run(  # nosemgrep
+        step, cwd=ROOT, capture_output=True, text=True, encoding="utf-8"
+    )
     tail = (proc.stdout + proc.stderr).strip().splitlines()[-3:]
     for line in tail:
         print("  " + line[:200])

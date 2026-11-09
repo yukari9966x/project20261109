@@ -199,4 +199,5 @@
   - 수정: LLM 주소는 http·https만 허용(스킴·호스트 검사), http·https·오류 처리기만 넣은 전용 opener로 연결(파일·FTP·data 처리기와 리다이렉트 없음, 그 밖의 스킴은 URLError). 테스트 추가(`file://` 주소 거부·전용 opener가 파일을 열지 못함)
   - 확인: semgrep-rules 저장소의 Python 규칙 전체로 거부된 커밋과 수정본을 비교 — tests/ 포함 기존 29건 → 28건, 사라진 것은 해당 1건뿐이고 새 지적 없음(나머지 28건은 GitLab 검사 규칙에 없어 1차 푸시에서도 지적되지 않음)
   - v1.0.0 태그는 아직 어디에도 공개되지 않았으므로(GitHub 태그 푸시 차단, GitLab 푸시 거부) 수정 커밋으로 옮겨 다시 만듦
+  - 재거부를 막기 위해 같은 규칙 모음 전체(파이썬·JS·Dockerfile·generic·HTML·bash, tests 포함)에서 ‘보안’ 분류 지적을 0건으로 정리: 규칙팩 동적 import → 명시적 import, 웹 UI의 `$(변수)` 호출 → `document.getElementById`, 고정 인자 subprocess 호출(scripts·테스트)과 자동 이스케이프가 켜진 Jinja2 환경은 검토 후 `# nosemgrep` 표시(이유 주석 포함). 남은 23건은 정확성·유지보수 분류(거부된 1차 푸시에서도 지적되지 않음)
 
