@@ -217,14 +217,15 @@ def cmd_eval(args: argparse.Namespace) -> int:
         return 2
     names = [p.strip() for p in args.profiles.split(",") if p.strip()]
     try:
-        results = run_eval(names, gold, args.out)
+        results = run_eval(names, gold, args.out, use_cache=args.cache)
     except (KeyError, ValueError) as exc:
         print(f"오류: {exc}", file=sys.stderr)
         return 2
     for r in results:
         comp = "-" if r["compliance_accuracy"] is None else f"{100 * r['compliance_accuracy']:.0f}%"
         print(
-            f"{r['profile']:16} {r['model']:22} 정확도 {100 * r['accuracy']:.0f}% · 적합성 {comp} · "
+            f"{r['profile']:16} {r['model']:22} 유형 정확도 {100 * r['accuracy']:.0f}% · "
+            f"허용 판별 {100 * r['permission_accuracy']:.0f}% · 적합성 {comp} · "
             f"판단보류 {r['held']} · 문장당 {r['sec_per_sentence']}초"
         )
     print(f"평가표: {Path(args.out) / 'modal_verbs_eval.md'}")
@@ -340,6 +341,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--gold", default=None, help="골드셋 JSONL(기본: tests/llm_gold/modal_verbs.jsonl)"
     )
     p.add_argument("--out", default="docs/eval", help="평가표 출력 디렉터리(기본: docs/eval)")
+    p.add_argument("--cache", action="store_true", help="응답 캐시 사용(응답 시간은 정확하지 않음)")
     p.set_defaults(func=cmd_eval)
 
     p = sub.add_parser("serve", help="로컬 웹 UI")
@@ -367,8 +369,30 @@ def _safe_streams() -> None:
             pass
 
 
+def load_dotenv(path: str = ".env") -> list[str]:
+    """현재 디렉터리의 .env(KEY=VALUE)를 환경변수로 읽는다. 이미 지정된 값은 덮어쓰지 않는다."""
+    from pathlib import Path
+
+    p = Path(path)
+    if not p.is_file():
+        return []
+    loaded = []
+    for line in p.read_text(encoding="utf-8-sig").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip().removeprefix("export ").strip()
+        value = value.strip().strip('"').strip("'")
+        if key.isidentifier() and value and key not in os.environ:
+            os.environ[key] = value
+            loaded.append(key)
+    return loaded
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     _safe_streams()
+    load_dotenv()
     parser = build_parser()
     args = parser.parse_args(argv)
     if not getattr(args, "command", None):

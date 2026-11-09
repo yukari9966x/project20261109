@@ -13,7 +13,7 @@ from functools import cache
 
 from ksfix._paths import read_pkg_text
 from ksfix.fix.invariants import text_tokens
-from ksfix.llm.base import LLMError
+from ksfix.llm.base import LLMConnectionError, LLMError
 
 PROMPT_VERSION = (
     "modal_verbs.v2"  # v1 = 계획서 부록 F 원본(예시가 단건 출력이라 일부 모델이 첫 문장만 답함)
@@ -145,18 +145,28 @@ def judge(llm, items: list[dict], batch_size: int = 8) -> dict[str, Judgment]:
     system, tmpl = load_prompt()
     out: dict[str, Judgment] = {}
     model = getattr(llm, "model", "") or getattr(llm, "name", "")
+    down: str | None = None  # 서버에 닿지 못하면 남은 문장은 묻지 않는다
     for i in range(0, len(items), batch_size):
         batch = items[i : i + batch_size]
-        try:
-            by_id = _ask(llm, system, tmpl, batch)
-        except LLMError:
-            by_id = {}
+        by_id: dict[str, dict] = {}
         errors: dict[str, str] = {}
+        if down is None:
+            try:
+                by_id = _ask(llm, system, tmpl, batch)
+            except LLMConnectionError as exc:
+                down = f"LLM 오류: {exc}"
+            except LLMError:
+                pass
         for it in batch:
             if str(it["id"]) in by_id:
                 continue
+            if down is not None:
+                errors[str(it["id"])] = down
+                continue
             try:
                 by_id.update(_ask(llm, system, tmpl, [it]))
+            except LLMConnectionError as exc:
+                down = errors[str(it["id"])] = f"LLM 오류: {exc}"
             except LLMError as exc:
                 errors[str(it["id"])] = f"LLM 오류: {exc}"
         for it in batch:
@@ -167,11 +177,14 @@ def judge(llm, items: list[dict], batch_size: int = 8) -> dict[str, Judgment]:
                     it["id"], it["text"], "판단보류", None, None, "", 0.0, model, why
                 )
                 continue
-            cat = x.get("category") if x.get("category") in CATEGORIES else "판단보류"
-            sugg = x.get("suggestion") or None
-            ok, why = guard(it["text"], sugg) if sugg else (False, None)
+            cat = normalize_category(x.get("category"))
             compliant = x.get("compliant") if isinstance(x.get("compliant"), bool) else None
-            j = Judgment(
+            sugg = x.get("suggestion") or None
+            if compliant is True or (sugg is not None and sugg.strip() == it["text"].strip()):
+                sugg = None  # 적합하다고 했거나 원문과 같은 '제안'은 제안이 아니다
+            ok, why = guard(it["text"], sugg) if sugg else (False, None)
+            # 가드레일에 걸린 제안은 버리고(판단보류로 기록) 유형 판정은 그대로 둔다
+            out[it["id"]] = Judgment(
                 id=it["id"],
                 text=it["text"],
                 category=cat,
@@ -182,7 +195,16 @@ def judge(llm, items: list[dict], batch_size: int = 8) -> dict[str, Judgment]:
                 model=model,
                 rejected=why,
             )
-            if sugg and not ok:
-                j.category = "판단보류"
-            out[it["id"]] = j
     return out
+
+
+def normalize_category(value: object) -> str:
+    """'요구 사항'·'외적제약'·'가능성·역량'처럼 표기만 다른 유형 이름을 맞춘다."""
+    if not isinstance(value, str):
+        return "판단보류"
+    v = re.sub(r"[\s·ㆍ/]", "", value)
+    table = {re.sub(r"[\s·ㆍ/]", "", c): c for c in CATEGORIES}
+    table.update(
+        {"요구": "요구사항", "권고": "권고사항", "가능성": "가능성/역량", "역량": "가능성/역량"}
+    )
+    return table.get(v, "판단보류")

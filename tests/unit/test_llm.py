@@ -141,7 +141,35 @@ def test_bad_llm_suggestion_is_discarded():
     data = make_docx(ks_skeleton(DOC_BODY))
     res = check_bytes(data, rules="VRB-02", llm=FakeLLM(bad_suggestion=True))
     f = next(f for f in res.findings if f.rule_id == "VRB-02")
-    assert f.source == "rule" and f.severity == "info"  # 판단보류 → 규칙 지적으로 남음
+    # 제안 문장만 버리고 '허용' 판정은 남긴다 → 고칠 문장 없는 AI 지적
+    assert f.source == "llm" and f.fix is None and f.suggestion is None
+    assert "검증을 통과하지 못해" in f.message
+    fx = fix_bytes(data, mode="tracked", rules="VRB-02", llm=FakeLLM(bad_suggestion=True))
+    assert all(d.action != "apply" for d in fx.decisions) and fx.invariants["ok"]
+
+
+def test_judge_keeps_category_and_drops_echo_suggestion():
+    from ksfix.llm.tasks.modal_verbs import judge, normalize_category
+
+    class Echo:
+        model = "echo"
+
+        def complete_json(self, system, user, schema, **kw):
+            items = json.loads(user.split("개): ", 1)[-1])
+            return {"items": [
+                {"id": it["id"], "category": "외적제약", "compliant": True, "suggestion": it["text"]}
+                for it in items
+            ]}  # fmt: skip
+
+    js = judge(
+        Echo(),
+        [{"id": "a", "text": "제품은 반드시 인증을 받아야 한다.", "where": "", "role": "body"}],
+    )
+    j = js["a"]
+    assert j.category == "외적 제약" and j.suggestion is None and j.rejected is None
+    assert normalize_category("요구 사항") == "요구사항"
+    assert normalize_category("가능성·역량") == "가능성/역량"
+    assert normalize_category("모름") == "판단보류" and normalize_category(None) == "판단보류"
 
 
 # ── OpenAI 호환 어댑터(로컬 가짜 서버) ──
@@ -211,9 +239,29 @@ def test_openai_compat_invalid_json_raises(server):
 
 
 def test_connection_failure_and_timeout():
+    from ksfix.llm.base import LLMConnectionError
+
     c = OpenAICompatClient("t", "http://127.0.0.1:9/v1", "m", timeout=2)
-    with pytest.raises(LLMError):
+    with pytest.raises(LLMConnectionError):
         c.complete_json("s", "u", SCHEMA)
+
+
+def test_unreachable_llm_stops_and_warns():
+    from ksfix.llm.base import LLMConnectionError
+
+    class Down:
+        name, model, external = "down/m", "m", False
+        calls = 0
+
+        def complete_json(self, *a, **kw):
+            Down.calls += 1
+            raise LLMConnectionError("연결 실패: 거부됨")
+
+    data = make_docx(ks_skeleton(DOC_BODY))
+    res = check_bytes(data, rules="VRB-01,VRB-02", llm=Down())
+    assert Down.calls == 1  # 첫 호출에서 서버가 없으면 더 묻지 않는다
+    assert {f.source for f in res.findings} == {"rule"}  # 규칙 지적으로 계속
+    assert any("LLM 판정 실패" in w and "연결 실패" in w for w in res.warnings)
 
 
 def test_profiles_and_env_override(monkeypatch):

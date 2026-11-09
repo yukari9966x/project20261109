@@ -7,7 +7,7 @@ import urllib.error
 import urllib.request
 from typing import Any
 
-from ksfix.llm.base import LLMError, LLMHTTPError
+from ksfix.llm.base import LLMConnectionError, LLMError, LLMHTTPError
 
 
 def post_json(url: str, payload: dict, headers: dict | None = None, timeout: float = 60.0) -> Any:
@@ -24,9 +24,13 @@ def post_json(url: str, payload: dict, headers: dict | None = None, timeout: flo
     except urllib.error.HTTPError as exc:
         raise LLMHTTPError(exc.code, exc.read().decode("utf-8", "replace")) from exc
     except TimeoutError as exc:
-        raise LLMError(f"시간 초과({timeout:.0f}초)") from exc
+        raise LLMConnectionError(f"시간 초과({timeout:.0f}초)") from exc
     except urllib.error.URLError as exc:
-        raise LLMError(f"연결 실패: {exc.reason}") from exc
+        if isinstance(exc.reason, TimeoutError):
+            raise LLMConnectionError(f"시간 초과({timeout:.0f}초)") from exc
+        raise LLMConnectionError(f"연결 실패: {exc.reason}") from exc
+    except (ConnectionError, OSError) as exc:
+        raise LLMConnectionError(f"연결 실패: {exc}") from exc
     try:
         return json.loads(body.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:

@@ -78,6 +78,9 @@ def _judgments(doc: KSDoc, ctx: RuleContext) -> dict:
         stats = {"judged": len(js), "model": getattr(ctx.llm, "model", None)}
         for j in js.values():
             stats[j.category] = stats.get(j.category, 0) + 1
+            if j.rejected and j.rejected.startswith("LLM 오류"):
+                stats["errors"] = stats.get("errors", 0) + 1
+                stats.setdefault("error", j.rejected)
         doc.meta["llm_modal"] = stats
     return ctx.memo["modal_judgments"]
 
@@ -156,6 +159,8 @@ def can_permission(doc: KSDoc, ctx: RuleContext):
             msg = "AI 판정: 허용의 뜻이므로 '~해도 된다'로 씁니다(부속서 I 표 I.3)."
             if j.reason:
                 msg += f" 근거: {j.reason}"
+            if j.rejected:
+                msg += f" (AI가 고친 문장은 검증을 통과하지 못해 쓰지 않았습니다: {j.rejected})"
             yield _llm_finding(ctx, "VRB-02", p, c, j, msg)
             continue
         m = CAN_RE.search(c["text"])

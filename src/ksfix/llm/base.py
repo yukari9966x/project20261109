@@ -11,6 +11,10 @@ class LLMError(RuntimeError):
     """LLM 호출 실패(연결·시간 초과·잘못된 응답)."""
 
 
+class LLMConnectionError(LLMError):
+    """서버에 닿지 못함(연결 실패·시간 초과). 같은 서버에 더 묻지 않는다."""
+
+
 class LLMHTTPError(LLMError):
     def __init__(self, status: int, body: str):
         super().__init__(f"HTTP {status}: {body[:200]}")

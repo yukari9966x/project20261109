@@ -123,6 +123,12 @@ def check_bytes(data: bytes, *, rules: str | None = None, llm: Any = None) -> Ch
         warnings.insert(
             0, f"외부 LLM({llm.name})을 사용했습니다. 후보 문장이 외부로 전송되었습니다."
         )
+    llm_stats = doc.meta.get("llm_modal") or {}
+    if llm_stats.get("errors"):
+        warnings.append(
+            f"LLM 판정 실패 {llm_stats['errors']}/{llm_stats.get('judged', 0)}문장"
+            f"({llm_stats.get('error')}). 해당 문장은 규칙 지적으로 남겼습니다."
+        )
     return CheckResult(
         doc=doc,
         findings=findings,
