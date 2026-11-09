@@ -81,8 +81,12 @@ def plan(
         if not fx.auto:
             d.reason = "판단이 필요한 수정이라 제안만"
             continue
-        if f.source == "llm" and not (apply_llm and f.confidence >= llm_min_conf):
-            d.reason = "AI 제안은 자동 반영하지 않음"
+        if (
+            f.source == "llm"
+            and mode != "tracked"
+            and not (apply_llm and f.confidence >= llm_min_conf)
+        ):
+            d.reason = "AI 제안은 반영본에 자동 반영하지 않음(메모로만)"
             continue
         if not allow_edits:
             d.reason = "기존 변경추적이 있는 문서라 메모만 남김"

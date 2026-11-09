@@ -13,7 +13,7 @@
 | 4 | 수정 엔진(변경추적·메모) + 불변성 | 완료 |
 | 5 | 리포트 | 완료 |
 | 6 | 웹 UI + Docker ★ 제출 가능 최소선 | 완료(v0.9.0) |
-| 7 | LLM 계층 + 모델 2종 평가 | 대기 |
+| 7 | LLM 계층 + 모델 2종 평가 | 완료(평가표 추가 예정) |
 | 8 | 규칙 확장 | 대기 |
 | 9 | 배포 산출물(P1) | 대기 |
 | 10 | 문서화·제출 패키지 | 대기 |
@@ -124,3 +124,17 @@
 - **제출 가능 상태**: 업로드 → 지적 → 변경추적 docx → 리포트 → 웹 UI 수직 슬라이스 완성
 - 사용자 확인 필요: 브라우저 UI 직접 사용(피드백), 변경추적본 Word 확인
 - 남은 일: Phase 7(LLM)·8(규칙 확장)·9(배포물 P1) → Phase 10(문서화)·11(GitLab 이관) 필수
+
+### Phase 7 — LLM 계층 + 문장 말미 판정 + 모델 2종 평가 (2026-11-09)
+
+- 한 일
+  - `llm/base.py`(LLMClient 프로토콜·JSON 추출·가벼운 스키마 검사), `transport.py`(urllib — 추가 의존성 없음), `openai_compat.py`(`POST {base_url}/chat/completions`, temperature 0, `response_format=json_object` → 모르는 서버면 빼고 재시도, 스키마 실패 시 1회 재시도), `null.py`, `cache.py`(SQLite, 키 = 모델·프롬프트 버전·입력 해시), `config.py`(`config/llm_profiles.yaml` → 없으면 패키지 기본 프로필, `${환경변수}` 치환, `KSFIX_LLM_BASE_URL`·`KSFIX_LLM_MODEL` 직접 지정, 로컬 주소가 아니면 외부로 표시)
+  - T1 `tasks/modal_verbs.py`: VRB-01·VRB-02 후보 문장 묶음 판정. 가드레일 — 제안은 공통 접두 비율 ≥ 0.7(‘반드시’ 삭제는 예외), 숫자·단위·표준번호가 바뀌면 폐기 → 판단보류, 정형문은 대상 제외. 단일 객체·배열 응답 정규화, 빠진 문장은 한 문장씩 재질의
+  - 프롬프트: `modal_verbs.v1.md`(부록 F 원본) 보존, 기본은 **v2**(예시를 묶음 입력→`items` 배열 출력으로 바꿈). 이유: gemma3:4b가 v1 예시를 따라 첫 문장만 단일 객체로 답함
+  - T2 `tasks/classify_blocks.py`(신뢰도 0.6 미만 블록 묶음 재판정)
+  - 규칙 연동: LLM이 켜지면 VRB-02 허용 의미 → "~해도 된다" AI 제안, 가능성·역량은 지적하지 않음, VRB-01 외적 제약은 적합 처리. 변경추적본에서는 AI 제안을 변경추적 + "[AI 제안 · 모델 · 신뢰도]" 메모로, 반영본에서는 메모로만. VRB-04(금지 표현) 규칙 추가
+  - `ksfix check/fix --llm PROFILE`(외부 API면 경고), 웹 UI 프로필 목록·외부 전송 경고, 리포트에 모델·판정 통계
+  - `ksfix eval --profiles A,B` + `tests/llm_gold/modal_verbs.jsonl`(직접 작성한 합성 60문장, 유형별 10) → `docs/eval/modal_verbs_eval.md`(정확도·적합성 정확도·판단보류·문장당 시간·혼동행렬)
+- 로컬 모델: 이 개발 환경에서 Docker `ollama/ollama` 이미지로 Ollama를 띄우고 `exaone3.5:7.8b`(4.8 GB)·`gemma3:4b`(3.4 GB)를 받아 실제로 구동(합성 문장만 사용, 실제 KS 문서는 보내지 않음). 스모크 테스트에서 두 모델 모두 허용→"수행해도 된다", 가능성/역량, 요구사항→"반드시" 삭제를 맞힘
+- 검사: `python scripts/check.py` 통과(pytest 112건, `--llm none` 기본 + FakeLLM·가짜 HTTP 서버로 잘못된 JSON·JSON 모드 미지원·연결 실패 처리 테스트)
+- 남은 일: 2모델 평가표(실행 중) 커밋, Phase 8(규칙 확장)

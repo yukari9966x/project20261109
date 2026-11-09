@@ -58,10 +58,10 @@ def location(p: Para | None) -> str:
 
 
 def status_label(f, action: str | None) -> str:
+    if f.source == "llm":
+        return "AI 제안(변경추적)" if action == "apply" else "AI 제안"
     if action == "apply":
         return "자동수정"
-    if f.source == "llm":
-        return "AI 제안"
     if f.extra.get("needs_judgement"):
         return "판단 필요"
     if action is None:

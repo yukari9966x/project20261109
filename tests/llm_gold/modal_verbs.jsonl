@@ -1,0 +1,61 @@
+# 합성 골드셋(직접 작성, 실제 표준 문장 아님): 조항 유형별 10문장. compliant = 문장 말미가 그 유형의 표준 형태인지(KS A 0001 부속서 I)
+{"id": "r01", "category": "요구사항", "compliant": true, "text": "시료는 시험 전에 24 h 동안 표준 상태에 두어야 한다."}
+{"id": "r02", "category": "요구사항", "compliant": true, "text": "표시는 쉽게 지워지지 않는 방법으로 하여야 한다."}
+{"id": "r03", "category": "요구사항", "compliant": true, "text": "측정 장치는 매 시험 전에 교정하여야 한다."}
+{"id": "r04", "category": "요구사항", "compliant": false, "text": "시험자는 반드시 보호 안경을 착용하여야 한다."}
+{"id": "r05", "category": "요구사항", "compliant": true, "text": "케이블의 피복은 시험 후 손상되어서는 안 된다."}
+{"id": "r06", "category": "요구사항", "compliant": false, "text": "제품의 금속 외함은 반드시 접지하여야 한다."}
+{"id": "r07", "category": "요구사항", "compliant": true, "text": "히터는 정격 전압의 110 %에서 1 h 동안 연속 작동하여야 한다."}
+{"id": "r08", "category": "요구사항", "compliant": false, "text": "시험 중에는 시료를 이동하지 말 것."}
+{"id": "r09", "category": "요구사항", "compliant": true, "text": "모든 나사는 제조자가 정한 토크로 조여야 한다."}
+{"id": "r10", "category": "요구사항", "compliant": true, "text": "포장 상자에는 취급 주의 표시를 하여야 한다."}
+{"id": "c01", "category": "권고사항", "compliant": true, "text": "시험실의 조도는 500 lx 이상으로 하는 것이 좋다."}
+{"id": "c02", "category": "권고사항", "compliant": true, "text": "측정은 같은 시험자가 반복하는 것이 좋다."}
+{"id": "c03", "category": "권고사항", "compliant": false, "text": "교정 주기는 1년 이내로 하는 것이 바람직하다."}
+{"id": "c04", "category": "권고사항", "compliant": true, "text": "시료는 직사광선을 피하여 보관하는 것이 좋다."}
+{"id": "c05", "category": "권고사항", "compliant": true, "text": "제조자는 사용 설명서에 교정 방법을 적어 두는 것이 좋다."}
+{"id": "c06", "category": "권고사항", "compliant": false, "text": "가능하면 새 배터리를 사용하는 것이 바람직하다."}
+{"id": "c07", "category": "권고사항", "compliant": true, "text": "시험 결과는 소수점 아래 한 자리까지 기록하는 것이 좋다."}
+{"id": "c08", "category": "권고사항", "compliant": true, "text": "측정 직후에는 시료를 손으로 만지지 않는 것이 좋다."}
+{"id": "c09", "category": "권고사항", "compliant": false, "text": "시험 기록은 5년간 보관하는 것이 바람직하다."}
+{"id": "c10", "category": "권고사항", "compliant": true, "text": "사용자는 정기적으로 영점을 확인하는 것이 좋다."}
+{"id": "p01", "category": "허용", "compliant": true, "text": "시험의 순서는 바꾸어도 된다."}
+{"id": "p02", "category": "허용", "compliant": false, "text": "이 표준의 다른 시험들은 편리한 순서에 따라 수행할 수 있다."}
+{"id": "p03", "category": "허용", "compliant": false, "text": "시료의 수는 당사자 사이의 합의로 줄일 수 있다."}
+{"id": "p04", "category": "허용", "compliant": true, "text": "표시는 제품 대신 포장에 하여도 된다."}
+{"id": "p05", "category": "허용", "compliant": false, "text": "치수가 작은 제품은 형식 표시를 생략할 수 있다."}
+{"id": "p06", "category": "허용", "compliant": true, "text": "온도 측정에는 열전대 대신 저항 온도계를 사용해도 된다."}
+{"id": "p07", "category": "허용", "compliant": false, "text": "시험 장치는 동등한 성능을 가진 다른 장치로 대체하는 것이 가능하다."}
+{"id": "p08", "category": "허용", "compliant": true, "text": "건조 시간은 2 h보다 짧게 해도 된다."}
+{"id": "p09", "category": "허용", "compliant": false, "text": "제조자가 요청하면 예비 시험을 생략할 수 있다."}
+{"id": "p10", "category": "허용", "compliant": true, "text": "형식 시험에 합격한 시료는 재시험할 필요가 없다."}
+{"id": "a01", "category": "가능성/역량", "compliant": true, "text": "이 장치는 최대 50 kg의 하중을 견딜 수 있다."}
+{"id": "a02", "category": "가능성/역량", "compliant": true, "text": "온도가 높으면 절연체가 변형될 수 있다."}
+{"id": "a03", "category": "가능성/역량", "compliant": true, "text": "이 센서는 0.1 ℃의 온도 변화를 감지할 수 있다."}
+{"id": "a04", "category": "가능성/역량", "compliant": true, "text": "습도가 높은 곳에서는 표면에 결로가 생길 수 있다."}
+{"id": "a05", "category": "가능성/역량", "compliant": true, "text": "배터리가 방전되면 표시값이 부정확할 수 있다."}
+{"id": "a06", "category": "가능성/역량", "compliant": true, "text": "이 방법으로는 1 μm 이하의 두께를 측정할 수 없다."}
+{"id": "a07", "category": "가능성/역량", "compliant": true, "text": "케이블을 과도하게 구부리면 도체가 끊어질 수 있다."}
+{"id": "a08", "category": "가능성/역량", "compliant": true, "text": "이 재료는 200 ℃의 온도에서도 형태를 유지할 수 있다."}
+{"id": "a09", "category": "가능성/역량", "compliant": true, "text": "진동이 크면 측정 오차가 커질 수 있다."}
+{"id": "a10", "category": "가능성/역량", "compliant": true, "text": "이 펌프는 1시간에 3 m³의 물을 보낼 수 있다."}
+{"id": "e01", "category": "외적 제약", "compliant": true, "text": "전기용품은 반드시 전기용품 및 생활용품 안전관리법에 따른 안전인증을 받아야 한다."}
+{"id": "e02", "category": "외적 제약", "compliant": true, "text": "제조자는 반드시 계량에 관한 법률에 따른 형식승인을 받아야 한다."}
+{"id": "e03", "category": "외적 제약", "compliant": true, "text": "수출 제품은 반드시 수입국의 법령이 정한 표시를 하여야 한다."}
+{"id": "e04", "category": "외적 제약", "compliant": true, "text": "의료기기는 반드시 의료기기법에 따라 허가를 받아야 한다."}
+{"id": "e05", "category": "외적 제약", "compliant": true, "text": "고압가스 용기는 반드시 고압가스 안전관리법에 따른 검사를 받아야 한다."}
+{"id": "e06", "category": "외적 제약", "compliant": false, "text": "식품에 닿는 재료는 식품위생법에서 정한 기준을 만족하여야 한다."}
+{"id": "e07", "category": "외적 제약", "compliant": false, "text": "건축 자재는 건축법에서 정한 불연 성능을 만족하여야 한다."}
+{"id": "e08", "category": "외적 제약", "compliant": true, "text": "어린이 제품은 반드시 어린이제품 안전 특별법에 따른 안전확인을 받아야 한다."}
+{"id": "e09", "category": "외적 제약", "compliant": true, "text": "화학물질 정보는 반드시 화학물질관리법에 따라 제공하여야 한다."}
+{"id": "e10", "category": "외적 제약", "compliant": false, "text": "자동차 부품은 자동차관리법에서 정한 기준에 적합하여야 한다."}
+{"id": "s01", "category": "설명", "compliant": true, "text": "체중계는 하중 센서와 표시부로 구성된다."}
+{"id": "s02", "category": "설명", "compliant": true, "text": "시험 결과의 예는 표 3에 나타낸다."}
+{"id": "s03", "category": "설명", "compliant": true, "text": "이 시험 방법은 IEC 60068-2-6을 기초로 한다."}
+{"id": "s04", "category": "설명", "compliant": true, "text": "그림 2는 시험 장치의 배치를 보여 준다."}
+{"id": "s05", "category": "설명", "compliant": true, "text": "정격 전류는 제조자가 정한 최대 연속 전류이다."}
+{"id": "s06", "category": "설명", "compliant": true, "text": "이 장치의 질량은 약 2 kg이다."}
+{"id": "s07", "category": "설명", "compliant": true, "text": "온도 상승 시험은 9.1에 규정되어 있다."}
+{"id": "s08", "category": "설명", "compliant": true, "text": "시료는 세 가지 크기로 제공된다."}
+{"id": "s09", "category": "설명", "compliant": true, "text": "이 시험에는 약 2 h가 걸린다."}
+{"id": "s10", "category": "설명", "compliant": true, "text": "이 표준의 개정판은 2026년에 발행되었다."}

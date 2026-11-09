@@ -94,6 +94,19 @@ def _exit_code(result, fail_on: str) -> int:
     return 1 if worst <= level else 0
 
 
+def _llm_client(name: str | None):
+    """--llm 값 → 클라이언트(끔이면 None). 외부 API면 경고를 찍는다."""
+    from ksfix.llm.config import make_client
+
+    client = make_client(name) if name else make_client(None)
+    if client is not None:
+        where = "외부" if client.external else "로컬"
+        print(f"  LLM: {client.name} ({where})", file=sys.stderr)
+        if client.external:
+            print("  ⚠ 외부 API 프로필입니다. 문서 문장이 외부로 전송됩니다.", file=sys.stderr)
+    return client
+
+
 def cmd_check(args: argparse.Namespace) -> int:
     from pathlib import Path
 
@@ -103,8 +116,8 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     try:
         data = read_input(args.file)
-        result = check_bytes(data, rules=args.rules)
-    except (InputError, ValueError) as exc:
+        result = check_bytes(data, rules=args.rules, llm=_llm_client(args.llm))
+    except (InputError, ValueError, KeyError) as exc:
         print(f"오류: {exc}", file=sys.stderr)
         return 2
     out = Path(args.out)
@@ -149,9 +162,10 @@ def cmd_fix(args: argparse.Namespace) -> int:
             data,
             mode=args.mode,
             rules=args.rules,
+            llm=_llm_client(args.llm),
             accept_existing_changes=args.accept_existing_changes,
         )
-    except (InputError, ValueError) as exc:
+    except (InputError, ValueError, KeyError) as exc:
         print(f"오류: {exc}", file=sys.stderr)
         return 2
     out = Path(args.out)
@@ -187,6 +201,33 @@ def cmd_fix(args: argparse.Namespace) -> int:
         print(f"  출력: {path}")
     if not input_ok or result.integrity:
         return 3
+    return 0
+
+
+def cmd_eval(args: argparse.Namespace) -> int:
+    from pathlib import Path
+
+    from ksfix.llm.eval import run_eval
+
+    gold = args.gold or str(
+        Path(__file__).resolve().parents[2] / "tests" / "llm_gold" / "modal_verbs.jsonl"
+    )
+    if not Path(gold).is_file():
+        print(f"골드셋을 찾을 수 없습니다: {gold} (--gold로 지정)", file=sys.stderr)
+        return 2
+    names = [p.strip() for p in args.profiles.split(",") if p.strip()]
+    try:
+        results = run_eval(names, gold, args.out)
+    except (KeyError, ValueError) as exc:
+        print(f"오류: {exc}", file=sys.stderr)
+        return 2
+    for r in results:
+        comp = "-" if r["compliance_accuracy"] is None else f"{100 * r['compliance_accuracy']:.0f}%"
+        print(
+            f"{r['profile']:16} {r['model']:22} 정확도 {100 * r['accuracy']:.0f}% · 적합성 {comp} · "
+            f"판단보류 {r['held']} · 문장당 {r['sec_per_sentence']}초"
+        )
+    print(f"평가표: {Path(args.out) / 'modal_verbs_eval.md'}")
     return 0
 
 
@@ -295,7 +336,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("eval", help="LLM 골드셋 평가(모델 비종속 입증)")
     p.add_argument("--profiles", required=True, help="쉼표로 구분한 프로필 이름")
-    p.set_defaults(func=_not_ready("Phase 7"))
+    p.add_argument(
+        "--gold", default=None, help="골드셋 JSONL(기본: tests/llm_gold/modal_verbs.jsonl)"
+    )
+    p.add_argument("--out", default="docs/eval", help="평가표 출력 디렉터리(기본: docs/eval)")
+    p.set_defaults(func=cmd_eval)
 
     p = sub.add_parser("serve", help="로컬 웹 UI")
     p.add_argument("--host", default=None, help="바인딩 주소(기본: 127.0.0.1)")

@@ -38,10 +38,10 @@ class ApplyResult:
 
 def _label(d: Decision) -> str:
     f = d.finding
-    if d.action == "apply":
-        return "자동수정"
     if f.source == "llm":
         return f"AI 제안 · {f.llm_model or '모델'} · 신뢰도 {f.confidence:.2f}"
+    if d.action == "apply":
+        return "자동수정"
     if f.extra.get("needs_judgement"):
         return "판단 필요"
     if f.fix is not None:
@@ -149,7 +149,7 @@ def apply_decisions(
             res.audit.append(_audit(d, mode, before, fx.text))
             if want_comments and comment_applied and mode == "tracked" and d.anchors:
                 commenter.add_range(
-                    d.anchors[0], d.anchors[-1], comment_text(d.finding, "자동수정")
+                    d.anchors[0], d.anchors[-1], comment_text(d.finding, _label(d))
                 )
 
     # 3) 문단 서식·이동·삽입·설정
@@ -194,9 +194,9 @@ def apply_decisions(
         res.audit.append(_audit(d, mode, f.snippet, f.suggestion or fx.text))
         if mode == "tracked" and comment_applied:
             if created:
-                commenter.add_paragraph(created[0], comment_text(f, "자동수정"))
+                commenter.add_paragraph(created[0], comment_text(f, _label(d)))
             elif fx.kind != "set_doc_setting":
-                commenter.add_paragraph(p.xml, comment_text(f, "자동수정"))
+                commenter.add_paragraph(p.xml, comment_text(f, _label(d)))
 
     if res.applied and doc.meta.get("has_toc_field"):
         set_update_fields(document)

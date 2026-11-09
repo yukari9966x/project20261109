@@ -20,6 +20,7 @@ PILL = {
     "자동수정 가능": "fixed",
     "제안": "sugg",
     "AI 제안": "sugg",
+    "AI 제안(변경추적)": "fixed",
     "판단 필요": "sugg",
     "검토 필요": "review",
 }
