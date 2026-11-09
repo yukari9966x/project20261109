@@ -10,8 +10,8 @@ import json
 import re
 from dataclasses import asdict, dataclass
 from functools import cache
-from importlib import resources
 
+from ksfix._paths import read_pkg_text
 from ksfix.fix.invariants import text_tokens
 from ksfix.llm.base import LLMError
 
@@ -45,7 +45,7 @@ class Judgment:
 @cache
 def load_prompt() -> tuple[str, str]:
     name = f"{PROMPT_VERSION}.md"
-    text = resources.files("ksfix.llm.prompts").joinpath(name).read_text(encoding="utf-8")
+    text = read_pkg_text("llm", "prompts", name)
     sys_part, user_part = text.split("[사용자]", 1)
     return sys_part.replace("[시스템]", "", 1).strip(), user_part.strip()
 

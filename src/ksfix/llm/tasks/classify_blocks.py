@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import json
 from functools import cache
-from importlib import resources
 
+from ksfix._paths import read_pkg_text
 from ksfix.llm.base import LLMError
 from ksfix.model.ir import KSDoc, Role
 
@@ -21,11 +21,7 @@ ALLOWED = {
 
 @cache
 def load_prompt() -> tuple[str, str]:
-    text = (
-        resources.files("ksfix.llm.prompts")
-        .joinpath("classify_blocks.v1.md")
-        .read_text(encoding="utf-8")
-    )
+    text = read_pkg_text("llm", "prompts", "classify_blocks.v1.md")
     sys_part, user_part = text.split("[사용자]", 1)
     return sys_part.replace("[시스템]", "", 1).strip(), user_part.strip()
 

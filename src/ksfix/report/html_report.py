@@ -6,7 +6,9 @@ import json
 from functools import cache
 from typing import Any
 
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+from ksfix._paths import pkg_path
 
 MODE_KO = {
     "check": "점검",
@@ -37,7 +39,7 @@ CL_PILL = {
 @cache
 def _env() -> Environment:
     return Environment(
-        loader=PackageLoader("ksfix.report", "templates"),
+        loader=FileSystemLoader(str(pkg_path("report", "templates"))),
         autoescape=select_autoescape(["html", "j2"]),
         trim_blocks=True,
         lstrip_blocks=True,

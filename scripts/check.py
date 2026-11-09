@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 SAMPLE = ROOT / "samples" / "sample_01_violations.docx"
 
 STEPS: list[list[str]] = [
-    [sys.executable, "-m", "ruff", "check", "src", "tests", "scripts"],
-    [sys.executable, "-m", "ruff", "format", "--check", "src", "tests", "scripts"],
+    [sys.executable, "-m", "ruff", "check", "src", "tests", "scripts", "packaging"],
+    [sys.executable, "-m", "ruff", "format", "--check", "src", "tests", "scripts", "packaging"],
     [sys.executable, "-m", "pytest", "-q"],
 ]
 

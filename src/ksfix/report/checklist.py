@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from collections import Counter
 from functools import cache
-from importlib import resources
 
 import yaml
 
+from ksfix._paths import read_pkg_text
 from ksfix.rules.base import Finding
 
 STATUS_LABEL = {
@@ -22,11 +22,7 @@ STATUS_LABEL = {
 
 @cache
 def load_checklist(pack: str = "ksa0001_2023") -> list[dict]:
-    text = (
-        resources.files("ksfix.rules.packs")
-        .joinpath(pack, "checklist.yaml")
-        .read_text(encoding="utf-8")
-    )
+    text = read_pkg_text("rules", "packs", pack, "checklist.yaml")
     return yaml.safe_load(text)["items"]
 
 

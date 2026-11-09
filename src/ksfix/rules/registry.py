@@ -9,11 +9,11 @@ import traceback
 from collections.abc import Callable
 from dataclasses import dataclass
 from functools import cache
-from importlib import resources
 from typing import Any
 
 import yaml
 
+from ksfix._paths import read_pkg_text
 from ksfix.model.ir import KSDoc
 from ksfix.rules.base import SEVERITY_ORDER, Finding
 from ksfix.rules.context import RuleContext
@@ -51,11 +51,7 @@ class Catalog:
 
 @cache
 def load_catalog(pack: str = DEFAULT_PACK) -> Catalog:
-    text = (
-        resources.files("ksfix.rules.packs")
-        .joinpath(pack, "catalog.yaml")
-        .read_text(encoding="utf-8")
-    )
+    text = read_pkg_text("rules", "packs", pack, "catalog.yaml")
     data = yaml.safe_load(text)
     ids = [r["id"] for r in data["rules"]]
     if len(ids) != len(set(ids)):

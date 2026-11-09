@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 from functools import cache
-from importlib import resources
 from typing import Any
 
 import yaml
 
+from ksfix._paths import read_pkg_text
+
 
 def read_text(name: str) -> str:
-    return resources.files(__name__).joinpath(name).read_text(encoding="utf-8")
+    return read_pkg_text("assets", name)
 
 
 @cache
