@@ -19,6 +19,7 @@
     if (attrs) Object.keys(attrs).forEach(function (k) {
       if (k === "text") e.textContent = attrs[k];
       else if (k === "cls") e.className = attrs[k];
+      else if (k === "style") Object.assign(e.style, attrs[k]);  // CSSOM(인라인 style 속성은 CSP가 막음)
       else e.setAttribute(k, attrs[k]);
     });
     (children || []).forEach(function (c) { if (c) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
@@ -61,7 +62,7 @@
     else c.appendChild(card("자동수정", s.applied, el("div", { cls: "d", text: "Word 변경추적으로 반영" })));
     c.appendChild(card("검토 필요", s.needs_review, el("div", { cls: "d", text: "제안·판단 필요(메모)" })));
     var rate = s.pass_rate_before + "%" + (s.pass_rate_after != null ? " → " + s.pass_rate_after + "%" : "");
-    c.appendChild(card("규칙 통과율", rate, el("div", { cls: "d", text: "지적 0건 규칙 " + s.rules_passed + " / " + s.rules_applied })));
+    c.appendChild(card("규칙 통과율", rate, el("div", { cls: "d", text: (s.pass_rate_after != null ? "교정 전 " : "") + "지적 없는 규칙 " + s.rules_passed + " / " + s.rules_applied })));
     var cs = r.checklist.summary;
     c.appendChild(card("부속서 A 검토 항목", cs.total, el("div", { cls: "d", text: "자동 통과 " + cs.auto_pass + " · 지적 " + cs.auto_fail + " · 부분 " + cs.partial + " · 수동 " + cs.manual })));
     var w = $("warnings");
@@ -78,8 +79,8 @@
     var max = Math.max.apply(null, r.categories.map(function (c) { return c.count; }));
     r.categories.forEach(function (c) {
       var track = el("div", { cls: "track" }, [
-        el("div", { cls: "fill", style: "width:" + (100 * c.count / max) + "%" }),
-        el("div", { cls: "fixed", style: "width:" + (100 * c.fixed / max) + "%" })]);
+        el("div", { cls: "fill", style: { width: (100 * c.count / max) + "%" } }),
+        el("div", { cls: "fixed", style: { width: (100 * c.fixed / max) + "%" } })]);
       b.appendChild(el("div", { cls: "row" }, [el("div", { text: c.name }), track, el("div", { text: c.count + "건" + (c.fixed ? " (" + c.fixed + ")" : "") })]));
     });
   }

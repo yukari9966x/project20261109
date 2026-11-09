@@ -28,6 +28,12 @@ from ksfix.io.safety import MB
 
 log = logging.getLogger("ksfix.web")
 JOB_RE = re.compile(r"^[0-9a-f]{32}$")
+# 웹 UI(정적 파일)는 인라인 스크립트·스타일·외부 자원을 쓰지 않는다
+UI_CSP = (
+    "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; "
+    "connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; "
+    "frame-ancestors 'none'"
+)
 FILES = {
     "tracked": ("result.ksfix-tracked.docx", "변경추적본(.docx)", ".ksfix-tracked.docx"),
     "clean": ("result.ksfix-clean.docx", "반영본(.docx)", ".ksfix-clean.docx"),
@@ -103,6 +109,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     static = settings.static_dir or find_static_dir()
     app = FastAPI(title="KS-Fix", version=__version__, docs_url="/api/docs", redoc_url=None)
     app.state.settings = settings
+
+    @app.middleware("http")
+    async def security_headers(request: Request, call_next):
+        resp = await call_next(request)
+        resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+        resp.headers.setdefault("Referrer-Policy", "no-referrer")
+        resp.headers.setdefault("X-Frame-Options", "DENY")
+        if not request.url.path.startswith("/api/"):
+            resp.headers.setdefault("Content-Security-Policy", UI_CSP)
+        return resp
 
     @app.get("/api/v1/health")
     def health() -> dict[str, Any]:

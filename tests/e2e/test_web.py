@@ -82,3 +82,12 @@ def test_static_ui_served(client):
     assert r.status_code == 200 and "KS-Fix" in r.text
     assert client.get("/app.js").status_code == 200
     assert "cdn" not in r.text.lower() and "https://" not in r.text
+
+
+def test_security_headers(client):
+    ui = client.get("/")
+    assert ui.headers["x-content-type-options"] == "nosniff"
+    assert "script-src 'self'" in ui.headers["content-security-policy"]
+    assert ui.headers["x-frame-options"] == "DENY"
+    api = client.get("/api/v1/health")
+    assert api.headers["referrer-policy"] == "no-referrer"
