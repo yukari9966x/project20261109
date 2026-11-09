@@ -1,0 +1,33 @@
+# 실제 KS 문서(저작권·미발간 초안) — 절대 커밋 금지
+local_samples/
+
+# 산출물·빌드
+out/
+dist/
+build/
+site/
+*.egg-info/
+
+# 비밀값
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# LLM 응답 캐시
+.ksfix_cache/
+
+# 편집기·OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+~$*.docx

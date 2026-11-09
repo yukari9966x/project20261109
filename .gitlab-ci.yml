@@ -1,0 +1,17 @@
+# 공공 GitLab에 러너가 없을 수 있으므로 기본은 파이프라인을 만들지 않는다.
+# 러너가 있으면 설정 > CI/CD > 변수에 KSFIX_ENABLE_CI=true 를 넣거나 수동 실행한다.
+workflow:
+  rules:
+    - if: '$KSFIX_ENABLE_CI == "true"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - when: never
+
+test:
+  image: python:3.12-slim
+  script:
+    - pip install -e ".[dev,web]"
+    - python scripts/make_samples.py
+    - python scripts/check.py
+  artifacts:
+    paths: [out/ci]
+    expire_in: 30 days
