@@ -148,9 +148,7 @@ def apply_decisions(
             res.applied += 1
             res.audit.append(_audit(d, mode, before, fx.text))
             if want_comments and comment_applied and mode == "tracked" and d.anchors:
-                commenter.add_range(
-                    d.anchors[0], d.anchors[-1], comment_text(d.finding, _label(d))
-                )
+                commenter.add_range(d.anchors[0], d.anchors[-1], comment_text(d.finding, _label(d)))
 
     # 3) 문단 서식·이동·삽입·설정
     for d in decisions:
