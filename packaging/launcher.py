@@ -53,6 +53,9 @@ def selftest() -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    from ksfix.cli import _safe_streams
+
+    _safe_streams()
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv and argv[0] in (
         "check",

@@ -352,11 +352,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _safe_streams() -> None:
-    """콘솔이 표현하지 못하는 문자(예: Windows cp949의 '⏎')로 죽지 않게 한다."""
+    """출력 인코딩 때문에 죽지 않게 한다.
+
+    콘솔이면 표현 못 하는 문자만 바꾸고(예: cp949의 '⏎'), 파일·파이프로 보낼 때는 UTF-8로 쓴다
+    (Windows에서 리다이렉트하면 cp1252가 되어 한국어를 쓰지 못한다).
+    """
     for stream in (sys.stdout, sys.stderr):
         try:
-            stream.reconfigure(errors="replace")  # type: ignore[union-attr]
-        except (AttributeError, ValueError):
+            if stream.isatty():
+                stream.reconfigure(errors="replace")  # type: ignore[union-attr]
+            else:
+                stream.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError, OSError):
             pass
 
 
