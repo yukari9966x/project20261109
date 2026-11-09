@@ -1,5 +1,110 @@
 <!doctype html>
 <html lang="ko">
-<head><meta charset="utf-8"><title>KS-Fix</title></head>
-<body><p>KS-Fix 웹 UI는 Phase 6에서 구현합니다.</p></body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KS-Fix — KS A 0001 표준안 서식 자동교정</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">KS-Fix</span><span class="tag">KS A 0001:2023 표준안 서식 점검·교정</span></div>
+  <span class="engine" id="engine-badge">연결 중…</span>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>표준안(docx)을 올리면 KS A 0001 위반을 찾아 Word 변경추적으로 고칩니다</h1>
+    <p>모든 지적에 근거 조항 · 자동 수정은 담당자가 수락·거절 · 수치·표준번호 같은 기술적 내용은 바뀌지 않음을 자동 검증</p>
+  </section>
+
+  <section class="step" id="step-upload">
+    <h2><span class="num">1</span>문서 올리기</h2>
+    <label class="drop" id="drop" for="file">
+      <input type="file" id="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+      <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2.5L17.5 8H14V4.5zM8 13h8v1.5H8V13zm0 3h8v1.5H8V16zm0-6h4v1.5H8V10z"/></svg>
+      <strong>docx 파일을 끌어다 놓거나 눌러서 선택</strong>
+      <span class="muted">최대 <span id="max-mb">30</span> MB · 올린 원본은 바뀌지 않습니다</span>
+      <span class="file-name" id="file-name"></span>
+    </label>
+  </section>
+
+  <section class="step" id="step-options">
+    <h2><span class="num">2</span>옵션</h2>
+    <div class="opt">
+      <div class="lbl">출력</div>
+      <div class="seg" role="radiogroup" aria-label="출력 모드">
+        <label><input type="radio" name="mode" value="tracked" checked><span>변경추적본</span></label>
+        <label><input type="radio" name="mode" value="clean"><span>반영본</span></label>
+        <label><input type="radio" name="mode" value="check"><span>점검만</span></label>
+      </div>
+      <div class="muted small" id="mode-help">자동 수정을 Word 변경 내용으로 남기고, 근거 조항은 메모로 답니다.</div>
+    </div>
+    <div class="opt">
+      <div class="lbl">규칙 범위</div>
+      <select id="rules">
+        <option value="">구현된 규칙 전체</option>
+        <option value="P0">P0(핵심 규칙)</option>
+        <option value="P0,P0b">P0 + P0b</option>
+      </select>
+    </div>
+    <div class="opt">
+      <div class="lbl">AI(LLM)</div>
+      <select id="llm"><option value="none">끔(규칙만)</option></select>
+      <div class="warn" id="llm-warn" hidden>⚠ 외부 API 프로필입니다. 문서 문장이 외부로 전송됩니다. 실제 표준안(미발간 초안 포함)은 보내지 마세요.</div>
+    </div>
+    <div class="actions">
+      <button id="run" class="primary" disabled>점검·교정 시작</button>
+      <span id="status" class="status" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="step" id="step-result" hidden>
+    <h2><span class="num">3</span>결과</h2>
+    <div id="warnings"></div>
+    <div class="cards" id="cards"></div>
+    <div class="panel"><h3>분류별 지적</h3><div class="bars" id="bars"></div></div>
+    <div class="tabs" role="tablist">
+      <button class="on" data-tab="findings" id="tab-btn-findings">지적 목록</button>
+      <button data-tab="checklist" id="tab-btn-checklist">부속서 A 체크리스트</button>
+    </div>
+    <div class="tab on" id="tab-findings">
+      <div class="filters">
+        <label><input type="checkbox" class="f-sev" value="error" checked> 오류</label>
+        <label><input type="checkbox" class="f-sev" value="warning" checked> 경고</label>
+        <label><input type="checkbox" class="f-sev" value="info" checked> 참고</label>
+        <select id="f-cat"><option value="">모든 분류</option></select>
+        <select id="f-status"><option value="">모든 상태</option></select>
+        <input type="search" id="f-q" placeholder="규칙 ID·내용 검색">
+        <span class="muted small" id="f-count"></span>
+      </div>
+      <div class="table-wrap"><table id="findings">
+        <thead><tr><th class="nowrap">심각도</th><th>규칙</th><th>위치</th><th>내용</th><th>원문 → 수정</th><th>상태</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+    <div class="tab" id="tab-checklist">
+      <p class="muted small">KS A 0001:2023 부속서 A(작성자·편집자용 검토 항목)를 규칙 결과에 대응시켰습니다. 항목 문구는 요약입니다.</p>
+      <div class="table-wrap"><table id="checklist">
+        <thead><tr><th>번호</th><th>구분</th><th>검토 항목(요약)</th><th>관련 규칙</th><th>상태</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="step" id="step-download" hidden>
+    <h2><span class="num">4</span>내려받기</h2>
+    <div class="downloads" id="downloads"></div>
+    <p class="muted small">변경추적본을 Word로 열면 KS-Fix의 수정이 변경 내용으로 보이고, 근거 조항은 메모로 달려 있습니다. [검토] → [수락]/[거절]로 확정하세요. 파일은 1시간 동안 보관됩니다.</p>
+  </section>
+</main>
+
+<footer>
+  <span id="privacy">문서는 이 컴퓨터의 KS-Fix 로컬 서버에서만 처리됩니다(LLM 끔: 외부 전송 없음).</span>
+  <span id="version"></span>
+</footer>
+
+<script src="engine-server.js"></script>
+<script src="app.js"></script>
+</body>
 </html>

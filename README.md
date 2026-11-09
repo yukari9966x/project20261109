@@ -10,16 +10,36 @@
 ## 주요 기능
 준비 중
 
-## 빠른 실행 (Windows 실행파일 / pip / Docker)
+## 빠른 실행 (pip / Docker)
+pip(Python 3.11 이상):
 ```bash
 pip install -e ".[web]"
 ```
 ```bash
-ksfix --help
+ksfix serve --open
 ```
+Docker:
+```bash
+docker compose up --build
+```
+브라우저에서 http://127.0.0.1:8765 를 연다. 명령줄만 쓸 때는 아래 "사용 방법"을 본다.
 
 ## 사용 방법 (웹 3단계 · CLI 예시)
-준비 중
+웹: ① docx 올리기 → ② 출력(변경추적본·반영본·점검만) 선택 → ③ 결과 확인 후 변경추적본·리포트 내려받기
+
+CLI:
+```bash
+ksfix fix samples/sample_01_violations.docx -o out --mode tracked
+```
+```bash
+ksfix check samples/sample_02_clean.docx -o out
+```
+```bash
+ksfix inspect samples/sample_03_messy_styles.docx
+```
+```bash
+ksfix rules
+```
 
 ## LLM 연결·교체 방법
 준비 중 — 기본값은 LLM 끔(규칙만으로 동작)

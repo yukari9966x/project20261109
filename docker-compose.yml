@@ -1,0 +1,18 @@
+# docker compose up --build  →  http://127.0.0.1:8765
+services:
+  ksfix:
+    build: .
+    image: ksfix:latest
+    ports:
+      # 이 컴퓨터에서만 접속. 업무망 서버로 공유하려면 앞의 "127.0.0.1:"을 지운다(방화벽·접근통제 확인 후).
+      - "127.0.0.1:8765:8765"
+    environment:
+      KSFIX_MAX_UPLOAD_MB: "30"
+      KSFIX_LLM_PROFILE: "none"
+      # 호스트의 Ollama를 쓸 때: config/llm_profiles.yaml의 base_url을 http://host.docker.internal:11434/v1 로 바꾼다.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped

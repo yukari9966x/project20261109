@@ -1,0 +1,18 @@
+# 실제 KS 문서는 이미지에 절대 넣지 않는다
+local_samples/
+.git/
+.venv/
+venv/
+out/
+dist/
+build/
+site/
+.env
+**/__pycache__/
+**/*.pyc
+.pytest_cache/
+.ruff_cache/
+tests/
+docs/
+examples/
+samples/

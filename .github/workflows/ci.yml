@@ -17,3 +17,17 @@ jobs:
           name: sample-outputs
           path: out/ci
           if-no-files-found: ignore
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t ksfix:ci .
+      - name: smoke test
+        run: |
+          docker run -d --name ksfix -p 127.0.0.1:8765:8765 --read-only --tmpfs /tmp ksfix:ci
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:8765/api/v1/health && break; sleep 1; done
+          curl -sf -F "file=@samples/sample_01_violations.docx" -F 'options={"mode":"tracked"}' \
+            http://127.0.0.1:8765/api/v1/process -o resp.json
+          python3 -c "import json; s=json.load(open('resp.json'))['report']['summary']; assert s['applied'] > 0, s; print(s)"
+          curl -sf http://127.0.0.1:8765/ | grep -q "KS-Fix"

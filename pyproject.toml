@@ -65,3 +65,6 @@ ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["ksfix"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.File", "fastapi.Form", "fastapi.Depends", "fastapi.Query"]

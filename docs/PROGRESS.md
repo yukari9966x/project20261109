@@ -12,7 +12,7 @@
 | 3 | 규칙 엔진 + 첫 규칙 8종 | 완료(+VRB-01·02) |
 | 4 | 수정 엔진(변경추적·메모) + 불변성 | 완료 |
 | 5 | 리포트 | 완료 |
-| 6 | 웹 UI + Docker ★ 제출 가능 최소선 | 대기 |
+| 6 | 웹 UI + Docker ★ 제출 가능 최소선 | 완료(v0.9.0) |
 | 7 | LLM 계층 + 모델 2종 평가 | 대기 |
 | 8 | 규칙 확장 | 대기 |
 | 9 | 배포 산출물(P1) | 대기 |
@@ -108,3 +108,19 @@
 - 결과: Playwright 스크린샷으로 HTML 표시 확인(요약 카드·분류 막대·지적 표·체크리스트). 오프라인 단일 파일·HTML 수치 = JSON 수치·체크리스트 53항목 상태 표시 테스트 통과
 - 검사: `python scripts/check.py` 통과(pytest 93건)
 - 남은 일: Phase 6(웹 UI + Docker, 제출 가능 최소선)
+
+### Phase 6 — 웹 UI + Docker ★ 제출 가능 최소선 (2026-11-09, v0.9.0)
+
+- 한 일
+  - `web/app.py`(FastAPI): `GET /api/v1/health`·`/rules`·`/llm/profiles`, `POST /api/v1/process`(multipart: file + options JSON → 요약·리포트·내려받기 URL), `GET /api/v1/files/{job}/{key}`. 기본 바인딩 127.0.0.1, 업로드 한도 30 MB(Content-Length·실제 읽기 양쪽 검사), 작업별 임시 디렉터리 1시간 뒤 삭제, 내려받기 경로는 작업 ID(32자리 hex)·고정 키만 허용, 문서 내용은 로그에 남기지 않음, 한글 파일명은 RFC 5987로 내려받기
+  - `webapp/`(정적, 한국어, CDN 없음): 끌어놓기 업로드 → 출력·규칙 범위·LLM 선택(외부 프로필이면 전송 경고) → 요약 카드·분류 막대·지적 목록(필터)·부속서 A 체크리스트 → 내려받기. 문서 텍스트는 모두 textContent로 넣음(XSS 방지). 엔진 인터페이스(`window.KSFixEngine`)를 `engine-server.js`로 분리 → 브라우저 데모(Pyodide)가 같은 UI 재사용 가능
+  - `ksfix serve [--host] [--port] [--open]`, 휠에 `webapp/` 포함(설치형·편집형 모두 정적 파일 찾음)
+  - `Dockerfile`(python:3.12-slim, `.[web,llm]`, 비루트 사용자, 헬스체크, TLS 검사 프록시 망용 선택 비밀값 `pip_ca`), `docker-compose.yml`(127.0.0.1에만 노출, 읽기 전용 파일시스템 + /tmp tmpfs), `.dockerignore`(`local_samples/` 제외), CI에 Docker 빌드·실행 검사 작업 추가
+- 결과
+  - FastAPI TestClient E2E 6건(샘플 1 업로드 → 변경추적본 내려받기 → python-docx 재열기, 점검 모드, 잘못된 입력·크기 초과, 경로 조작 차단, 정적 UI)
+  - 실제 서버 + Playwright로 화면 조작 확인(업로드 → 0.4초 처리 → 결과·내려받기 4종)
+  - Docker: 샌드박스에서 이미지 빌드(232 MB)·실행(읽기 전용, 비루트) → 헬스체크 healthy, 업로드 처리·UI 응답 확인
+- 검사: `python scripts/check.py` 통과(pytest 99건)
+- **제출 가능 상태**: 업로드 → 지적 → 변경추적 docx → 리포트 → 웹 UI 수직 슬라이스 완성
+- 사용자 확인 필요: 브라우저 UI 직접 사용(피드백), 변경추적본 Word 확인
+- 남은 일: Phase 7(LLM)·8(규칙 확장)·9(배포물 P1) → Phase 10(문서화)·11(GitLab 이관) 필수

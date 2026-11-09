@@ -190,6 +190,16 @@ def cmd_fix(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_serve(args: argparse.Namespace) -> int:
+    try:
+        from ksfix.web.app import serve
+    except ImportError:
+        print('웹 기능이 설치되어 있지 않습니다: pip install -e ".[web]"', file=sys.stderr)
+        return 2
+    serve(args.host, args.port, args.open)
+    return 0
+
+
 def cmd_rules(args: argparse.Namespace) -> int:
     from ksfix.rules.registry import implemented_ids, load_catalog
 
@@ -291,7 +301,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--host", default=None, help="바인딩 주소(기본: 127.0.0.1)")
     p.add_argument("--port", type=int, default=None, help="포트(기본: 8765)")
     p.add_argument("--open", action="store_true", help="브라우저를 자동으로 연다")
-    p.set_defaults(func=_not_ready("Phase 6"))
+    p.set_defaults(func=cmd_serve)
 
     return parser
 
