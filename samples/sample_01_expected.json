@@ -1,0 +1,210 @@
+[
+ {
+  "rule_id": "TOC-01",
+  "where": "목차"
+ },
+ {
+  "rule_id": "TOC-02",
+  "where": "5\t시험\t3"
+ },
+ {
+  "rule_id": "STR-04",
+  "where": "KS X 9999-2에 따라 시험하여야 한다"
+ },
+ {
+  "rule_id": "BLT-02",
+  "where": "머리말"
+ },
+ {
+  "rule_id": "STR-02",
+  "where": "머리말"
+ },
+ {
+  "rule_id": "TTL-04",
+  "where": "KS X 9999 : 2026"
+ },
+ {
+  "rule_id": "TTL-01",
+  "where": "디지털 체중계 - 제1부"
+ },
+ {
+  "rule_id": "STR-01",
+  "where": "디지털 체중계"
+ },
+ {
+  "rule_id": "STR-04",
+  "where": "이 표준에 적합하여야 한다"
+ },
+ {
+  "rule_id": "BLT-03",
+  "where": "다음의 인용표준은"
+ },
+ {
+  "rule_id": "NRF-01",
+  "where": "KS A 0006"
+ },
+ {
+  "rule_id": "REF-04",
+  "where": "60068-2-6 : 2007"
+ },
+ {
+  "rule_id": "NRF-03",
+  "where": "계량에 관한 법률"
+ },
+ {
+  "rule_id": "BLT-04",
+  "where": "용어와 정의"
+ },
+ {
+  "rule_id": "TRM-01",
+  "where": "눈금 간격 (scale interval)"
+ },
+ {
+  "rule_id": "TRM-02",
+  "where": "인접한 두 표시값 사이의 차이."
+ },
+ {
+  "rule_id": "STR-03",
+  "where": "이 절은 체중계의 일반 요구사항을 규정한다"
+ },
+ {
+  "rule_id": "QTY-06",
+  "where": "40 mm x 40 mm"
+ },
+ {
+  "rule_id": "QTY-03",
+  "where": "2,000 N"
+ },
+ {
+  "rule_id": "QTY-01",
+  "where": "150kg"
+ },
+ {
+  "rule_id": "QTY-07",
+  "where": "900 cm2"
+ },
+ {
+  "rule_id": "FIG-01",
+  "where": "그림1. 구조"
+ },
+ {
+  "rule_id": "FIG-02",
+  "where": "그림1. 구조"
+ },
+ {
+  "rule_id": "FIG-03",
+  "where": "그림1. 구조"
+ },
+ {
+  "rule_id": "FMT-01",
+  "where": "그림1. 구조"
+ },
+ {
+  "rule_id": "QTY-02",
+  "where": ".1 kg"
+ },
+ {
+  "rule_id": "PUN-01",
+  "where": "건전지를 사용한다;"
+ },
+ {
+  "rule_id": "NTE-01",
+  "where": "비고 1 표시부의 밝기는"
+ },
+ {
+  "rule_id": "QTY-04",
+  "where": "23 ± 2 ℃"
+ },
+ {
+  "rule_id": "STR-04",
+  "where": "시험 장소에는 진동원이 없어야 한다"
+ },
+ {
+  "rule_id": "VRB-02",
+  "where": "순서를 바꿀 수 있다"
+ },
+ {
+  "rule_id": "PUN-03",
+  "where": "「계량에 관한 법률」"
+ },
+ {
+  "rule_id": "TBL-01",
+  "where": "<표 1>"
+ },
+ {
+  "rule_id": "TBL-02",
+  "where": "<표 1>"
+ },
+ {
+  "rule_id": "FMT-01",
+  "where": "<표 1>"
+ },
+ {
+  "rule_id": "VRB-01",
+  "where": "반드시 영점 조정"
+ },
+ {
+  "rule_id": "PUN-06",
+  "where": "허용 오차 이내이어야 한다.."
+ },
+ {
+  "rule_id": "REF-01",
+  "where": "표 5 참조"
+ },
+ {
+  "rule_id": "VRB-04",
+  "where": "이동하면 안 된다"
+ },
+ {
+  "rule_id": "NUM-03",
+  "where": "5.3.1.1.1.1"
+ },
+ {
+  "rule_id": "REF-02",
+  "where": "5.2항"
+ },
+ {
+  "rule_id": "PUN-02",
+  "where": "5 ~ 40 ℃"
+ },
+ {
+  "rule_id": "QTY-05",
+  "where": "5 ~ 40 ℃"
+ },
+ {
+  "rule_id": "NRF-02",
+  "where": "KS C IEC 61000-4-2"
+ },
+ {
+  "rule_id": "NUM-02",
+  "where": "6.1 표시 사항"
+ },
+ {
+  "rule_id": "NUM-07",
+  "where": "표 3 — 표시 항목"
+ },
+ {
+  "rule_id": "TBL-04",
+  "where": "표 3 — 표시 항목"
+ },
+ {
+  "rule_id": "TBL-03",
+  "where": "내부 표"
+ },
+ {
+  "rule_id": "NUM-01",
+  "where": "8 포장"
+ },
+ {
+  "rule_id": "STR-06",
+  "where": "참고문헌"
+ },
+ {
+  "rule_id": "NUM-06",
+  "where": "부속서 B"
+ },
+ {
+  "rule_id": "BLT-06",
+  "where": "해설"
+ }
+]

@@ -1,0 +1,46 @@
+"""local_samples/의 실제 KS 문서가 있을 때만 실행(CI에서는 건너뜀). 문서 내용은 출력하지 않는다."""
+
+import re
+import time
+
+from ksfix.io import read_input
+from ksfix.model import build
+
+
+def norm(s: str) -> str:
+    return re.sub(r"\s+", "", s)
+
+
+def test_real_docs_parse_fast(real_docs):
+    for path in real_docs:
+        t0 = time.perf_counter()
+        doc = build(read_input(path))
+        assert doc.paras, path.name
+        assert time.perf_counter() - t0 < 15
+
+
+def test_toc_cache_labels_match_resolved_numbering(real_docs):
+    """목차 필드 캐시("5.1→시험 조건→2")의 번호와 자동번호 해석 결과가 같아야 한다."""
+    for path in real_docs:
+        doc = build(read_input(path))
+        heads: dict[str, set[str]] = {}
+        for p in doc.paras:
+            if p.attrs["in_toc"] or not p.num_label:
+                continue
+            if re.fullmatch(r"\d+(\.\d+)*", p.num_label):
+                heads.setdefault(norm(p.text), set()).add(p.num_label)
+        checked = mismatched = 0
+        for p in doc.paras:
+            if not p.attrs["in_toc"]:
+                continue
+            parts = p.text.split("\t")
+            if len(parts) < 3 or not re.fullmatch(r"\d+(\.\d+)*", parts[0].strip()):
+                continue
+            found = heads.get(norm(parts[1]))
+            if found is None:
+                continue  # 목차 캐시가 낡은 경우(TOC-02 대상)는 번호 해석 검증에서 제외
+            checked += 1
+            if parts[0].strip() not in found:
+                mismatched += 1
+        assert checked >= 10, path.name
+        assert mismatched == 0, path.name

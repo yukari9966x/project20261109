@@ -20,16 +20,13 @@ STEPS: list[list[str]] = [
     [sys.executable, "-m", "pytest", "-q"],
 ]
 
+# Phase 4(수정 엔진) 전까지는 구조 보기로 샘플 처리 스모크 검사를 한다.
 SAMPLE_STEP = [
     sys.executable,
     "-m",
     "ksfix",
-    "fix",
+    "inspect",
     str(SAMPLE.relative_to(ROOT)),
-    "-o",
-    "out/ci",
-    "--mode",
-    "tracked",
 ]
 
 # 값이 붙은 비밀값 할당만 잡는다(예: api_key = "sk-..."). 환경변수 이름 참조는 허용.
@@ -91,9 +88,15 @@ def hygiene() -> bool:
     return ok
 
 
-def run(step: list[str]) -> bool:
+def run(step: list[str], quiet: bool = False) -> bool:
     print("$", " ".join(step), flush=True)
-    return subprocess.run(step, cwd=ROOT).returncode == 0
+    if not quiet:
+        return subprocess.run(step, cwd=ROOT).returncode == 0
+    proc = subprocess.run(step, cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
+    tail = (proc.stdout + proc.stderr).strip().splitlines()[-3:]
+    for line in tail:
+        print("  " + line[:200])
+    return proc.returncode == 0
 
 
 def main() -> int:
@@ -106,7 +109,7 @@ def main() -> int:
     if not run(STEPS[2]):
         return 1
     if SAMPLE.exists():
-        if not run(SAMPLE_STEP):
+        if not run(SAMPLE_STEP, quiet=True):
             return 1
     else:
         print(

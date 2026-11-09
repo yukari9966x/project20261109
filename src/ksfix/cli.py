@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from collections.abc import Callable, Sequence
 
@@ -17,6 +18,42 @@ def _not_ready(phase: str) -> Callable[[argparse.Namespace], int]:
         return 2
 
     return handler
+
+
+def _short(text: str, width: int = 60) -> str:
+    text = text.replace("\n", "⏎").replace("\t", "→")
+    return text if len(text) <= width else text[: width - 1] + "…"
+
+
+def cmd_inspect(args: argparse.Namespace) -> int:
+    import json
+
+    from ksfix.api import inspect_bytes
+    from ksfix.io import InputError, read_input
+
+    try:
+        result = inspect_bytes(read_input(args.file))
+    except InputError as exc:
+        print(f"오류: {exc}", file=sys.stderr)
+        return 2
+    if args.json:
+        print(json.dumps(result, ensure_ascii=False, indent=1))
+        return 0
+    meta = result["meta"]
+    print(
+        f"문단 {meta['paragraph_count']}개 · 표 {meta['table_count']}개 · 구역 {meta['sections']}개 · "
+        f"한글 비율 {meta['hangul_ratio']:.0%} · 메모 {meta['comment_count']}건"
+        + (" · 기존 변경추적 있음" if meta["has_tracked_changes"] else "")
+    )
+    print(f"{'idx':>5} {'구역':>2} {'역할':16} {'번호':10} {'스타일':24} 텍스트")
+    for b in result["blocks"]:
+        if not args.all and (b["in_table"] or not b["text"].strip()) and not b["label"]:
+            continue
+        print(
+            f"{b['idx']:>5} {b['section']:>2} {b['role']:16} {str(b['label'] or ''):10} "
+            f"{str(b['style'] or '')[:24]:24} {_short(b['text'])}"
+        )
+    return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -53,7 +90,8 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("inspect", help="블록별 역할·번호·스타일 보기(디버깅·시연용)")
     p.add_argument("file", help="입력 docx")
     p.add_argument("--json", action="store_true", help="JSON으로 출력")
-    p.set_defaults(func=_not_ready("Phase 1"))
+    p.add_argument("--all", action="store_true", help="빈 문단과 표 안 문단도 표시")
+    p.set_defaults(func=cmd_inspect)
 
     p = sub.add_parser("rules", help="규칙 목록")
     p.add_argument("--markdown", action="store_true", help="마크다운 표로 출력(docs/RULES.md)")
@@ -72,13 +110,28 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _safe_streams() -> None:
+    """콘솔이 표현하지 못하는 문자(예: Windows cp949의 '⏎')로 죽지 않게 한다."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors="replace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv: Sequence[str] | None = None) -> int:
+    _safe_streams()
     parser = build_parser()
     args = parser.parse_args(argv)
     if not getattr(args, "command", None):
         parser.print_help()
         return 0
-    return int(args.func(args) or 0)
+    try:
+        return int(args.func(args) or 0)
+    except BrokenPipeError:  # 예: ksfix inspect ... | head
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        return 0
 
 
 if __name__ == "__main__":
